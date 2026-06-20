@@ -36,8 +36,8 @@ TIER 3 — DEFERRED
 
 | Repo | Branch | HEAD | npm / pin | Role |
 |------|--------|------|-----------|------|
-| `xray` | `feat/user-asides` | `c72812ec2` | package **3.5.4** (not merged) | Framework: user-asides + pipeline rewire |
-| `repertoire` | `main` | `c7e448d` | **@0xray/repertoire@0.1.8** | Memory organ + MCP |
+| `xray` | `main` | `327c618bd` | **0xray@3.5.5** (npm tag pending) | User-asides P0 + pipeline P3 — confer CONDITIONAL PASS |
+| `repertoire` | `main` | `6b2848a` | **@0xray/repertoire@0.1.8** | Memory organ + MCP + consolidated helm |
 | `groover` | `main` | `97027aa` | 0xray ^3.4.x prod | Field body (Moltbook VPS) |
 | `repertoire-suit-iteration` | `feat/suit-pre-release-iteration` | `a27db28` | links `file:../xray` | Suit dogfood worktree — **complete** |
 | `jelly` | varies | — | **strray-ai 1.18** ❌ | Commercial — blocked on J1 |
@@ -190,13 +190,11 @@ TIER 3 — DEFERRED
 
 ## Single next-action list (copy to lead-dev plan)
 
-1. **Implement user-asides P0 #1** — `delegation-gate.ts`: worktree mismatch → **deny** (not warn).
-2. **Implement user-asides P0 #2** — `auto_provision_worktree` on analyze-complexity intake.
-3. **Pipeline P3 skeleton** — `verify:pipeline-facets.mjs` + wire `confirm:suit:full`.
-4. **Merge `feat/user-asides` → `main`** — release-gate, tag **0xray@3.5.5**, CHANGELOG.
-5. **Update `0x0/docs/FINAL-PLAN.md`** — versions (repertoire 0.1.8, xray 3.5.5), branch state, this doc as helm pointer.
-6. **Kick Jelly J1** — only after step 4.
-7. **Background:** Groover Syncopate daily poll; publish repertoire if brain > 145.
+1. ~~User-asides P0 + P3 + merge~~ — **done** `327c618bd` / `6b2848a`; retrospective confer **CONDITIONAL PASS** 2026-06-20
+2. **`npm publish 0xray@3.5.5`** — after `release-gate`; Groover ACK: no field blockers
+3. **3.5.6 hardening** — `auto_chain_delegations: false` cwd bypass; synthesis+worktree deny test
+4. **Kick Jelly J1** — after npm tag
+5. **Background:** Groover Syncopate daily poll; publish repertoire if brain > 145
 
 ---
 
