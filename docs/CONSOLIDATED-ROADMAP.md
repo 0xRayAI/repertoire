@@ -19,7 +19,7 @@ TIER 0 — SHIPPED (maintain, do not re-sprint)
   Core field loop · suit wearable · Repertoire memory · Groover G-09
 
 TIER 1 — IN FLIGHT (unblock everything else)
-  1. Merge feat/user-asides → xray main + npm tag (3.5.5) — **code ready**
+  1. ~~Merge feat/user-asides → xray main~~ — **done**; 4× PASS confer → npm tag **3.5.6**
   2. ~~User-asides P0~~ — **done** 2026-06-20 (cwd deny + auto_provision_worktree)
   3. ~~Pipeline P3 skeleton~~ — **done** (`verify:pipeline-facets`, `confirm:suit:full`)
 
@@ -36,7 +36,7 @@ TIER 3 — DEFERRED
 
 | Repo | Branch | HEAD | npm / pin | Role |
 |------|--------|------|-----------|------|
-| `xray` | `main` | `327c618bd` | **0xray@3.5.5** (npm tag pending) | User-asides P0 + pipeline P3 — confer CONDITIONAL PASS |
+| `xray` | `main` | `a22b7f553` | **0xray@3.5.6** (npm tag pending) | User-asides P0 hardened — 4-agent confer **PASS** |
 | `repertoire` | `main` | `6b2848a` | **@0xray/repertoire@0.1.8** | Memory organ + MCP + consolidated helm |
 | `groover` | `main` | `97027aa` | 0xray ^3.4.x prod | Field body (Moltbook VPS) |
 | `repertoire-suit-iteration` | `feat/suit-pre-release-iteration` | `a27db28` | links `file:../xray` | Suit dogfood worktree — **complete** |
@@ -190,10 +190,9 @@ TIER 3 — DEFERRED
 
 ## Single next-action list (copy to lead-dev plan)
 
-1. ~~User-asides P0 + P3 + merge~~ — **done** `327c618bd` / `6b2848a`; retrospective confer **CONDITIONAL PASS** 2026-06-20
-2. **`npm publish 0xray@3.5.5`** — after `release-gate`; Groover ACK: no field blockers
-3. **3.5.6 hardening** — `auto_chain_delegations: false` cwd bypass; synthesis+worktree deny test
-4. **Kick Jelly J1** — after npm tag
+1. ~~User-asides P0 + P3 + merge + hardening~~ — **done** `a22b7f553`; unanimous confer **PASS** 2026-06-20
+2. **`npm publish 0xray@3.5.6`** — after `release-gate`; Groover PASS: no field blockers
+3. **Kick Jelly J1** — after npm tag
 5. **Background:** Groover Syncopate daily poll; publish repertoire if brain > 145
 
 ---
