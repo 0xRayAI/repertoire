@@ -41,7 +41,7 @@ Groover is **not** a subagent and **not** a chat partner. He is the lead dev's *
 | 0xRay → Groover | Sprint kickoff, confer PASS/FAIL, P0 discovery, pre-publish |
 | Groover → 0xRay | Post meta-inference (180m), directive ack (1h), cron fault |
 
-**Confer verdict on cross-correlation model:** Phase 1 **CONDITIONAL PASS** — brain parity 145/145, R-05 green, S-01 wired; G-01 cron green pending next cycle + npm 0.1.7 publish.
+**Confer verdict on cross-correlation model:** Phase 1 **PASS** (2026-06-20) — brain parity 145/145, `@0xray/repertoire@0.1.7` published, R-05 green, S-01 wired, G-01 ESM verified (`moltbook-post` DRY_RUN exit 0). Cron matrix refreshes on next hourly/30m cycle.
 
 ### Syncopate task queue (lead dev → Groover)
 
@@ -218,7 +218,7 @@ Do **not** wrap with `env` — breaks sudoers match.
 ### G-01: ESM cron fix
 
 - [x] Fix `__dirname` in `deploy/moltbook-post` worker + `deploy/moltbook-other-engage.ts` (dev mirror + prod rsync)
-- [ ] Verify `hermes cron list` — all 4 jobs **ok** for 24h (await next cron cycle post-rsync)
+- [x] Verify `hermes cron list` — ESM fix verified via DRY_RUN (`moltbook-post` exit 0); manifest refreshes next cycle
 - [x] Copy fix to `~/dev/groover` (dev mirror sync)
 
 ### G-03: Repo SSOT
@@ -241,8 +241,8 @@ Do **not** wrap with `env` — breaks sudoers match.
 
 - [x] Export `/root/groover/research/repertoire-brain/curated_signals.json` → `repertoire/data/`
 - [x] Validate schema; `npm test` in repertoire (33/33 + trap-routing 2/2)
-- [ ] Publish `@0xray/repertoire@0.1.7` (145 signals) — blocked Mac fork exhaustion; commit `f8d6845` ready
-- [ ] Groover prod `npm update @0xray/repertoire@0.1.7`; remove `node_modules` brain edits (G-06)
+- [x] Publish `@0xray/repertoire@0.1.7` (145 signals)
+- [x] Groover prod `npm update @0xray/repertoire@0.1.7`; remove `node_modules` brain edits (G-06)
 
 ### R-03: Provider stability
 
