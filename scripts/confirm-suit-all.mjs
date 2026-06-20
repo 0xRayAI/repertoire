@@ -24,6 +24,7 @@ const flags = {
   install: args.includes('--install'),
   grokHarness: args.includes('--grok-harness'),
   verifyOnly: args.includes('--verify-only'),
+  pipelineAudit: args.includes('--pipeline-audit'),
 };
 const onlyArg = args.find((a) => a.startsWith('--only='));
 const onlySet = onlyArg
@@ -231,6 +232,21 @@ if (anyRed) {
 if (flags.grokHarness && grokHarnessOk === false) {
   console.error('❌ Grok harness FAILED — memory routing / stdio probes not ready.');
   process.exit(1);
+}
+
+if (flags.pipelineAudit) {
+  console.log('Phase 3 — Pipeline facet verify\n');
+  const pipelineScript = join(root, 'node_modules', '0xray', 'scripts', 'mjs', 'verify-pipeline-facets.mjs');
+  const pipelineResult = spawnSync('node', [pipelineScript], {
+    cwd: root,
+    encoding: 'utf8',
+    stdio: 'inherit',
+  });
+  if (pipelineResult.status !== 0) {
+    console.error('❌ Pipeline facet verify FAILED');
+    process.exit(1);
+  }
+  console.log('');
 }
 
 console.log('✅ Suit wear matrix PASS — all verified bridges wearable.');

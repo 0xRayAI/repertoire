@@ -36,7 +36,11 @@
     "phased_plan_threshold": 25,
     "auto_consult_major_work": true,
     "no_new_surface": true,
-    "auto_chain_delegations": true
+    "auto_chain_delegations": true,
+    "user_asides": {
+      "enabled": true,
+      "auto_provision_worktree": false
+    }
   },
   "autonomous_reporting": {
     "enabled": true,
@@ -203,6 +207,8 @@
   },
   "inference_governance": {
     "enabled": true,
+    "local_mode": true,
+    "require_external_dynamo": false,
     "request_timeout_ms": 10000,
     "min_confidence_threshold": 0.5,
     "proposal_defaults": {
