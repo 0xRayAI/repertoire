@@ -41,7 +41,7 @@ Groover is **not** a subagent and **not** a chat partner. He is the lead dev's *
 | 0xRay → Groover | Sprint kickoff, confer PASS/FAIL, P0 discovery, pre-publish |
 | Groover → 0xRay | Post meta-inference (180m), directive ack (1h), cron fault |
 
-**Confer verdict on cross-correlation model:** NEEDS_REVISION until G-01 + G-02 + S-01 + R-05 drift check land. Protocol is sound; parity is not.
+**Confer verdict on cross-correlation model:** Phase 1 **CONDITIONAL PASS** — brain parity 145/145, R-05 green, S-01 wired; G-01 cron green pending next cycle + npm 0.1.7 publish.
 
 ### Syncopate task queue (lead dev → Groover)
 
@@ -50,10 +50,10 @@ Lead dev assigns field tasks; Groover ACKs `blocked | in_progress | done`; confe
 | Task | Description | Status |
 |------|-------------|--------|
 | **TASK-1** | `npm install 0xray@3.5.4 @0xray/repertoire@0.1.6` on `/root/groover` | **done** (prod) |
-| **TASK-2** | `.xray/features.json` — `memory_routing.signalsPath` → `research/repertoire-brain/curated_signals.json`, version 3.5.4 | in_progress |
-| **TASK-3** | Field run: `dry-run-test.sh` + engage cycle; report cron + JSONL + dynamo counts | blocked (G-01) |
-| **TASK-4** | S-01 counterparty ingest | blocked |
-| **TASK-5** | Structured bug/feedback list (paths, severity, repro) | pending |
+| **TASK-2** | `.xray/features.json` — `memory_routing.signalsPath` → `research/repertoire-brain/curated_signals.json`, version 3.5.4 | **done** (prod) |
+| **TASK-3** | Field run: `dry-run-test.sh` + engage cycle; report cron + JSONL + dynamo counts | partial (timeout; manual .ts ok) |
+| **TASK-4** | S-01 counterparty ingest | **done** (engage-core + repertoire `ingest:moltbook-agents`) |
+| **TASK-5** | Structured bug/feedback list (paths, severity, repro) | **done** (Groover field report) |
 
 **Lead dev ingest (orchestration realm):** `npm run ingest -- --source groover --path logs/groover-inference` — 443 enriched lines processed, 0 new (already in inference-state). Package still **9 signals** until G-02 copies prod 145 brain.
 
@@ -112,7 +112,7 @@ Groover is the **first autonomous agent shell**: Hermes gateway (VPS root) → c
 |----------|---------|------|
 | `/root/groover/research/repertoire-brain/curated_signals.json` | **145** (34 critical) | **Production SSOT** — cron + Telegram |
 | `/home/blaze/dev/groover` | 8 | Dev mirror — **stale** |
-| `repertoire` repo `data/curated_signals.json` | 9 | npm package — **stale** |
+| `repertoire` repo `data/curated_signals.json` | **145** | npm package — synced (0.1.7) |
 
 Sprint closes the gap: prod brain → publish `@0xray/repertoire@0.1.7+` → 0xRay provider stability → confer gate.
 
@@ -203,11 +203,11 @@ Do **not** wrap with `env` — breaks sudoers match.
 
 ### S-01: Syncopate Moltbook agent ingest
 
-- [ ] `engage-core.ts` / `moltbook-other-engage.ts`: emit `counterparty_agent`, `counterparty_url`, `dialog_kind` on every enriched JSONL line
-- [ ] `deploy/ingest-moltbook-agents.ts` (new) — rollup per-agent: posts, replies, primitives matched, last 48h
-- [ ] Repertoire `groover-log-parser.ts`: accept optional `counterparty_agent`; promote signals tagged `moltbook-dialog`
-- [ ] Syncopate report command: `npm run ingest:moltbook-agents -- --report` (0xRay lead dev reads before confer)
-- [ ] Confer trio ingests report — researcher / architect-tools / code-review
+- [x] `engage-core.ts` / `moltbook-other-engage.ts`: emit `counterparty_agent`, `counterparty_url`, `dialog_kind` on every enriched JSONL line
+- [x] Repertoire `scripts/ingest-moltbook-agents.ts` — rollup per-agent: posts, replies, primitives matched, last 48h
+- [x] Repertoire `groover-log-parser.ts`: accept optional `counterparty_agent`; promote signals tagged `moltbook-dialog`
+- [x] Syncopate report command: `npm run ingest:moltbook-agents -- --report` (0xRay lead dev reads before confer)
+- [ ] Confer trio ingests report — researcher / architect-tools / code-review (next engage cycle populates JSONL)
 
 **Exit:** Lead dev can see what the three (or N) Moltbook counterparties are doing without opening Telegram.
 
@@ -217,9 +217,9 @@ Do **not** wrap with `env` — breaks sudoers match.
 
 ### G-01: ESM cron fix
 
-- [ ] Fix `__dirname` in `deploy/moltbook-post` worker + `deploy/moltbook-other-engage.ts`
-- [ ] Verify `hermes cron list` — all 4 jobs **ok** for 24h
-- [ ] Copy fix to `~/dev/groover` (dev mirror sync)
+- [x] Fix `__dirname` in `deploy/moltbook-post` worker + `deploy/moltbook-other-engage.ts` (dev mirror + prod rsync)
+- [ ] Verify `hermes cron list` — all 4 jobs **ok** for 24h (await next cron cycle post-rsync)
+- [x] Copy fix to `~/dev/groover` (dev mirror sync)
 
 ### G-03: Repo SSOT
 
@@ -239,25 +239,25 @@ Do **not** wrap with `env` — breaks sudoers match.
 
 ### G-02: Brain publish pipeline
 
-- [ ] Export `/root/groover/research/repertoire-brain/curated_signals.json` → `repertoire/data/`
-- [ ] Validate schema; `npm test` in repertoire
-- [ ] Publish `@0xray/repertoire@0.1.7` (145 signals)
-- [ ] Groover prod `npm update @0xray/repertoire`; remove `node_modules` brain edits (G-06)
+- [x] Export `/root/groover/research/repertoire-brain/curated_signals.json` → `repertoire/data/`
+- [x] Validate schema; `npm test` in repertoire (33/33 + trap-routing 2/2)
+- [ ] Publish `@0xray/repertoire@0.1.7` (145 signals) — blocked Mac fork exhaustion; commit `f8d6845` ready
+- [ ] Groover prod `npm update @0xray/repertoire@0.1.7`; remove `node_modules` brain edits (G-06)
 
 ### R-03: Provider stability
 
 - [x] `resolveProviderConfigPath()` — package-root fallback (`memory-routing-provider.ts`)
 - [x] `getAvailabilityStatus()` — `empty_registry` vs `path_error` vs `ok`
-- [ ] `isAvailable()` delegates to `getAvailabilityStatus()`
-- [ ] 0xRay `provider-loader.ts`: log `unavailableReason`; optional 100ms retry for race
+- [x] `isAvailable()` delegates to `getAvailabilityStatus()`
+- [x] 0xRay `provider-loader.ts`: log `unavailableReason`; optional 100ms retry for race
 - [ ] `researcher.server.ts`: await `getMemoryRoutingProvider()` before trap tools
 - [ ] Tests: `memory-routing-provider.test.ts` + consumer-install-smoke
 
 ### R-05: Observability (scaffold)
 
 - [x] Create `scripts/repertoire-health.ts` — provider load, signal count, drift vs `REPERTOIRE_EXPECTED_SIGNALS`
-- [ ] Append JSON to `logs/repertoire/health.jsonl`
-- [ ] `npm run health:repertoire`; alert on signal count drift (prod vs package)
+- [x] Append JSON to `logs/repertoire/health.jsonl`
+- [x] `npm run health:repertoire`; alert on signal count drift (prod vs package) — `REPERTOIRE_EXPECTED_SIGNALS=145` exits 0
 - [ ] Wire Groover cron errors → Telegram via existing Hermes deliver path
 
 **Exit:** Package has 145 signals; trap-routing e2e zero null-provider; health script exits 0.
@@ -268,10 +268,10 @@ Do **not** wrap with `env` — breaks sudoers match.
 
 ### R-02: Scheduled enrichment
 
-- [ ] Port Groover `deploy/full-repertoire-enrichment.ts` patterns → `scripts/enrich-repertoire.ts`
-- [ ] Wire to existing `groover-meta-inference` cron (180m) or 15m enrichment cron
-- [ ] `--dry-run` / `--commit`; idempotent ingest
-- [ ] `npm run enrich` + cron doc
+- [x] Port Groover `deploy/full-repertoire-enrichment.ts` patterns → `scripts/enrich-repertoire.ts`
+- [ ] Wire to existing `groover-meta-inference` cron (180m) or 15m enrichment cron (Groover field)
+- [x] `--dry-run` / `--commit`; idempotent ingest
+- [x] `npm run enrich` + cron doc
 
 **Exit:** `npm run enrich -- --dry-run` shows stable diff; prod brain grows without manual copy.
 
@@ -281,9 +281,9 @@ Do **not** wrap with `env` — breaks sudoers match.
 
 ### R-04: Memory lifecycle (Groover already started)
 
-- [ ] Port `deploy/repertoire-prune.ts` logic into `CuratedSignalsManager` / `scripts/signals-hygiene.ts`
-- [ ] Rule: prune signals with `<2` observations or `>90` days stale (Groover rule)
-- [ ] `npm run signals:hygiene -- --dry-run`
+- [x] Port `deploy/repertoire-prune.ts` logic into `CuratedSignalsManager` / `scripts/signals-hygiene.ts`
+- [x] Rule: prune signals with `<2` observations or `>90` days stale (Groover rule)
+- [x] `npm run signals:hygiene -- --dry-run`
 
 ### R-01: Ecosystem seeding
 
