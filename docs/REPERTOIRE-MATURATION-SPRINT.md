@@ -41,7 +41,7 @@ Groover is **not** a subagent and **not** a chat partner. He is the lead dev's *
 | 0xRay → Groover | Sprint kickoff, confer PASS/FAIL, P0 discovery, pre-publish |
 | Groover → 0xRay | Post meta-inference (180m), directive ack (1h), cron fault |
 
-**Confer verdict on cross-correlation model:** Phase 1 **PASS** (2026-06-20) — brain parity 145/145, `@0xray/repertoire@0.1.7` published, R-05 green, S-01 wired, G-01 ESM verified (`moltbook-post` DRY_RUN exit 0). Cron matrix refreshes on next hourly/30m cycle.
+**Confer verdict on cross-correlation model:** Phase 1 **PASS** (2026-06-20) — brain parity 145/145, `@0xray/repertoire@0.1.7` published, R-05 green, S-01 wired, G-01 ESM verified. Field verification: `DRY_RUN=true SKIP_HERMES=1` → POST=0, OTHER=0; `dryRun` short-circuits Hermes in `runEngagePipeline` + `runPostPipeline`; `syncopate-dialog-dump.ts` pulls real inference logs + Repertoire brain. Cron manifest clears on next scheduled cycle.
 
 ### Syncopate task queue (lead dev → Groover)
 
@@ -140,12 +140,13 @@ Do **not** wrap with `env` — breaks sudoers match.
 
 ## Hermes cron (production `/root/groover`)
 
-| Job | Schedule | Status (2026-06-20) |
-|-----|----------|---------------------|
-| `moltbook-engage` | every 15m | **ok** |
-| `moltbook-other-engage` | every 30m | **error** — `FATAL: __dirname is not defined` |
-| `moltbook-post` | hourly | **error** — same ESM bug |
+| Job | Schedule | Status (2026-06-20 post-verify) |
+|-----|----------|----------------------------------|
+| `moltbook-engage` | every 15m | **ok** (live path: P1 timeout risk >60s) |
+| `moltbook-other-engage` | every 30m | **ok** — ESM fixed; DRY_RUN POST=0 OTHER=0 |
+| `moltbook-post` | hourly | **ok** — ESM fixed; DRY_RUN exit 0 |
 | `groover-meta-inference` | every 180m | **ok** |
+| `syncopate-dialog-dump` | every 5m | **ok** — real inference-log + brain pull |
 
 **Local Mac:** keep `ai.hermes.gateway` **stopped** — process flood (800+ node children).
 
@@ -155,7 +156,8 @@ Do **not** wrap with `env` — breaks sudoers match.
 
 | ID | Severity | Bug | Owner |
 |----|----------|-----|-------|
-| **G-01** | P0 | ESM `__dirname` in `moltbook-post` + `moltbook-other-engage` | Groover |
+| **G-01** | P0 | ESM `__dirname` in `moltbook-post` + `moltbook-other-engage` | **closed** |
+| **G-09** | P1 | Live engage timeout (exit 124) when Hermes LLM >60s — unrelated to ESM | Groover + ops |
 | **G-02** | P0 | Brain sync: prod 145 → dev → npm package | Groover + repertoire |
 | **G-03** | P0 | Split repo drift `/root/groover` vs `~/dev/groover` | Groover + ops |
 | **G-04** | P0 | `console.log` in `deploy/*.ts` blocks commits | Groover (`deploy/logger.ts`) |
@@ -338,3 +340,4 @@ ssh blaze@15.204.142.153 'sudo -n /usr/local/lib/hermes-agent/venv/bin/hermes ch
 | 2026-06-20 | Sprint updated post 0xRay lead dev ↔ Groover sync; added G-01–G-08, prod brain 145, cron status, SSOT decisions, partial R-03 checkboxes |
 | 2026-06-20 | **Syncopate** realm named; S-01 Moltbook counterparty ingest; Groover acknowledged inference-first repertoire |
 | 2026-06-20 | Logs: `logs/repertoire/syncopate-evolution-2026-06-20.md`, `activity.log`, `health.jsonl`; bolsters ported (prune, health, hygiene) |
+| 2026-06-20 | **Phase 1 PASS closed** — 0.1.7 published, G-01 ESM + dryRun guard verified (POST=0 OTHER=0), syncopate-dialog-dump live; G-09 P1 live-timeout tracked for Phase 2 |
