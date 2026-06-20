@@ -373,6 +373,16 @@ After each PR lands: pulse Groover → `hermes cron list` + 1 DRY_RUN + brain co
 
 **Exit (G-09 close):** 3× live `moltbook-engage` exit 0, wall <60s, enriched JSONL Δ, autonomy target **~80%**.
 
+### G-09 implementation status (2026-06-20)
+
+- [x] G-09-0 — `repertoireServicePaths(GROOVER_ROOT)` in consult + post-tick
+- [x] G-09-1 — `hermes-runner` retry + structured stderr JSON logging
+- [x] G-09-2 — `engage-core` MAX_HERMES_CALLS, null→degraded fallback
+- [x] G-09-3 — workers `DRY_RUN→skipHermes`; other-engage incremental save
+- [x] G-09-5 — `recentReplyHashes` in `.moltbot` state via `engage-state-helpers`
+- [x] G-09-4 — `resolveRepertoireLivePolicy` (skip low-confidence; force gov on trap)
+- [ ] Prod verify — 3× live engage exit ≠ 124 (await cron cycles)
+
 ---
 
 ## Deferred (out of sprint)
