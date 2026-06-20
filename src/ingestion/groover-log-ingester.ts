@@ -13,6 +13,8 @@ export interface GrooverIngesterOptions {
   targetDir?: string;
   signalsManager?: CuratedSignalsManager;
   promoteAfterIngest?: boolean;
+  /** Preview counts only — no log append, observation writes, or promotion. */
+  dryRun?: boolean;
 }
 
 export interface GrooverIngestResult {
@@ -26,12 +28,14 @@ export class GrooverLogIngester {
   private readonly targetDir: string;
   private readonly signalsManager: CuratedSignalsManager;
   private readonly promoteAfterIngest: boolean;
+  private readonly dryRun: boolean;
 
   constructor(options: GrooverIngesterOptions) {
     this.sourceDir = options.sourceDir;
     this.targetDir = options.targetDir ?? 'logs/groover-inference';
     this.signalsManager = options.signalsManager ?? new CuratedSignalsManager();
     this.promoteAfterIngest = options.promoteAfterIngest ?? true;
+    this.dryRun = options.dryRun ?? false;
   }
 
   ingest(): GrooverIngestResult {
@@ -67,6 +71,12 @@ export class GrooverLogIngester {
             continue;
           }
 
+          if (this.dryRun) {
+            if (id) existingIds.add(id);
+            imported++;
+            continue;
+          }
+
           const entry = buildInferenceEntryFromGrooverLog(raw);
           const targetFile = join(this.targetDir, basename(file));
           appendFileSync(targetFile, JSON.stringify(entry) + '\n');
@@ -83,9 +93,10 @@ export class GrooverLogIngester {
       }
     }
 
-    const promoted = this.promoteAfterIngest
-      ? this.signalsManager.promoteQualifiedSignals()
-      : [];
+    const promoted =
+      !this.dryRun && this.promoteAfterIngest
+        ? this.signalsManager.promoteQualifiedSignals()
+        : [];
 
     return { imported, skipped, promoted };
   }

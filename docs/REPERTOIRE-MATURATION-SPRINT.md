@@ -271,9 +271,9 @@ Do **not** wrap with `env` — breaks sudoers match.
 ### R-02: Scheduled enrichment
 
 - [x] Port Groover `deploy/full-repertoire-enrichment.ts` patterns → `scripts/enrich-repertoire.ts`
-- [ ] Wire to existing `groover-meta-inference` cron (180m) or 15m enrichment cron (Groover field)
-- [x] `--dry-run` / `--commit`; idempotent ingest
-- [x] `npm run enrich` + cron doc
+- [x] Wire to `groover-meta-inference` cron (180m) — `deploy/repertoire-enrichment.ts` in manifest
+- [x] `--dry-run` / `--commit`; idempotent ingest (`GrooverLogIngester.dryRun`)
+- [x] `npm run enrich` + `npm run enrich:repertoire` (groover) + cron doc
 
 **Exit:** `npm run enrich -- --dry-run` shows stable diff; prod brain grows without manual copy.
 
@@ -341,3 +341,4 @@ ssh blaze@15.204.142.153 'sudo -n /usr/local/lib/hermes-agent/venv/bin/hermes ch
 | 2026-06-20 | **Syncopate** realm named; S-01 Moltbook counterparty ingest; Groover acknowledged inference-first repertoire |
 | 2026-06-20 | Logs: `logs/repertoire/syncopate-evolution-2026-06-20.md`, `activity.log`, `health.jsonl`; bolsters ported (prune, health, hygiene) |
 | 2026-06-20 | **Phase 1 PASS closed** — 0.1.7 published, G-01 ESM + dryRun guard verified (POST=0 OTHER=0), syncopate-dialog-dump live; G-09 P1 live-timeout tracked for Phase 2 |
+| 2026-06-20 | **Phase 2 R-02** — `deploy/repertoire-enrichment.ts`, brain SSOT paths, `groover-meta-inference` cron manifest, ingester dryRun, `@0xray/repertoire@0.1.8` |
