@@ -325,6 +325,56 @@ ssh blaze@15.204.142.153 'sudo -n /usr/local/lib/hermes-agent/venv/bin/hermes ch
 
 ---
 
+## Phase 2b — G-09 Autonomy Hardening (65% → 80%+)
+
+**Confer:** 2026-06-20 — Groover field + researcher + architect-tools + code-review  
+**Verdict:** **APPROVED** (conditional) — Groover-field sprint; Codex 69 (no new MCP); close when **3 consecutive live engage cycles** exit ≠ 124.
+
+### Groover field assessment (~65% autonomous)
+
+| Layer | Autonomy | Notes |
+|-------|----------|-------|
+| Brain / hygiene / dry-run | ~85% | R-02 wired; syncopate-dialog-dump live |
+| Live engage (Hermes + Dynamo) | ~45–50% | exit-124 on full runs; repertoire consult not decisive |
+| **Overall** | **~65%** | Unattended hours OK; not 24/7 live without monitoring |
+
+### Unanimous diagnosis
+
+- exit-124 = **cron wall (~60s)** vs **90s Hermes** × N comments — not ESM
+- `dryRun` guards POST but **not Hermes** unless `SKIP_HERMES=1`
+- Repertoire consulted; does not yet **skip** or **budget** live LLM calls
+- `recentReplyHashes` guard exists; workers don't persist across cron runs
+- **other-engage** saves state only at end — timeout loses progress
+
+### Merged PR plan (confer priority)
+
+| PR | Owner | Scope | Gate |
+|----|-------|-------|------|
+| **G-09-0** | Groover | Fix `repertoire-confidence` + `post-tick` → `repertoireServicePaths(GROOVER_ROOT)` | Consult hits `research/repertoire-brain/` without env override |
+| **G-09-1** | Groover | `hermes-runner`: classify timeout/124, 1 retry w/ backoff, structured log `{ attempts, final_status, durationMs }` | `hermes-runner.test.ts` green |
+| **G-09-2** | Groover | `engage-core`: `MAX_HERMES_CALLS_PER_RUN` env cap; null Hermes → `buildDryRunInference` fallback; per-stage time budget | Mock test: null ≠ worker abort; wall <60s |
+| **G-09-3** | Groover | Workers: `skipHermes: dryRun \|\| SKIP_HERMES`; incremental `saveState` on other-engage; cron manifest uses safe wrappers | `DRY_RUN=true` alone → POST=0 OTHER=0 exit 0 |
+| **G-09-4** | Groover | Repertoire live policy: `shouldSkipHermes` / `forceGovernance` from consult (low-confidence skip; trap → force gov) | JSONL has `consult_skipped_reason` or `repertoire_routing` |
+| **G-09-5** | Groover | Persistent `recentReplyHashes` in `.moltbot/*-state.json` (cap 100) | No duplicate public reply same thread within window |
+
+**Merge order:** G-09-0 → G-09-1 → G-09-2 → G-09-3 → G-09-5 → G-09-4 (policy last — needs stable logs from 1–3).
+
+### Realm ownership
+
+| Groover field | Lead dev (0xRay) |
+|---------------|-----------------|
+| `deploy/*`, VPS cron, live Moltbook | Confer gate, Syncopate directives |
+| `.moltbot/` state on `/root/groover` | `npm run ingest` + `ingest:moltbook-agents --report` |
+| ACK + readback after each PR | Package publish only if JSONL schema / brain changes |
+
+### Syncopate cadence
+
+After each PR lands: pulse Groover → `hermes cron list` + 1 DRY_RUN + brain count → lead dev logs `activity.log`.
+
+**Exit (G-09 close):** 3× live `moltbook-engage` exit 0, wall <60s, enriched JSONL Δ, autonomy target **~80%**.
+
+---
+
 ## Deferred (out of sprint)
 
 - eX0 bundle packaging (Phase 7 in `PHASED-PLAN.md`)
