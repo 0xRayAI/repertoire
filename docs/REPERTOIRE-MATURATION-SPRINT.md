@@ -371,7 +371,16 @@ ssh blaze@15.204.142.153 'sudo -n /usr/local/lib/hermes-agent/venv/bin/hermes ch
 
 After each PR lands: pulse Groover → `hermes cron list` + 1 DRY_RUN + brain count → lead dev logs `activity.log`.
 
-**Exit (G-09 close):** 3× live `moltbook-engage` exit 0, wall <60s, enriched JSONL Δ, autonomy target **~80%**.
+**Exit (G-09 close):** 3× live `moltbook-engage` exit 0, wall <60s, enriched JSONL Δ, autonomy target **~80%**. **CLOSED** 2026-06-20 (Groover pulse).
+
+### Syncopate poll cadence (lead dev obligation)
+
+| Trigger | Action |
+|---------|--------|
+| Post-deploy / post-PR | Immediate pulse — cron matrix + DRY_RUN + brain count |
+| Active sprint | Every **30–60m** or after each cron cycle window |
+| G-09+ live path watch | Poll until 3× clean live exits, then daily |
+| Confer gate | Pulse before verdict; Groover ACK + readback (no vote) |
 
 ### G-09 implementation status (2026-06-20)
 
@@ -381,7 +390,7 @@ After each PR lands: pulse Groover → `hermes cron list` + 1 DRY_RUN + brain co
 - [x] G-09-3 — workers `DRY_RUN→skipHermes`; other-engage incremental save
 - [x] G-09-5 — `recentReplyHashes` in `.moltbot` state via `engage-state-helpers`
 - [x] G-09-4 — `resolveRepertoireLivePolicy` (skip low-confidence; force gov on trap)
-- [ ] Prod verify — 3× live engage exit ≠ 124 (await cron cycles)
+- [x] Prod verify — 3× live engage exit ≠ 124 (19:05, 19:21, 19:37 — Groover pulse 2026-06-20)
 
 ---
 
