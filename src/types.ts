@@ -41,6 +41,10 @@ export interface InferenceEntry {
   governance_forced?: boolean;
   dynamo_result?: DynamoResult;
   repertoire_signals?: string[];
+  /** S-01 / Syncopate: Moltbook dialog partner */
+  counterparty_agent?: string;
+  counterparty_url?: string;
+  dialog_kind?: string;
 }
 
 export interface SignalObservationStats {

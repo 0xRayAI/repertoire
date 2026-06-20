@@ -124,5 +124,10 @@ export function buildInferenceEntryFromGrooverLog(
     governance_forced: parsed.governanceForced,
     dynamo_result: raw.dynamo_result as InferenceEntry['dynamo_result'],
     repertoire_signals: matchedPrimitives,
+    counterparty_agent:
+      typeof raw.counterparty_agent === 'string' ? raw.counterparty_agent : undefined,
+    counterparty_url:
+      typeof raw.counterparty_url === 'string' ? raw.counterparty_url : undefined,
+    dialog_kind: typeof raw.dialog_kind === 'string' ? raw.dialog_kind : undefined,
   };
 }

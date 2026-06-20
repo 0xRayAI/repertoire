@@ -5,7 +5,15 @@
  * Other providers can follow the same createMemoryRoutingProvider() export pattern.
  */
 
+import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
+import {
+  DEFAULT_DATA_DIR,
+  DEFAULT_FEEDBACK_DIR,
+  DEFAULT_LOG_DIR,
+  DEFAULT_SIGNALS_PATH,
+  DEFAULT_STATE_PATH,
+} from '../paths.js';
 import { RepertoireService } from '../RepertoireService.js';
 import type {
   AgentCapability,
@@ -152,6 +160,33 @@ function toRoutingContext(ctx: RepertoireRoutingContext): MemoryRoutingContext {
   };
 }
 
+export type ProviderAvailabilityReason =
+  | 'ok'
+  | 'empty_registry'
+  | 'signals_unreadable'
+  | 'signals_missing';
+
+export interface ProviderAvailabilityStatus {
+  available: boolean;
+  reason: ProviderAvailabilityReason;
+  signalCount: number;
+  signalsPath: string;
+}
+
+/** Resolve config path: consumer-relative first, then package default fallback. */
+export function resolveProviderConfigPath(
+  configured: string | undefined,
+  cwd: string,
+  packageDefault: string,
+): string {
+  if (!configured) return packageDefault;
+  const fromCwd = resolve(cwd, configured);
+  if (existsSync(fromCwd)) return fromCwd;
+  if (existsSync(configured)) return resolve(configured);
+  if (existsSync(packageDefault)) return packageDefault;
+  return fromCwd;
+}
+
 function toInheritedContext(ctx: RepertoireInheritedContext): MemoryInheritedContext {
   return {
     providerId: 'repertoire',
@@ -170,24 +205,59 @@ export class RepertoireMemoryRoutingProvider implements MemoryRoutingProvider {
   readonly name = 'Repertoire (deep memory + primitive registry)';
   private readonly service: RepertoireService;
 
+  readonly signalsPath: string;
+
   constructor(config: MemoryRoutingProviderConfig = {}) {
     const cwd = process.cwd();
+    this.signalsPath = resolveProviderConfigPath(
+      config.signalsPath,
+      cwd,
+      DEFAULT_SIGNALS_PATH,
+    );
+    const dataDir = resolveProviderConfigPath(
+      config.dataDir,
+      cwd,
+      DEFAULT_DATA_DIR,
+    );
     this.service = new RepertoireService({
-      dataDir: config.dataDir ? resolve(cwd, config.dataDir) : undefined,
-      signalsPath: config.signalsPath ? resolve(cwd, config.signalsPath) : undefined,
-      statePath: config.statePath ? resolve(cwd, config.statePath) : undefined,
-      logDir: config.logDir ? resolve(cwd, config.logDir) : undefined,
-      feedbackDir: config.feedbackDir ? resolve(cwd, config.feedbackDir) : undefined,
+      dataDir,
+      signalsPath: this.signalsPath,
+      statePath: resolveProviderConfigPath(config.statePath, cwd, DEFAULT_STATE_PATH),
+      logDir: resolveProviderConfigPath(config.logDir, cwd, DEFAULT_LOG_DIR),
+      feedbackDir: resolveProviderConfigPath(config.feedbackDir, cwd, DEFAULT_FEEDBACK_DIR),
     });
   }
 
-  isAvailable(): boolean {
+  getAvailabilityStatus(): ProviderAvailabilityStatus {
     try {
       const signals = this.service.signalsManager.load();
-      return signals.signals.length > 0;
+      const count = signals.signals.length;
+      if (count === 0) {
+        return {
+          available: false,
+          reason: 'empty_registry',
+          signalCount: 0,
+          signalsPath: this.signalsPath,
+        };
+      }
+      return {
+        available: true,
+        reason: 'ok',
+        signalCount: count,
+        signalsPath: this.signalsPath,
+      };
     } catch {
-      return false;
+      return {
+        available: false,
+        reason: existsSync(this.signalsPath) ? 'signals_unreadable' : 'signals_missing',
+        signalCount: 0,
+        signalsPath: this.signalsPath,
+      };
     }
+  }
+
+  isAvailable(): boolean {
+    return this.getAvailabilityStatus().available;
   }
 
   buildRoutingContext(operation: string): MemoryRoutingContext {

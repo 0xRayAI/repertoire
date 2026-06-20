@@ -30,6 +30,13 @@ async function main() {
     process.exit(1);
   }
 
+  try {
+    execSync('npm run health:repertoire', { cwd: root, stdio: 'pipe', env: { ...process.env, REPERTOIRE_EXPECTED_SIGNALS: '145' } });
+    pass('health:repertoire', '145 signals drift gate');
+  } catch (e) {
+    fail('health:repertoire', e.stderr?.toString() || e.message);
+  }
+
   const features = JSON.parse(readFileSync(join(root, '.xray/features.json'), 'utf8'));
   if (!features.synthesis?.enabled) fail('synthesis.enabled in features.json');
   else pass('synthesis.enabled in features.json');

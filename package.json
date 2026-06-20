@@ -1,6 +1,6 @@
 {
   "name": "@0xray/repertoire",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Deep memory, synthesis, and orchestrator enrichment for the 0xRay/Groover stack",
   "type": "module",
   "license": "MIT",
@@ -71,6 +71,10 @@
     "prepublishOnly": "npm run build && npm test && node scripts/consumer-install-smoke.mjs",
     "pack:check": "npm run build && node scripts/consumer-install-smoke.mjs && npm pack --dry-run",
     "ingest": "node --import tsx scripts/ingest.ts",
+    "health:repertoire": "node --import tsx scripts/repertoire-health.ts",
+    "signals:hygiene": "node --import tsx scripts/signals-hygiene.ts",
+    "enrich": "node --import tsx scripts/enrich-repertoire.ts",
+    "ingest:moltbook-agents": "node --import tsx scripts/ingest-moltbook-agents.ts",
     "meta-inference": "node --import tsx scripts/run-meta-inference.ts",
     "pipeline": "node --import tsx scripts/run-pipeline.ts",
     "feedback-cycle": "node --import tsx scripts/run-feedback-cycle.ts",
