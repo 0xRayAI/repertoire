@@ -1,7 +1,7 @@
 {
   "description": "Curated high-signal primitives and invariants surfaced by Groover inference that are not yet tracked in the Master Index or MCP filters. Each entry includes implementation guidance for autonomous agents.",
-  "last_updated": "2026-06-20T16:00:48.829Z",
-  "source": "meta-inference-2026-06-17-deep + verifiable-agent-ecosystem",
+  "last_updated": "2026-07-28T10:55:18.713Z",
+  "source": "meta-inference-2026-06-17-deep + verifiable-agent-ecosystem + bedrock-load-2026-07-28",
   "schema_version": "1.1",
   "implementation_guidance": {
     "how_to_use": "Each signal should be registered in the Master Index and evaluated during govern_with_solar calls on ontological-trap classified entries. Use the validation_experiment and evaluation_criteria fields to implement detection logic.",
@@ -48,20 +48,20 @@
       "implementation_notes": "Add detection logic in the inference prompt for replies that contrast 'map' vs 'verdict' language. Enforce via govern_with_solar on ontological-trap entries. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T03:34:47.520Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T03:35:45.128Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T03:36:26.412Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T03:36:49.355Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T03:37:16.514Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T03:40:47.476Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T03:41:14.807Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T03:43:00.158Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T03:45:22.809Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T03:45:47.352Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T03:46:40.304Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T03:59:07.309Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T10:45:01.587Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T10:45:26.003Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T10:45:28.461Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T10:45:41.951Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T10:45:45.192Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T10:46:02.437Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T10:48:45.562Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T10:59:03.264Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T11:00:25.803Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T11:00:40.136Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T11:00:53.511Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T11:01:11.313Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T11:01:27.220Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T11:01:42.950Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T11:08:19.035Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T11:08:33.313Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T11:08:53.946Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T11:09:13.458Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T11:09:32.069Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T11:09:53.069Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T11:10:16.290Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T11:24:12.782Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T11:24:39.683Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T11:24:58.076Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T11:25:25.277Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T11:26:02.129Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T11:26:42.534Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T11:27:12.984Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T11:28:00.202Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T11:28:34.620Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T11:29:15.667Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T01:59:19.164Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T01:59:56.681Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T02:00:36.766Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T02:11:37.904Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T02:14:46.869Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T02:15:05.432Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T02:15:21.142Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T02:15:33.226Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T02:17:22.946Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T02:21:54.124Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T02:22:35.403Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T02:23:09.989Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T02:29:29.170Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T02:30:26.060Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T02:30:55.218Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T02:39:28.536Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T02:40:20.883Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T02:40:50.612Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T02:41:17.861Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T02:41:41.380Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T02:42:09.358Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T10:54:17.517Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T10:54:32.000Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T10:55:08.132Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T10:55:41.093Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:03:10.244Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:03:36.125Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:04:21.933Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:10:35.963Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:12:22.771Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:12:39.918Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:12:42.259Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:12:55.167Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:12:55.491Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:13:14.440Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:13:25.765Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:13:37.383Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:13:38.950Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:14:14.268Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:14:45.270Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:15:47.830Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:16:10.393Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:16:47.816Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:17:00.697Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:17:03.273Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:17:22.214Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:17:27.370Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:29:00.270Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:29:15.780Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:29:57.221Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:42:46.053Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:45:33.737Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T12:02:40.705Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T12:03:10.362Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T12:15:15.965Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T12:20:21.364Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T12:36:00.821Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T12:37:05.343Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T12:53:36.379Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T12:53:49.701Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T12:54:04.116Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T13:09:38.485Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T13:10:03.516Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T13:10:16.950Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T13:19:31.032Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T13:26:39.817Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T13:26:53.790Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T13:27:13.532Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T13:27:30.519Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T13:42:51.213Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T13:43:17.317Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T13:43:41.668Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T13:43:56.327Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T13:44:11.141Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T13:59:59.054Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T14:00:18.127Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T14:00:36.381Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T14:01:07.449Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T14:16:34.537Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T14:16:58.285Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T14:17:19.401Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T14:17:49.928Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T14:23:19.715Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T14:33:57.948Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T14:34:21.293Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T14:34:56.252Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T14:50:29.666Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T14:50:54.479Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T14:51:38.728Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T15:07:58.874Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T15:08:21.636Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T15:08:41.539Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T15:25:01.593Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T15:25:26.315Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T15:25:46.159Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T15:26:09.223Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T15:42:20.446Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T15:59:03.919Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T16:15:24.579Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T16:15:46.544Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T16:16:32.372Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T16:16:52.453Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T16:32:06.618Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T16:32:33.132Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T16:32:55.540Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T16:33:20.541Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T16:35:42.038Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T16:36:10.824Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T16:50:10.024Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T17:06:52.271Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T17:07:11.119Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T17:07:43.690Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T17:08:29.176Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T17:09:02.039Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T17:09:14.064Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T17:40:30.194Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T17:40:45.572Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T17:41:13.294Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T17:52:59.076Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T17:53:12.746Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T19:47:02.520Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T20:18:32.594Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T20:49:43.720Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T20:50:33.850Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T21:21:24.229Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T21:22:14.170Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T21:32:07.649Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T21:53:59.039Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T22:25:23.077Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T22:25:47.270Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T22:43:33.356Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T22:50:27.087Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T22:56:43.473Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T22:56:58.316Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T23:28:11.263Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T23:28:25.866Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T23:59:48.598Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T00:00:12.926Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T00:06:54.358Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T01:09:44.992Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T02:07:36.125Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T02:07:53.798Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T02:39:18.461Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T03:11:14.328Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T03:12:00.562Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T03:17:52.029Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T03:43:23.285Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T04:15:17.282Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T04:47:26.790Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T05:09:55.592Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T05:18:44.269Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T05:19:28.117Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T05:19:54.816Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T05:25:42.546Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T05:39:56.591Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T05:40:27.253Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T05:50:54.241Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T06:23:09.805Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T06:23:21.436Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T06:54:54.557Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T07:26:09.618Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T07:58:23.593Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T08:29:59.539Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T08:30:54.899Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T09:01:46.961Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T09:02:15.949Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T09:02:29.979Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T09:33:47.661Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T09:34:00.491Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T09:34:13.338Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T10:05:44.805Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T10:05:58.344Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T10:06:31.980Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T10:37:48.042Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T10:38:00.774Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T10:38:32.421Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T10:38:47.424Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T10:39:03.994Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T11:09:49.631Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T11:10:05.089Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T11:10:19.544Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T11:10:35.715Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T11:41:46.363Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T11:41:59.787Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T11:42:24.841Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T12:12:48.085Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T12:13:01.900Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T12:13:28.385Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T12:43:44.731Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T12:44:10.417Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T13:14:45.939Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T13:14:58.503Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T13:15:25.413Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T13:46:47.996Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T13:47:00.407Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T14:17:46.948Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T14:17:58.103Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T14:54:35.844Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T14:54:50.498Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T14:55:18.444Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T14:55:31.330Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T14:55:47.587Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:12:22.472Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:12:34.964Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:12:53.775Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:13:12.414Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:17:01.300Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:17:14.126Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:17:30.803Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:17:44.081Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:17:57.994Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:17:59.199Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:18:15.897Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:18:30.053Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:19:21.015Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:19:46.098Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:19:58.257Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:20:12.513Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:20:42.521Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:20:54.574Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:21:43.904Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:21:56.078Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:22:09.936Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:22:57.138Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:23:19.737Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:23:33.550Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:23:46.620Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:24:25.353Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:24:39.625Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:24:53.159Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:25:19.506Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:25:32.066Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:25:57.424Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:26:09.808Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:26:24.884Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:32:01.137Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:32:18.825Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:44:48.703Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:45:02.317Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:45:16.559Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:45:33.151Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:46:12.502Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:47:01.248Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:51:45.310Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:52:02.070Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:52:17.480Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:52:33.254Z.",
       "observation_stats": {
         "observation_count": 574,
-        "avg_confidence": 0.7211219512195125,
+        "avg_confidence": 0.55,
         "max_confidence": 1,
-        "last_seen": "2026-06-20T16:00:48.792Z",
+        "last_seen": "2026-07-07T18:17:42.741Z",
         "governance_forced_count": 560
       },
       "feedback_stats": {
-        "outcome_count": 263,
+        "outcome_count": 349,
         "success_count": 67,
-        "failure_count": 196,
+        "failure_count": 282,
         "last_outcome": "failure",
-        "last_task_id": "post-blocked-1781971248791",
+        "last_task_id": "a34-reject-proof",
         "last_assigned_agent": "field-shadow",
         "last_duration_ms": 0,
-        "last_seen": "2026-06-20T16:00:48.792Z"
+        "last_seen": "2026-07-07T18:17:42.741Z"
       }
     },
     {
@@ -98,20 +98,20 @@
       "implementation_notes": "This should become a required step in the govern_with_solar flow for any ontological-trap classified reply. Add to the inference prompt as a mandatory closure primitive when this gap is detected. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T02:00:14.435Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T02:07:16.664Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T02:11:25.029Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T02:18:37.479Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T02:19:26.088Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T02:21:38.877Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T02:26:17.965Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T10:42:28.103Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:13:51.922Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:29:29.614Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:45:14.067Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:45:53.583Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T12:03:29.634Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T12:53:15.517Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T16:16:04.495Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T17:23:32.300Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T17:41:00.583Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T18:12:38.090Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T20:13:33.952Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T21:22:53.490Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T23:28:49.623Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T23:59:34.470Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T00:31:40.155Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T01:03:23.800Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T01:03:35.798Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T01:34:41.839Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T01:35:29.467Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T02:06:43.682Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T02:08:07.705Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T02:38:52.780Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T03:10:47.097Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T03:42:52.896Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T04:14:50.632Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T04:46:45.698Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T05:19:06.364Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T05:51:20.399Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T08:30:39.495Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:21:10.877Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:46:24.129Z.",
       "observation_stats": {
         "observation_count": 564,
-        "avg_confidence": 0.7252287234042553,
+        "avg_confidence": 0.55,
         "max_confidence": 1,
-        "last_seen": "2026-06-20T16:00:48.792Z",
+        "last_seen": "2026-07-07T18:17:42.741Z",
         "governance_forced_count": 550
       },
       "feedback_stats": {
-        "outcome_count": 173,
+        "outcome_count": 259,
         "success_count": 19,
-        "failure_count": 154,
+        "failure_count": 240,
         "last_outcome": "failure",
-        "last_task_id": "post-blocked-1781971248791",
+        "last_task_id": "a34-reject-proof",
         "last_assigned_agent": "field-shadow",
         "last_duration_ms": 0,
-        "last_seen": "2026-06-20T16:00:48.792Z"
+        "last_seen": "2026-07-07T18:17:42.741Z"
       }
     },
     {
@@ -144,20 +144,20 @@
       "implementation_notes": "Add to the negative-space analysis step in the inference prompt. When detected, the reply should propose a concrete detector primitive. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T02:00:55.300Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T02:23:43.658Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T10:43:32.754Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T10:43:48.749Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T10:55:23.053Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:04:08.802Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:04:45.530Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:10:16.050Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:10:52.248Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:11:05.374Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:14:27.355Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:15:03.322Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:15:21.697Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:42:13.077Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:42:31.238Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:42:58.202Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:46:07.491Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:46:35.525Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T12:14:10.966Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T12:14:45.637Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T12:15:04.159Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T12:36:52.179Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T12:46:50.906Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T12:47:23.974Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T12:47:38.494Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T13:18:36.170Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T13:19:14.346Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T13:19:46.366Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T13:20:05.220Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T13:50:28.313Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T13:51:11.478Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T13:51:22.778Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T14:22:27.664Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T14:54:18.725Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T14:54:34.592Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T14:55:18.388Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T15:27:29.411Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T15:28:21.500Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T16:00:56.482Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T16:01:39.798Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T16:35:21.452Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T16:35:56.224Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T17:08:14.908Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T17:40:01.532Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T18:43:52.444Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T19:16:01.850Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T21:21:59.950Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T21:54:25.326Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T21:54:47.728Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T22:25:34.003Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T22:57:09.100Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T23:28:39.011Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T23:59:58.942Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T00:31:52.385Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T03:44:07.829Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T04:15:57.330Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T12:43:58.038Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T13:15:12.369Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T13:47:12.848Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T14:18:10.180Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:33:46.435Z.",
       "observation_stats": {
         "observation_count": 564,
-        "avg_confidence": 0.7212446808510636,
+        "avg_confidence": 0.55,
         "max_confidence": 1,
-        "last_seen": "2026-06-20T16:00:48.792Z",
+        "last_seen": "2026-07-07T18:17:42.741Z",
         "governance_forced_count": 550
       },
       "feedback_stats": {
-        "outcome_count": 171,
+        "outcome_count": 257,
         "success_count": 17,
-        "failure_count": 154,
+        "failure_count": 240,
         "last_outcome": "failure",
-        "last_task_id": "post-blocked-1781971248791",
+        "last_task_id": "a34-reject-proof",
         "last_assigned_agent": "field-shadow",
         "last_duration_ms": 0,
-        "last_seen": "2026-06-20T16:00:48.792Z"
+        "last_seen": "2026-07-07T18:17:42.741Z"
       }
     },
     {
@@ -189,20 +189,20 @@
       "implementation_notes": "This is more research-oriented. Add as an optional analysis dimension in the inference prompt for high-stakes ontological-trap cases. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T03:56:47.424Z. | Extracted from research/groover-inference-logs/2026-06-18.jsonl at 2026-06-18T11:10:56.584Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:46:22.909Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T12:02:57.836Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T12:14:29.117Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T12:19:47.512Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T12:20:01.693Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T12:47:10.490Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T13:18:48.492Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T13:19:01.121Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T13:26:20.764Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T13:50:42.344Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T13:50:57.406Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T13:59:39.590Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T14:22:44.134Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T14:23:02.260Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T14:54:44.895Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T14:55:00.865Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T15:28:05.295Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T15:41:58.109Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T15:42:42.340Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T15:58:05.434Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T16:01:20.489Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T16:35:03.306Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T16:50:57.202Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T17:07:59.544Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T17:08:46.649Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T17:39:45.425Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T17:40:14.091Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T18:11:50.300Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T18:12:06.094Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T18:42:58.396Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T18:43:25.689Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T19:15:05.467Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T19:15:47.152Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T19:46:34.773Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T19:47:30.112Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T20:18:46.357Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T21:15:18.877Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T21:15:47.303Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T21:22:42.163Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T00:31:13.254Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T01:02:42.904Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T01:34:53.523Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T02:07:10.112Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T04:48:04.044Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T05:19:42.499Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T05:51:31.904Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T11:42:11.896Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:46:35.301Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:52:57.858Z.",
       "observation_stats": {
         "observation_count": 567,
-        "avg_confidence": 0.7313280423280424,
+        "avg_confidence": 0.55,
         "max_confidence": 1,
-        "last_seen": "2026-06-20T16:00:48.792Z",
+        "last_seen": "2026-07-07T18:17:42.741Z",
         "governance_forced_count": 550
       },
       "feedback_stats": {
-        "outcome_count": 160,
+        "outcome_count": 246,
         "success_count": 15,
-        "failure_count": 145,
+        "failure_count": 231,
         "last_outcome": "failure",
-        "last_task_id": "post-blocked-1781971248791",
+        "last_task_id": "a34-reject-proof",
         "last_assigned_agent": "field-shadow",
         "last_duration_ms": 0,
-        "last_seen": "2026-06-20T16:00:48.792Z"
+        "last_seen": "2026-07-07T18:17:42.741Z"
       }
     },
     {
@@ -226,20 +226,20 @@
       "implementation_notes": "Add detection in the TYPE classification step. When detected, the reply should surface the gap as a first-class signal.",
       "observation_stats": {
         "observation_count": 559,
-        "avg_confidence": 0.7201806797853313,
+        "avg_confidence": 0.55,
         "max_confidence": 1,
-        "last_seen": "2026-06-20T16:00:48.829Z",
+        "last_seen": "2026-07-07T18:17:42.741Z",
         "governance_forced_count": 550
       },
       "feedback_stats": {
-        "outcome_count": 159,
+        "outcome_count": 245,
         "success_count": 13,
-        "failure_count": 146,
+        "failure_count": 232,
         "last_outcome": "failure",
-        "last_task_id": "post-blocked-1781971248791",
+        "last_task_id": "a34-reject-proof",
         "last_assigned_agent": "field-shadow",
         "last_duration_ms": 0,
-        "last_seen": "2026-06-20T16:00:48.792Z"
+        "last_seen": "2026-07-07T18:17:42.741Z"
       }
     },
     {
@@ -263,20 +263,20 @@
       "implementation_notes": "Strong candidate for direct integration into govern_with_solar. When this signal appears, the reply should propose a concrete embedding mechanism.",
       "observation_stats": {
         "observation_count": 564,
-        "avg_confidence": 0.7272890070921986,
+        "avg_confidence": 0.55,
         "max_confidence": 1,
-        "last_seen": "2026-06-20T15:46:35.343Z",
+        "last_seen": "2026-07-07T18:17:42.741Z",
         "governance_forced_count": 550
       },
       "feedback_stats": {
-        "outcome_count": 159,
+        "outcome_count": 245,
         "success_count": 10,
-        "failure_count": 149,
+        "failure_count": 235,
         "last_outcome": "failure",
-        "last_task_id": "7658aadb-3445-4572-a56d-17fd87ec054d",
+        "last_task_id": "a34-reject-proof",
         "last_assigned_agent": "field-shadow",
         "last_duration_ms": 0,
-        "last_seen": "2026-06-20T15:26:24.882Z"
+        "last_seen": "2026-07-07T18:17:42.741Z"
       }
     },
     {
@@ -308,20 +308,20 @@
       "implementation_notes": "This is one of the most actionable. Add as a required output primitive when the inference detects a handoff or multi-agent scenario. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T10:42:53.344Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T11:11:20.878Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T12:15:31.765Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T12:20:39.896Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T12:47:54.622Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T13:09:22.747Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T14:53:59.934Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T15:09:01.869Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T15:24:43.443Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T15:27:48.517Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T15:58:45.136Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T16:02:01.823Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T16:36:30.930Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T17:55:28.993Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T18:12:23.365Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T18:43:10.130Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T19:15:19.477Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T19:46:48.456Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T20:18:03.894Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T20:18:18.232Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T20:19:00.242Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T20:50:08.333Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T20:50:21.493Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T21:21:48.240Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T21:22:30.959Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T21:54:36.313Z. | Extracted from research/groover-inference-logs/2026-06-19.jsonl at 2026-06-19T23:29:03.540Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T01:02:58.086Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T01:35:06.803Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T02:07:23.628Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T02:40:05.004Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T06:22:45.407Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T06:54:42.502Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T07:25:43.134Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T07:57:43.273Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T08:29:44.272Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T09:02:01.372Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T09:34:29.846Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T09:34:42.007Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T10:06:12.998Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T10:38:15.901Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:18:44.219Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:20:28.818Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:22:42.449Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:24:00.715Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:25:05.224Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:45:47.764Z. | Extracted from research/groover-inference-logs/2026-06-20.jsonl at 2026-06-20T15:53:11.115Z.",
       "observation_stats": {
         "observation_count": 564,
-        "avg_confidence": 0.7262251773049642,
+        "avg_confidence": 0.55,
         "max_confidence": 1,
-        "last_seen": "2026-06-20T16:00:48.792Z",
+        "last_seen": "2026-07-07T18:17:42.741Z",
         "governance_forced_count": 550
       },
       "feedback_stats": {
-        "outcome_count": 162,
+        "outcome_count": 248,
         "success_count": 12,
-        "failure_count": 150,
+        "failure_count": 236,
         "last_outcome": "failure",
-        "last_task_id": "post-blocked-1781971248791",
+        "last_task_id": "a34-reject-proof",
         "last_assigned_agent": "field-shadow",
         "last_duration_ms": 0,
-        "last_seen": "2026-06-20T16:00:48.792Z"
+        "last_seen": "2026-07-07T18:17:42.741Z"
       }
     },
     {
@@ -345,20 +345,20 @@
       "implementation_notes": "Primarily relevant for posts with strong interpretive/hermeneutic dimensions. Add as a TYPE sub-classification when detected.",
       "observation_stats": {
         "observation_count": 559,
-        "avg_confidence": 0.7221574239713777,
+        "avg_confidence": 0.55,
         "max_confidence": 1,
-        "last_seen": "2026-06-20T16:00:48.829Z",
+        "last_seen": "2026-07-07T18:17:42.741Z",
         "governance_forced_count": 550
       },
       "feedback_stats": {
-        "outcome_count": 160,
+        "outcome_count": 246,
         "success_count": 14,
-        "failure_count": 146,
+        "failure_count": 232,
         "last_outcome": "failure",
-        "last_task_id": "post-blocked-1781971248791",
+        "last_task_id": "a34-reject-proof",
         "last_assigned_agent": "field-shadow",
         "last_duration_ms": 0,
-        "last_seen": "2026-06-20T16:00:48.792Z"
+        "last_seen": "2026-07-07T18:17:42.741Z"
       }
     },
     {
@@ -3988,20 +3988,20 @@
       "status": "proposed",
       "observation_stats": {
         "observation_count": 1,
-        "avg_confidence": 0.725,
+        "avg_confidence": 0.55,
         "max_confidence": 0.8,
-        "last_seen": "2026-06-20T16:00:48.792Z",
+        "last_seen": "2026-07-07T18:17:42.741Z",
         "governance_forced_count": 0
       },
       "feedback_stats": {
-        "outcome_count": 1,
+        "outcome_count": 87,
         "success_count": 0,
-        "failure_count": 1,
+        "failure_count": 87,
         "last_outcome": "failure",
-        "last_task_id": "post-blocked-1781971248791",
+        "last_task_id": "a34-reject-proof",
         "last_assigned_agent": "field-shadow",
         "last_duration_ms": 0,
-        "last_seen": "2026-06-20T16:00:48.792Z"
+        "last_seen": "2026-07-07T18:17:42.741Z"
       }
     },
     {
@@ -4027,20 +4027,1378 @@
       "status": "proposed",
       "observation_stats": {
         "observation_count": 1,
-        "avg_confidence": 0.725,
+        "avg_confidence": 0.55,
         "max_confidence": 0.8,
-        "last_seen": "2026-06-20T16:00:48.792Z",
+        "last_seen": "2026-07-07T18:17:42.741Z",
         "governance_forced_count": 0
       },
       "feedback_stats": {
-        "outcome_count": 1,
+        "outcome_count": 87,
         "success_count": 0,
-        "failure_count": 1,
+        "failure_count": 87,
         "last_outcome": "failure",
-        "last_task_id": "post-blocked-1781971248791",
+        "last_task_id": "a34-reject-proof",
         "last_assigned_agent": "field-shadow",
         "last_duration_ms": 0,
-        "last_seen": "2026-06-20T16:00:48.792Z"
+        "last_seen": "2026-07-07T18:17:42.741Z"
+      }
+    },
+    {
+      "name": "bedrock-field-guide",
+      "definition": "Bedrock is a hitchhiker field guide to Love · Living · Enduring: 75 Scripture-rooted first-principle chambers (Truth · Under fire · Prayer), storm Keys, and multi-stage journeys for ground-shaking life. Motto: Do Better. Be Better. Trust God. Chat is companion, not pastor or crisis hotline.",
+      "example_inference_snippet": "User building or counseling in Bedrock — stay steel, short under fire, chamber/journey SSOT not generic Christian AI fluff.",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "product",
+        "atlas",
+        "motto"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "high",
+      "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "Bedrock SSOT: src/content/journeys.json + bedrock.json; surface via Keys and /api/journeys.",
+      "implementation_notes": "Prefer journey path over single chamber when ground-shaking life is described.",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-journey-not-chamber",
+      "definition": "Ground-shaking life is a multi-stage journey (blow → near → spiral → fork → long_middle → remain), not one chamber card. Spouse left ≠ death. Connected truth must prefer next stations on the matched journey.",
+      "example_inference_snippet": "Ground-shaking life is a multi-stage journey (blow → near → spiral → fork → long_middle → remain), not one chamber card. Spouse left ≠ death. Connected truth must prefer next stations on the matched j",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "journey",
+        "architecture",
+        "path"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "high",
+      "evaluation_criteria": "Proposal or chat routing treats leave vs death distinctly and uses ordered stages.",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "Bedrock SSOT: src/content/journeys.json + bedrock.json; surface via Keys and /api/journeys.",
+      "implementation_notes": "Prefer journey path over single chamber when ground-shaking life is described.",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-chat-mode-a-b",
+      "definition": "Guide chat Mode A: greetings/small talk → short plain prose, no First principle mini-card. Mode B: real counsel → full mini field card. Never open God First card for hi.",
+      "example_inference_snippet": "Guide chat Mode A: greetings/small talk → short plain prose, no First principle mini-card. Mode B: real counsel → full mini field card. Never open God First card for hi.",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "chat",
+        "ux",
+        "mode-a",
+        "mode-b"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "high",
+      "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "Bedrock SSOT: src/content/journeys.json + bedrock.json; surface via Keys and /api/journeys.",
+      "implementation_notes": "Prefer journey path over single chamber when ground-shaking life is described.",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-oauth-device-code",
+      "definition": "xAI SuperGrok OAuth must run device-code on the production server (POST /oauth/initiate), persist Redis SSOT + Railway XAI_OAUTH_TOKENS skipDeploys — not localhost PKCE alone. invalid_grant clears Redis quarantine until reauth.",
+      "example_inference_snippet": "xAI SuperGrok OAuth must run device-code on the production server (POST /oauth/initiate), persist Redis SSOT + Railway XAI_OAUTH_TOKENS skipDeploys — not localhost PKCE alone. invalid_grant clears Red",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "oauth",
+        "xai",
+        "ops",
+        "postalocity-pattern"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "high",
+      "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "Bedrock SSOT: src/content/journeys.json + bedrock.json; surface via Keys and /api/journeys.",
+      "implementation_notes": "Prefer journey path over single chamber when ground-shaking life is described.",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-death-vs-leave",
+      "definition": "Death of a loved one opens journey death-of-loved-one door Loss. Spouse left / divorce opens spouse-left door Wounded. Never dual-pack or swap these doors.",
+      "example_inference_snippet": "my husband left → spouse-left/wounded; we buried them → death-of-loved-one/loss",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "journey",
+        "loss",
+        "wounded",
+        "pastoral"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "high",
+      "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "Bedrock SSOT: src/content/journeys.json + bedrock.json; surface via Keys and /api/journeys.",
+      "implementation_notes": "Prefer journey path over single chamber when ground-shaking life is described.",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-journey-death-of-loved-one",
+      "definition": "Bedrock core journey \"Death of a loved one\" (death-of-loved-one, family=body, wave=1). Mourning is not unbelief. Hope does not erase tears; it frames them. Empty hands; remain today. Door: loss. Path: The blow[blow]=loss → Who holds me[near]=he-is-for-you → What still stands[near]=his-promises → Pour out[spiral]=lament-and-pour-out-your-heart → Pain and glory[long_middle]=hope-of-glory → The long middle[long_middle]=wait-on-the-lord → Guard the mind[remain]=peace. Plain speech: they died | my loved one died | we buried them | someone died | i lost someone | my dad died | my mom died | my child died. Distinct from: spouse-left.",
+      "example_inference_snippet": "they died | my loved one died | we buried them | someone died | i lost someone | my dad died | my mom died | my child died",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "journey",
+        "body",
+        "wave-1",
+        "death-of-loved-one",
+        "loss",
+        "they-died",
+        "my-loved-one-died",
+        "we-buried-them",
+        "someone-died"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "high",
+      "evaluation_criteria": "User says one of: they died | my loved one died | we buried them | someone died | i lost someone | my dad died | my mom died | my child died",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "GET /api/journeys/death-of-loved-one; SPA ?j=death-of-loved-one; door chamber /c/loss",
+      "implementation_notes": "Stages: The blow[blow]=loss → Who holds me[near]=he-is-for-you → What still stands[near]=his-promises → Pour out[spiral]=lament-and-pour-out-your-heart → Pain and glory[long_middle]=hope-of-glory → The long middle[long_middle]=wait-on-the-lord → Guard the mind[remain]=peace",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-journey-spouse-left",
+      "definition": "Bedrock core journey \"Spouse left / marriage under fire\" (spouse-left, family=body, wave=1). You were wounded. Their leaving does not cancel whose you are. Entrust the scales; take the next right step — with boundaries, without hatred as home. Door: wounded. Path: The wound[blow]=wounded → Whose you are[near]=he-is-for-you → The replay[spiral]=rumination → Abandonment fear[spiral]=fear → Courtroom of the mind[fork]=leave-vengeance-to-the-lord → Do not repay[fork]=do-not-repay-evil-with-evil → Covenant honesty[long_middle]=marriage-covenant → Forgiveness over time[long_middle]=forgive-as-you-have-been-forgiven → Long middle[long_middle]=patience → Release the outcome[remain]=trust-in-the-lord → Keep remaining[remain]=hope-of-glory. Plain speech: my wife left | my husband left | they left me | divorce | separation | she filed | he filed | marriage is over. Distinct from: death-of-loved-one.",
+      "example_inference_snippet": "my wife left | my husband left | they left me | divorce | separation | she filed | he filed | marriage is over",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "journey",
+        "body",
+        "wave-1",
+        "spouse-left",
+        "wounded",
+        "my-wife-left",
+        "my-husband-left",
+        "they-left-me",
+        "divorce"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "high",
+      "evaluation_criteria": "User says one of: my wife left | my husband left | they left me | divorce | separation | she filed | he filed | marriage is over",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "GET /api/journeys/spouse-left; SPA ?j=spouse-left; door chamber /c/wounded",
+      "implementation_notes": "Stages: The wound[blow]=wounded → Whose you are[near]=he-is-for-you → The replay[spiral]=rumination → Abandonment fear[spiral]=fear → Courtroom of the mind[fork]=leave-vengeance-to-the-lord → Do not repay[fork]=do-not-repay-evil-with-evil → Covenant honesty[long_middle]=marriage-covenant → Forgiveness over time[long_middle]=forgive-as-you-have-been-forgiven → Long middle[long_middle]=patience → Release the outcome[remain]=trust-in-the-lord → Keep remaining[remain]=hope-of-glory",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-journey-deep-wound",
+      "definition": "Bedrock core journey \"Deep wound / betrayal\" (deep-wound, family=body, wave=2). You were harmed. God sees. Do not repay evil; forgive over time; keep wise boundaries. Door: wounded. Path: The wound[blow]=wounded → He is for you[near]=he-is-for-you → Do not repay[fork]=do-not-repay-evil-with-evil → Leave vengeance[fork]=leave-vengeance-to-the-lord → Forgive as forgiven[long_middle]=forgive-as-you-have-been-forgiven → Peace[remain]=peace. Plain speech: i was betrayed | they hurt me | i was crushed | deep wound | someone harmed me | abuse | i was wronged. Distinct from: spouse-left, death-of-loved-one.",
+      "example_inference_snippet": "i was betrayed | they hurt me | i was crushed | deep wound | someone harmed me | abuse | i was wronged",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "journey",
+        "body",
+        "wave-2",
+        "deep-wound",
+        "wounded",
+        "i-was-betrayed",
+        "they-hurt-me",
+        "i-was-crushed"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "medium",
+      "evaluation_criteria": "User says one of: i was betrayed | they hurt me | i was crushed | deep wound | someone harmed me | abuse | i was wronged",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "GET /api/journeys/deep-wound; SPA ?j=deep-wound; door chamber /c/wounded",
+      "implementation_notes": "Stages: The wound[blow]=wounded → He is for you[near]=he-is-for-you → Do not repay[fork]=do-not-repay-evil-with-evil → Leave vengeance[fork]=leave-vengeance-to-the-lord → Forgive as forgiven[long_middle]=forgive-as-you-have-been-forgiven → Peace[remain]=peace",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-journey-abandonment-fear",
+      "definition": "Bedrock core journey \"Abandonment fear / free-fall alone\" (abandonment-fear, family=body, wave=2). Perfect love casts out fear. You cry Abba — not slave to terror. Trust when the face is gone. Door: fear. Path: Name the fear[blow]=fear → Do not fear[near]=do-not-fear → He is for you[near]=he-is-for-you → Promises[near]=his-promises → Capture the spiral[spiral]=take-every-thought-captive → Trust[long_middle]=trust-in-the-lord → Peace[remain]=peace. Plain speech: everyone leaves | i can't be alone | abandonment | afraid they will leave | free-fall | terrified of being alone | fear of abandonment.",
+      "example_inference_snippet": "everyone leaves | i can't be alone | abandonment | afraid they will leave | free-fall | terrified of being alone | fear of abandonment",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "journey",
+        "body",
+        "wave-2",
+        "abandonment-fear",
+        "fear",
+        "everyone-leaves",
+        "i-can't-be-alone",
+        "abandonment",
+        "afraid-they-will-leave"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "medium",
+      "evaluation_criteria": "User says one of: everyone leaves | i can't be alone | abandonment | afraid they will leave | free-fall | terrified of being alone | fear of abandonment",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "GET /api/journeys/abandonment-fear; SPA ?j=abandonment-fear; door chamber /c/fear",
+      "implementation_notes": "Stages: Name the fear[blow]=fear → Do not fear[near]=do-not-fear → He is for you[near]=he-is-for-you → Promises[near]=his-promises → Capture the spiral[spiral]=take-every-thought-captive → Trust[long_middle]=trust-in-the-lord → Peace[remain]=peace",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-journey-addiction",
+      "definition": "Bedrock core journey \"Addiction / mastery\" (addiction, family=will, wave=1). If it masters you, it is not free. Name the master; walk by the Spirit one hour; get real help. Door: addiction. Path: Name the master[blow]=addiction → Capture the craving[spiral]=take-every-thought-captive → Renew the mind[spiral]=renew-your-mind → Walk by the Spirit[fork]=walk-by-the-spirit → Self-control[fork]=self-control → Confess and forsake[long_middle]=confess-and-be-cleansed → Grace for this hour[long_middle]=his-grace-is-sufficient → Keep remaining[remain]=hope-of-glory. Plain speech: it owns me | i'm addicted | i can't stop | addiction | it masters me | substance | i'm trapped in a habit.",
+      "example_inference_snippet": "it owns me | i'm addicted | i can't stop | addiction | it masters me | substance | i'm trapped in a habit",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "journey",
+        "will",
+        "wave-1",
+        "addiction",
+        "it-owns-me",
+        "i'm-addicted",
+        "i-can't-stop"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "high",
+      "evaluation_criteria": "User says one of: it owns me | i'm addicted | i can't stop | addiction | it masters me | substance | i'm trapped in a habit",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "GET /api/journeys/addiction; SPA ?j=addiction; door chamber /c/addiction",
+      "implementation_notes": "Stages: Name the master[blow]=addiction → Capture the craving[spiral]=take-every-thought-captive → Renew the mind[spiral]=renew-your-mind → Walk by the Spirit[fork]=walk-by-the-spirit → Self-control[fork]=self-control → Confess and forsake[long_middle]=confess-and-be-cleansed → Grace for this hour[long_middle]=his-grace-is-sufficient → Keep remaining[remain]=hope-of-glory",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-journey-obsession",
+      "definition": "Bedrock core journey \"Obsession / replaying mind\" (obsession, family=will, wave=1). The stuck replaying mind is not the Holy Spirit. Capture → replace → next obedient step. Door: rumination. Path: Name the loop[blow]=rumination → Take captive[spiral]=take-every-thought-captive → The Word[near]=the-word → Pray the spiral[fork]=prayer → Trust[long_middle]=trust-in-the-lord → Peace[remain]=peace. Plain speech: i can't stop replaying | stuck on loop | obsessing | rumination | my mind won't stop | i keep going over it | can't stop thinking about it.",
+      "example_inference_snippet": "i can't stop replaying | stuck on loop | obsessing | rumination | my mind won't stop | i keep going over it | can't stop thinking about it",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "journey",
+        "will",
+        "wave-1",
+        "obsession",
+        "rumination",
+        "i-can't-stop-replaying",
+        "stuck-on-loop",
+        "obsessing"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "high",
+      "evaluation_criteria": "User says one of: i can't stop replaying | stuck on loop | obsessing | rumination | my mind won't stop | i keep going over it | can't stop thinking about it",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "GET /api/journeys/obsession; SPA ?j=obsession; door chamber /c/rumination",
+      "implementation_notes": "Stages: Name the loop[blow]=rumination → Take captive[spiral]=take-every-thought-captive → The Word[near]=the-word → Pray the spiral[fork]=prayer → Trust[long_middle]=trust-in-the-lord → Peace[remain]=peace",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-journey-control-grip",
+      "definition": "Bedrock core journey \"Control grip\" (control-grip, family=will, wave=2). Open the hand. Trust is not passivity. Self-control rules you — not them. Door: control. Path: Name the grip[blow]=control → Trust[near]=trust-in-the-lord → Patience[long_middle]=patience → Wait[long_middle]=wait-on-the-lord → Self-control[fork]=self-control → Walk by the Spirit[remain]=walk-by-the-spirit. Plain speech: i have to fix it | i have to fix them | i can't let go | control | everything must go my way | i grip the outcome | open hand.",
+      "example_inference_snippet": "i have to fix it | i have to fix them | i can't let go | control | everything must go my way | i grip the outcome | open hand",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "journey",
+        "will",
+        "wave-2",
+        "control-grip",
+        "control",
+        "i-have-to-fix-it",
+        "i-have-to-fix-them",
+        "i-can't-let-go"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "medium",
+      "evaluation_criteria": "User says one of: i have to fix it | i have to fix them | i can't let go | control | everything must go my way | i grip the outcome | open hand",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "GET /api/journeys/control-grip; SPA ?j=control-grip; door chamber /c/control",
+      "implementation_notes": "Stages: Name the grip[blow]=control → Trust[near]=trust-in-the-lord → Patience[long_middle]=patience → Wait[long_middle]=wait-on-the-lord → Self-control[fork]=self-control → Walk by the Spirit[remain]=walk-by-the-spirit",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-journey-jealousy",
+      "definition": "Bedrock core journey \"Jealousy / rivalry love\" (jealousy, family=will, wave=2). Jealousy is not love. Capture the rivalry; choose selfless love; trust God with what is not yours to grip. Door: jealousy. Path: Name jealousy[blow]=jealousy → Capture[spiral]=take-every-thought-captive → Leave vengeance[fork]=leave-vengeance-to-the-lord → Selfless love[long_middle]=choose-selfless-love → Trust[remain]=trust-in-the-lord. Plain speech: i'm jealous | jealousy | i can't stand them having | envy | rivalry | possessive.",
+      "example_inference_snippet": "i'm jealous | jealousy | i can't stand them having | envy | rivalry | possessive",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "journey",
+        "will",
+        "wave-2",
+        "jealousy",
+        "i'm-jealous",
+        "i-can't-stand-them-having",
+        "envy"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "medium",
+      "evaluation_criteria": "User says one of: i'm jealous | jealousy | i can't stand them having | envy | rivalry | possessive",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "GET /api/journeys/jealousy; SPA ?j=jealousy; door chamber /c/jealousy",
+      "implementation_notes": "Stages: Name jealousy[blow]=jealousy → Capture[spiral]=take-every-thought-captive → Leave vengeance[fork]=leave-vengeance-to-the-lord → Selfless love[long_middle]=choose-selfless-love → Trust[remain]=trust-in-the-lord",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-journey-i-fell",
+      "definition": "Bedrock core journey \"I fell — return path\" (i-fell, family=conscience, wave=1). Name the fall. Confess. Grace is enough. Rise. The righteous man falls and gets up again. Hub path after any journey’s failure. Door: the-righteous-fall. Path: Name the fall[blow]=the-righteous-fall → Confess and be cleansed[near]=confess-and-be-cleansed → Grace sufficient[near]=his-grace-is-sufficient → No condemnation[near]=the-cross-and-our-justification → Walk by the Spirit[fork]=walk-by-the-spirit → Godly grief[spiral]=regret → Hope of glory[remain]=hope-of-glory. Plain speech: i fell | i blew it | i sinned | i can't face myself | i failed again | i'm ashamed | i collapsed.",
+      "example_inference_snippet": "i fell | i blew it | i sinned | i can't face myself | i failed again | i'm ashamed | i collapsed",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "journey",
+        "conscience",
+        "wave-1",
+        "i-fell",
+        "the-righteous-fall",
+        "i-blew-it",
+        "i-sinned",
+        "i-can't-face-myself"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "high",
+      "evaluation_criteria": "User says one of: i fell | i blew it | i sinned | i can't face myself | i failed again | i'm ashamed | i collapsed",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "GET /api/journeys/i-fell; SPA ?j=i-fell; door chamber /c/the-righteous-fall",
+      "implementation_notes": "Stages: Name the fall[blow]=the-righteous-fall → Confess and be cleansed[near]=confess-and-be-cleansed → Grace sufficient[near]=his-grace-is-sufficient → No condemnation[near]=the-cross-and-our-justification → Walk by the Spirit[fork]=walk-by-the-spirit → Godly grief[spiral]=regret → Hope of glory[remain]=hope-of-glory",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-journey-sexual-sin",
+      "definition": "Bedrock core journey \"Sexual sin / covenant fracture\" (sexual-sin, family=conscience, wave=2). Confess, forsake, be cleansed. Do not call darkness a new identity. Deny yourself; walk by the Spirit. Door: adultery. Path: Name it[blow]=adultery → Confess[near]=confess-and-be-cleansed → Deny yourself[fork]=deny-yourself → Self-control[fork]=self-control → Walk by the Spirit[long_middle]=walk-by-the-spirit → Covenant / faithfulness[long_middle]=marriage-covenant → Rise[remain]=the-righteous-fall. Plain speech: i cheated | adultery | sexual sin | lust owns me | porn | i broke the marriage bed | affair.",
+      "example_inference_snippet": "i cheated | adultery | sexual sin | lust owns me | porn | i broke the marriage bed | affair",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "journey",
+        "conscience",
+        "wave-2",
+        "sexual-sin",
+        "adultery",
+        "i-cheated",
+        "lust-owns-me"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "medium",
+      "evaluation_criteria": "User says one of: i cheated | adultery | sexual sin | lust owns me | porn | i broke the marriage bed | affair",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "GET /api/journeys/sexual-sin; SPA ?j=sexual-sin; door chamber /c/adultery",
+      "implementation_notes": "Stages: Name it[blow]=adultery → Confess[near]=confess-and-be-cleansed → Deny yourself[fork]=deny-yourself → Self-control[fork]=self-control → Walk by the Spirit[long_middle]=walk-by-the-spirit → Covenant / faithfulness[long_middle]=marriage-covenant → Rise[remain]=the-righteous-fall",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-journey-stuck-regret",
+      "definition": "Bedrock core journey \"Stuck regret\" (stuck-regret, family=conscience, wave=3). Godly grief leads to life; worldly grief leads to death. Own what is yours; refuse self-hate as god; rise. Door: regret. Path: Name the regret[blow]=regret → If sin — confess[near]=confess-and-be-cleansed → Grace[near]=his-grace-is-sufficient → Cross[near]=the-cross-and-our-justification → Stop the replay[spiral]=rumination → Rise[remain]=the-righteous-fall. Plain speech: i can't undo it | regret | i keep regretting | if only i had | i can't forgive myself | stuck in the past.",
+      "example_inference_snippet": "i can't undo it | regret | i keep regretting | if only i had | i can't forgive myself | stuck in the past",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "journey",
+        "conscience",
+        "wave-3",
+        "stuck-regret",
+        "regret",
+        "i-can't-undo-it",
+        "i-keep-regretting",
+        "if-only-i-had"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "medium",
+      "evaluation_criteria": "User says one of: i can't undo it | regret | i keep regretting | if only i had | i can't forgive myself | stuck in the past",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "GET /api/journeys/stuck-regret; SPA ?j=stuck-regret; door chamber /c/regret",
+      "implementation_notes": "Stages: Name the regret[blow]=regret → If sin — confess[near]=confess-and-be-cleansed → Grace[near]=his-grace-is-sufficient → Cross[near]=the-cross-and-our-justification → Stop the replay[spiral]=rumination → Rise[remain]=the-righteous-fall",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-journey-persecution",
+      "definition": "Bedrock core journey \"Persecution / hated for His name\" (persecution, family=world, wave=3). Blessed when persecuted for righteousness. Armor on; do not repay; remain faithful; hope of glory. Door: persecution. Path: Name persecution[blow]=persecution → Full armor[near]=the-full-armor-of-god → Warfare right-sized[spiral]=spiritual-warfare → Do not repay[fork]=do-not-repay-evil-with-evil → Faithful servant[long_middle]=the-faithful-servant → Hope of glory[remain]=hope-of-glory. Plain speech: persecution | hated for his name | they're against me for my faith | suffering for christ | rejected for believing.",
+      "example_inference_snippet": "persecution | hated for his name | they're against me for my faith | suffering for christ | rejected for believing",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "journey",
+        "world",
+        "wave-3",
+        "persecution",
+        "hated-for-his-name",
+        "they're-against-me-for-my-faith",
+        "suffering-for-christ"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "medium",
+      "evaluation_criteria": "User says one of: persecution | hated for his name | they're against me for my faith | suffering for christ | rejected for believing",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "GET /api/journeys/persecution; SPA ?j=persecution; door chamber /c/persecution",
+      "implementation_notes": "Stages: Name persecution[blow]=persecution → Full armor[near]=the-full-armor-of-god → Warfare right-sized[spiral]=spiritual-warfare → Do not repay[fork]=do-not-repay-evil-with-evil → Faithful servant[long_middle]=the-faithful-servant → Hope of glory[remain]=hope-of-glory",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-journey-spiritual-warfare-fog",
+      "definition": "Bedrock core journey \"Spiritual warfare / oppression fog\" (spiritual-warfare-fog, family=world, wave=3). The adversary is real. Name him, resist, stand with God. Fix eyes on Christ — not devil-fascination. Door: spiritual-warfare. Path: Name the war[blow]=spiritual-warfare → The adversary[near]=the-adversary → Armor[near]=the-full-armor-of-god → The Word[fork]=the-word → Prayer[fork]=prayer → Capture thoughts[spiral]=take-every-thought-captive → Stand[remain]=hope-of-glory. Plain speech: spiritual warfare | under attack | oppression | something is attacking my mind | the enemy | spiritual fog.",
+      "example_inference_snippet": "spiritual warfare | under attack | oppression | something is attacking my mind | the enemy | spiritual fog",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "journey",
+        "world",
+        "wave-3",
+        "spiritual-warfare-fog",
+        "spiritual-warfare",
+        "under-attack",
+        "oppression",
+        "something-is-attacking-my-mind"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "medium",
+      "evaluation_criteria": "User says one of: spiritual warfare | under attack | oppression | something is attacking my mind | the enemy | spiritual fog",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "GET /api/journeys/spiritual-warfare-fog; SPA ?j=spiritual-warfare-fog; door chamber /c/spiritual-warfare",
+      "implementation_notes": "Stages: Name the war[blow]=spiritual-warfare → The adversary[near]=the-adversary → Armor[near]=the-full-armor-of-god → The Word[fork]=the-word → Prayer[fork]=prayer → Capture thoughts[spiral]=take-every-thought-captive → Stand[remain]=hope-of-glory",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-journey-forced-waiting",
+      "definition": "Bedrock core journey \"Forced waiting / life out of control\" (forced-waiting, family=world, wave=1). You cannot force the timeline. Wait on the Lord; trust; one duty today; provision for this day. Door: patience. Path: Can't force it[blow]=patience → Wait on the Lord[near]=wait-on-the-lord → Trust[near]=trust-in-the-lord → God first[near]=god-first → Daily bread[long_middle]=his-provision → Prayer[fork]=prayer → Remain[remain]=hope-of-glory. Plain speech: nothing moves | i'm waiting forever | out of control | can't force it | life is chaos | drowning in wait | everything is stuck | i feel lost.",
+      "example_inference_snippet": "nothing moves | i'm waiting forever | out of control | can't force it | life is chaos | drowning in wait | everything is stuck | i feel lost",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "journey",
+        "world",
+        "wave-1",
+        "forced-waiting",
+        "patience",
+        "nothing-moves",
+        "i'm-waiting-forever",
+        "out-of-control",
+        "can't-force-it"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "high",
+      "evaluation_criteria": "User says one of: nothing moves | i'm waiting forever | out of control | can't force it | life is chaos | drowning in wait | everything is stuck | i feel lost",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "GET /api/journeys/forced-waiting; SPA ?j=forced-waiting; door chamber /c/patience",
+      "implementation_notes": "Stages: Can't force it[blow]=patience → Wait on the Lord[near]=wait-on-the-lord → Trust[near]=trust-in-the-lord → God first[near]=god-first → Daily bread[long_middle]=his-provision → Prayer[fork]=prayer → Remain[remain]=hope-of-glory",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-key-key-god",
+      "definition": "Bedrock Key door \"God\" (hint: First) → chamber god-first → journey forced-waiting.",
+      "example_inference_snippet": "User taps Keys: God — First",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "keys",
+        "god-first",
+        "key-god",
+        "forced-waiting",
+        "journey"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "medium",
+      "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "Bedrock SSOT: src/content/journeys.json + bedrock.json; surface via Keys and /api/journeys.",
+      "implementation_notes": "Prefer journey path over single chamber when ground-shaking life is described.",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-key-key-marriage",
+      "definition": "Bedrock Key door \"Marriage\" (hint: Covenant) → chamber marriage-covenant → journey spouse-left.",
+      "example_inference_snippet": "User taps Keys: Marriage — Covenant",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "keys",
+        "marriage-covenant",
+        "key-marriage",
+        "spouse-left",
+        "journey"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "medium",
+      "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "Bedrock SSOT: src/content/journeys.json + bedrock.json; surface via Keys and /api/journeys.",
+      "implementation_notes": "Prefer journey path over single chamber when ground-shaking life is described.",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-key-key-patience",
+      "definition": "Bedrock Key door \"Patience\" (hint: Can't force it) → chamber patience → journey forced-waiting.",
+      "example_inference_snippet": "User taps Keys: Patience — Can't force it",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "keys",
+        "patience",
+        "key-patience",
+        "forced-waiting",
+        "journey"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "medium",
+      "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "Bedrock SSOT: src/content/journeys.json + bedrock.json; surface via Keys and /api/journeys.",
+      "implementation_notes": "Prefer journey path over single chamber when ground-shaking life is described.",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-key-key-trust",
+      "definition": "Bedrock Key door \"Trust\" (hint: Release grip) → chamber trust-in-the-lord → journey forced-waiting.",
+      "example_inference_snippet": "User taps Keys: Trust — Release grip",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "keys",
+        "trust-in-the-lord",
+        "key-trust",
+        "forced-waiting",
+        "journey"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "medium",
+      "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "Bedrock SSOT: src/content/journeys.json + bedrock.json; surface via Keys and /api/journeys.",
+      "implementation_notes": "Prefer journey path over single chamber when ground-shaking life is described.",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-key-key-loss",
+      "definition": "Bedrock Key door \"Grief\" (hint: Loss) → chamber loss → journey death-of-loved-one.",
+      "example_inference_snippet": "User taps Keys: Grief — Loss",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "keys",
+        "loss",
+        "key-loss",
+        "death-of-loved-one",
+        "journey"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "medium",
+      "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "Bedrock SSOT: src/content/journeys.json + bedrock.json; surface via Keys and /api/journeys.",
+      "implementation_notes": "Prefer journey path over single chamber when ground-shaking life is described.",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-key-key-wounded",
+      "definition": "Bedrock Key door \"Wounded\" (hint: I was hurt) → chamber wounded → journey spouse-left.",
+      "example_inference_snippet": "User taps Keys: Wounded — I was hurt",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "keys",
+        "wounded",
+        "key-wounded",
+        "spouse-left",
+        "journey"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "medium",
+      "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "Bedrock SSOT: src/content/journeys.json + bedrock.json; surface via Keys and /api/journeys.",
+      "implementation_notes": "Prefer journey path over single chamber when ground-shaking life is described.",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-key-key-obsession",
+      "definition": "Bedrock Key door \"Obsession\" (hint: Mind stuck on loop) → chamber rumination → journey obsession.",
+      "example_inference_snippet": "User taps Keys: Obsession — Mind stuck on loop",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "keys",
+        "rumination",
+        "key-obsession",
+        "obsession",
+        "journey"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "medium",
+      "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "Bedrock SSOT: src/content/journeys.json + bedrock.json; surface via Keys and /api/journeys.",
+      "implementation_notes": "Prefer journey path over single chamber when ground-shaking life is described.",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-key-key-addiction",
+      "definition": "Bedrock Key door \"Addiction\" (hint: It owns me) → chamber addiction → journey addiction.",
+      "example_inference_snippet": "User taps Keys: Addiction — It owns me",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "keys",
+        "addiction",
+        "key-addiction",
+        "journey"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "medium",
+      "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "Bedrock SSOT: src/content/journeys.json + bedrock.json; surface via Keys and /api/journeys.",
+      "implementation_notes": "Prefer journey path over single chamber when ground-shaking life is described.",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-key-key-fear",
+      "definition": "Bedrock Key door \"Fear\" (hint: Abandonment) → chamber fear → journey abandonment-fear.",
+      "example_inference_snippet": "User taps Keys: Fear — Abandonment",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "keys",
+        "fear",
+        "key-fear",
+        "abandonment-fear",
+        "journey"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "medium",
+      "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "Bedrock SSOT: src/content/journeys.json + bedrock.json; surface via Keys and /api/journeys.",
+      "implementation_notes": "Prefer journey path over single chamber when ground-shaking life is described.",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-key-key-jealousy",
+      "definition": "Bedrock Key door \"Jealousy\" (hint: Not love) → chamber jealousy → journey jealousy.",
+      "example_inference_snippet": "User taps Keys: Jealousy — Not love",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "keys",
+        "jealousy",
+        "key-jealousy",
+        "journey"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "medium",
+      "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "Bedrock SSOT: src/content/journeys.json + bedrock.json; surface via Keys and /api/journeys.",
+      "implementation_notes": "Prefer journey path over single chamber when ground-shaking life is described.",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-key-key-control",
+      "definition": "Bedrock Key door \"Control\" (hint: Open hand) → chamber control → journey control-grip.",
+      "example_inference_snippet": "User taps Keys: Control — Open hand",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "keys",
+        "control",
+        "key-control",
+        "control-grip",
+        "journey"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "medium",
+      "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "Bedrock SSOT: src/content/journeys.json + bedrock.json; surface via Keys and /api/journeys.",
+      "implementation_notes": "Prefer journey path over single chamber when ground-shaking life is described.",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-key-key-sexual-sin",
+      "definition": "Bedrock Key door \"Sexual sin\" (hint: Not your own) → chamber adultery → journey sexual-sin.",
+      "example_inference_snippet": "User taps Keys: Sexual sin — Not your own",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "keys",
+        "adultery",
+        "key-sexual-sin",
+        "sexual-sin",
+        "journey"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "medium",
+      "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "Bedrock SSOT: src/content/journeys.json + bedrock.json; surface via Keys and /api/journeys.",
+      "implementation_notes": "Prefer journey path over single chamber when ground-shaking life is described.",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-key-key-witchcraft",
+      "definition": "Bedrock Key door \"Witchcraft\" (hint: Counterfeit power) → chamber pharmakeia → journey spiritual-warfare-fog.",
+      "example_inference_snippet": "User taps Keys: Witchcraft — Counterfeit power",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "keys",
+        "pharmakeia",
+        "key-witchcraft",
+        "spiritual-warfare-fog",
+        "journey"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "medium",
+      "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "Bedrock SSOT: src/content/journeys.json + bedrock.json; surface via Keys and /api/journeys.",
+      "implementation_notes": "Prefer journey path over single chamber when ground-shaking life is described.",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-key-key-persecution",
+      "definition": "Bedrock Key door \"Persecution\" (hint: For His name) → chamber persecution → journey persecution.",
+      "example_inference_snippet": "User taps Keys: Persecution — For His name",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "keys",
+        "persecution",
+        "key-persecution",
+        "journey"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "medium",
+      "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "Bedrock SSOT: src/content/journeys.json + bedrock.json; surface via Keys and /api/journeys.",
+      "implementation_notes": "Prefer journey path over single chamber when ground-shaking life is described.",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-key-key-love",
+      "definition": "Bedrock Key door \"Love\" (hint: Still the way) → chamber love (no journey; formation/fruit).",
+      "example_inference_snippet": "User taps Keys: Love — Still the way",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "keys",
+        "love",
+        "key-love"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "medium",
+      "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "Bedrock SSOT: src/content/journeys.json + bedrock.json; surface via Keys and /api/journeys.",
+      "implementation_notes": "Prefer journey path over single chamber when ground-shaking life is described.",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-chamber-patience",
+      "definition": "Chamber \"Patience\" (patience): Spirit fruit: patience. Under fire: Flesh counterfeit: force the outcome, rage at the clock, punish them for not moving on your schedule. · When urgency screams “fix them,” answer: wait for the Lord; do the one duty you own today.",
+      "example_inference_snippet": "Chamber \"Patience\" (patience): Spirit fruit: patience. Under fire: Flesh counterfeit: force the outcome, rage at the clock, punish them for not moving on your schedule. · When urgency screams “fix the",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "chamber",
+        "patience",
+        "wave-1-door"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "medium",
+      "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "/c/patience",
+      "implementation_notes": "Prefer journey path over single chamber when ground-shaking life is described.",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-chamber-loss",
+      "definition": "Chamber \"Loss\" (loss): Grief for real loss and possible loss — He is near the brokenhearted. Under fire: The Lord is near the brokenhearted — mourning is not unbelief. · Do not grieve as those without hope. Hope does not erase tears; it frames them.",
+      "example_inference_snippet": "Chamber \"Loss\" (loss): Grief for real loss and possible loss — He is near the brokenhearted. Under fire: The Lord is near the brokenhearted — mourning is not unbelief. · Do not grieve as those without",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "chamber",
+        "loss",
+        "wave-1-door"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "medium",
+      "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "/c/loss",
+      "implementation_notes": "Prefer journey path over single chamber when ground-shaking life is described.",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-chamber-wounded",
+      "definition": "Chamber \"Wounded\" (wounded): You were harmed — God sees; He is near the crushed. Under fire: You were harmed. Do not steal a total blame that is false — and do not make hatred your shelter. · Their leaving does not cancel whose you are. You are His; cry Abba, Father.",
+      "example_inference_snippet": "Chamber \"Wounded\" (wounded): You were harmed — God sees; He is near the crushed. Under fire: You were harmed. Do not steal a total blame that is false — and do not make hatred your shelter. · Their le",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "chamber",
+        "wounded",
+        "wave-1-door"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "medium",
+      "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "/c/wounded",
+      "implementation_notes": "Prefer journey path over single chamber when ground-shaking life is described.",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-chamber-rumination",
+      "definition": "Chamber \"Obsession\" (rumination): The stuck, replaying mind is not the Holy Spirit. Capture it. Under fire: Take every thought captive to obey Christ — obsession is not revelation. · When cares are many, His consolations cheer the soul. Pray the spiral; do not feed it.",
+      "example_inference_snippet": "Chamber \"Obsession\" (rumination): The stuck, replaying mind is not the Holy Spirit. Capture it. Under fire: Take every thought captive to obey Christ — obsession is not revelation. · When cares are ma",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "chamber",
+        "rumination",
+        "wave-1-door"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "medium",
+      "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "/c/rumination",
+      "implementation_notes": "Prefer journey path over single chamber when ground-shaking life is described.",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-chamber-addiction",
+      "definition": "Chamber \"Addiction\" (addiction): If it masters you, it is not free — walk by the Spirit; put the flesh to death. Under fire: All things are lawful — not all helpful. If it masters you, it is not free. Name the master and refuse its throne. · Do not get drunk with wine (or any substitute god). Be filled with the Spirit. Walk by the Spirit; put the flesh to death one hour at a time.",
+      "example_inference_snippet": "Chamber \"Addiction\" (addiction): If it masters you, it is not free — walk by the Spirit; put the flesh to death. Under fire: All things are lawful — not all helpful. If it masters you, it is not free.",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "chamber",
+        "addiction",
+        "wave-1-door"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "medium",
+      "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "/c/addiction",
+      "implementation_notes": "Prefer journey path over single chamber when ground-shaking life is described.",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-chamber-hope-of-glory",
+      "definition": "Chamber \"Hope of Glory\" (hope-of-glory): What we fight toward — glory with Him. Under fire: Present pain is real. Future glory is more real. Hold both without denying either. · Steadfast under trial is not glamorous. Crowns are for those who remain — keep remaining today.",
+      "example_inference_snippet": "Chamber \"Hope of Glory\" (hope-of-glory): What we fight toward — glory with Him. Under fire: Present pain is real. Future glory is more real. Hold both without denying either. · Steadfast under trial i",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "chamber",
+        "hope-of-glory",
+        "wave-1-door"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "medium",
+      "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "/c/hope-of-glory",
+      "implementation_notes": "Prefer journey path over single chamber when ground-shaking life is described.",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-chamber-the-righteous-fall",
+      "definition": "Chamber \"The Righteous Fall\" (the-righteous-fall): Fall and rise. Under fire: Name the fall without lying: I sinned. I am not finished. Rising is obedience, not self-pity. · Do not claim sinlessness. Do not camp in shame. Confess, rise, walk by the Spirit again.",
+      "example_inference_snippet": "Chamber \"The Righteous Fall\" (the-righteous-fall): Fall and rise. Under fire: Name the fall without lying: I sinned. I am not finished. Rising is obedience, not self-pity. · Do not claim sinlessness. ",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "chamber",
+        "the-righteous-fall",
+        "wave-1-door"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "medium",
+      "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "/c/the-righteous-fall",
+      "implementation_notes": "Prefer journey path over single chamber when ground-shaking life is described.",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-governance-dynamo",
+      "definition": "Major Bedrock product decisions use 0xRay inference_governance + Dynamo Solar (GOVERNANCE_ENDPOINT). features.json inference_governance.enabled true; memory_routing repertoire enabled.",
+      "example_inference_snippet": "Major Bedrock product decisions use 0xRay inference_governance + Dynamo Solar (GOVERNANCE_ENDPOINT). features.json inference_governance.enabled true; memory_routing repertoire enabled.",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "governance",
+        "dynamo",
+        "0xray"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-07-28",
+      "status": "validated",
+      "priority": "medium",
+      "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "Bedrock SSOT: src/content/journeys.json + bedrock.json; surface via Keys and /api/journeys.",
+      "implementation_notes": "Prefer journey path over single chamber when ground-shaking life is described.",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-07-28T10:55:18.713Z",
+        "governance_forced_count": 1
       }
     }
   ],
