@@ -1,7 +1,7 @@
 {
   "description": "Curated high-signal primitives and invariants surfaced by Groover inference that are not yet tracked in the Master Index or MCP filters. Each entry includes implementation guidance for autonomous agents.",
-  "last_updated": "2026-07-28T10:55:18.713Z",
-  "source": "meta-inference-2026-06-17-deep + verifiable-agent-ecosystem + bedrock-load-2026-07-28",
+  "last_updated": "2026-07-28T15:01:28.227Z",
+  "source": "meta-inference-2026-06-17-deep + verifiable-agent-ecosystem + bedrock-load-2026-07-28 + bedrock-load-2026-07-28",
   "schema_version": "1.1",
   "implementation_guidance": {
     "how_to_use": "Each signal should be registered in the Master Index and evaluated during govern_with_solar calls on ontological-trap classified entries. Use the validation_experiment and evaluation_criteria fields to implement detection logic.",
@@ -4069,7 +4069,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -4099,7 +4099,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -4130,7 +4130,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -4161,7 +4161,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -4192,7 +4192,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -4228,13 +4228,13 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
     {
       "name": "bedrock-journey-spouse-left",
-      "definition": "Bedrock core journey \"Spouse left / marriage under fire\" (spouse-left, family=body, wave=1). You were wounded. Their leaving does not cancel whose you are. Entrust the scales; take the next right step — with boundaries, without hatred as home. Door: wounded. Path: The wound[blow]=wounded → Whose you are[near]=he-is-for-you → The replay[spiral]=rumination → Abandonment fear[spiral]=fear → Courtroom of the mind[fork]=leave-vengeance-to-the-lord → Do not repay[fork]=do-not-repay-evil-with-evil → Covenant honesty[long_middle]=marriage-covenant → Forgiveness over time[long_middle]=forgive-as-you-have-been-forgiven → Long middle[long_middle]=patience → Release the outcome[remain]=trust-in-the-lord → Keep remaining[remain]=hope-of-glory. Plain speech: my wife left | my husband left | they left me | divorce | separation | she filed | he filed | marriage is over. Distinct from: death-of-loved-one.",
+      "definition": "Bedrock core journey \"Spouse left / marriage under fire\" (spouse-left, family=body, wave=1). You were wounded. Their leaving does not cancel whose you are. Critical to healing: your emotional state is your own — not dependent on them. Love and pursue reconciliation if God leads — and still refuse them the remote to your internal state. Adult position. Hold it. Door: wounded. Path: The wound[blow]=wounded → Whose you are[near]=he-is-for-you → The replay[spiral]=rumination → Abandonment fear[spiral]=fear → Courtroom of the mind[fork]=leave-vengeance-to-the-lord → Do not repay[fork]=do-not-repay-evil-with-evil → Covenant honesty[long_middle]=marriage-covenant → Forgiveness over time[long_middle]=forgive-as-you-have-been-forgiven → Long middle[long_middle]=patience → Release the outcome[remain]=trust-in-the-lord → Keep remaining[remain]=hope-of-glory. Plain speech: my wife left | my husband left | they left me | divorce | separation | she filed | he filed | marriage is over. Distinct from: death-of-loved-one.",
       "example_inference_snippet": "my wife left | my husband left | they left me | divorce | separation | she filed | he filed | marriage is over",
       "tags": [
         "bedrock",
@@ -4264,7 +4264,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -4299,7 +4299,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -4335,7 +4335,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -4369,7 +4369,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -4404,14 +4404,14 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
     {
       "name": "bedrock-journey-control-grip",
-      "definition": "Bedrock core journey \"Control grip\" (control-grip, family=will, wave=2). Open the hand. Trust is not passivity. Self-control rules you — not them. Door: control. Path: Name the grip[blow]=control → Trust[near]=trust-in-the-lord → Patience[long_middle]=patience → Wait[long_middle]=wait-on-the-lord → Self-control[fork]=self-control → Walk by the Spirit[remain]=walk-by-the-spirit. Plain speech: i have to fix it | i have to fix them | i can't let go | control | everything must go my way | i grip the outcome | open hand.",
-      "example_inference_snippet": "i have to fix it | i have to fix them | i can't let go | control | everything must go my way | i grip the outcome | open hand",
+      "definition": "Bedrock core journey \"Control grip\" (control-grip, family=will, wave=2). Open the hand. Trust is not passivity. Self-control rules you — not them. Critical to healing: your emotional state is your own — not dependent on them. Refuse them the remote. Adult position. Hold it. Door: control. Path: Name the grip[blow]=control → Trust[near]=trust-in-the-lord → Patience[long_middle]=patience → Wait[long_middle]=wait-on-the-lord → Self-control[fork]=self-control → Walk by the Spirit[remain]=walk-by-the-spirit. Plain speech: i have to fix it | i have to fix them | i can't let go | control | everything must go my way | i grip the outcome | open hand | my emotional state.",
+      "example_inference_snippet": "i have to fix it | i have to fix them | i can't let go | control | everything must go my way | i grip the outcome | open hand | my emotional state",
       "tags": [
         "bedrock",
         "product-context",
@@ -4431,7 +4431,7 @@
       "first_seen": "2026-07-28",
       "status": "validated",
       "priority": "medium",
-      "evaluation_criteria": "User says one of: i have to fix it | i have to fix them | i can't let go | control | everything must go my way | i grip the outcome | open hand",
+      "evaluation_criteria": "User says one of: i have to fix it | i have to fix them | i can't let go | control | everything must go my way | i grip the outcome | open hand | my emotional state",
       "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
       "master_index_integration": "GET /api/journeys/control-grip; SPA ?j=control-grip; door chamber /c/control",
       "implementation_notes": "Stages: Name the grip[blow]=control → Trust[near]=trust-in-the-lord → Patience[long_middle]=patience → Wait[long_middle]=wait-on-the-lord → Self-control[fork]=self-control → Walk by the Spirit[remain]=walk-by-the-spirit",
@@ -4439,7 +4439,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -4473,7 +4473,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -4508,7 +4508,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -4542,7 +4542,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -4577,7 +4577,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -4611,7 +4611,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -4646,7 +4646,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -4682,7 +4682,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -4714,7 +4714,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -4746,7 +4746,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -4778,7 +4778,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -4810,7 +4810,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -4842,7 +4842,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -4874,7 +4874,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -4906,7 +4906,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -4937,7 +4937,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -4969,7 +4969,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -5000,7 +5000,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -5032,7 +5032,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -5064,7 +5064,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -5096,7 +5096,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -5127,7 +5127,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -5157,7 +5157,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -5187,7 +5187,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -5217,13 +5217,13 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
     {
       "name": "bedrock-chamber-wounded",
-      "definition": "Chamber \"Wounded\" (wounded): You were harmed — God sees; He is near the crushed. Under fire: You were harmed. Do not steal a total blame that is false — and do not make hatred your shelter. · Their leaving does not cancel whose you are. You are His; cry Abba, Father.",
+      "definition": "Chamber \"Wounded\" (wounded): You were harmed — God sees; He is near the crushed. Under fire: You were harmed. Do not steal a total blame that is false — and do not make hatred your shelter. · Their leaving does not cancel whose you are — and does not own your emotional state. You are His; cry Abba, Father.",
       "example_inference_snippet": "Chamber \"Wounded\" (wounded): You were harmed — God sees; He is near the crushed. Under fire: You were harmed. Do not steal a total blame that is false — and do not make hatred your shelter. · Their le",
       "tags": [
         "bedrock",
@@ -5247,7 +5247,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -5277,7 +5277,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -5307,7 +5307,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -5337,7 +5337,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -5367,7 +5367,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     },
@@ -5397,7 +5397,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T10:55:18.713Z",
+        "last_seen": "2026-07-28T15:01:28.227Z",
         "governance_forced_count": 1
       }
     }
