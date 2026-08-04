@@ -1,7 +1,7 @@
 {
   "description": "Curated high-signal primitives and invariants surfaced by Groover inference that are not yet tracked in the Master Index or MCP filters. Each entry includes implementation guidance for autonomous agents.",
-  "last_updated": "2026-07-28T15:01:28.227Z",
-  "source": "meta-inference-2026-06-17-deep + verifiable-agent-ecosystem + bedrock-load-2026-07-28 + bedrock-load-2026-07-28",
+  "last_updated": "2026-08-04T17:52:08.158Z",
+  "source": "meta-inference-2026-06-17-deep + verifiable-agent-ecosystem + bedrock-load-2026-07-28 + bedrock-load-2026-07-28 + bedrock-load-2026-07-28",
   "schema_version": "1.1",
   "implementation_guidance": {
     "how_to_use": "Each signal should be registered in the Master Index and evaluated during govern_with_solar calls on ontological-trap classified entries. Use the validation_experiment and evaluation_criteria fields to implement detection logic.",
@@ -4058,7 +4058,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "high",
       "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
@@ -4069,7 +4069,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -4088,7 +4088,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "high",
       "evaluation_criteria": "Proposal or chat routing treats leave vs death distinctly and uses ordered stages.",
@@ -4099,7 +4099,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -4119,7 +4119,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "high",
       "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
@@ -4130,7 +4130,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -4150,7 +4150,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "high",
       "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
@@ -4161,7 +4161,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -4181,7 +4181,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "high",
       "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
@@ -4192,7 +4192,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -4217,7 +4217,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "high",
       "evaluation_criteria": "User says one of: they died | my loved one died | we buried them | someone died | i lost someone | my dad died | my mom died | my child died",
@@ -4228,13 +4228,13 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
     {
       "name": "bedrock-journey-spouse-left",
-      "definition": "Bedrock core journey \"Spouse left / marriage under fire\" (spouse-left, family=body, wave=1). You were wounded. Their leaving does not cancel whose you are. Critical to healing: your emotional state is your own — not dependent on them. Love and pursue reconciliation if God leads — and still refuse them the remote to your internal state. Adult position. Hold it. Door: wounded. Path: The wound[blow]=wounded → Whose you are[near]=he-is-for-you → The replay[spiral]=rumination → Abandonment fear[spiral]=fear → Courtroom of the mind[fork]=leave-vengeance-to-the-lord → Do not repay[fork]=do-not-repay-evil-with-evil → Covenant honesty[long_middle]=marriage-covenant → Forgiveness over time[long_middle]=forgive-as-you-have-been-forgiven → Long middle[long_middle]=patience → Release the outcome[remain]=trust-in-the-lord → Keep remaining[remain]=hope-of-glory. Plain speech: my wife left | my husband left | they left me | divorce | separation | she filed | he filed | marriage is over. Distinct from: death-of-loved-one.",
+      "definition": "Bedrock core journey \"Spouse left / marriage under fire\" (spouse-left, family=body, wave=1). You were wounded. Their leaving does not cancel whose you are. Critical to healing: your emotional state is your own — not dependent on them. Operational standard: Kill the Flesh. Walk in the Spirit. — return to your side of the street; refuse the remote. Adult position. Hold it. Door: wounded. Path: The wound[blow]=wounded → Whose you are[near]=he-is-for-you → The replay[spiral]=rumination → Abandonment fear[spiral]=fear → Courtroom of the mind[fork]=leave-vengeance-to-the-lord → Do not repay[fork]=do-not-repay-evil-with-evil → Covenant honesty[long_middle]=marriage-covenant → Forgiveness over time[long_middle]=forgive-as-you-have-been-forgiven → Long middle[long_middle]=patience → Release the outcome[remain]=trust-in-the-lord → The Rubric[remain]=kill-the-flesh-walk-in-the-spirit → Keep remaining[remain]=hope-of-glory. Plain speech: my wife left | my husband left | they left me | divorce | separation | she filed | he filed | marriage is over. Distinct from: death-of-loved-one.",
       "example_inference_snippet": "my wife left | my husband left | they left me | divorce | separation | she filed | he filed | marriage is over",
       "tags": [
         "bedrock",
@@ -4253,18 +4253,18 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "high",
       "evaluation_criteria": "User says one of: my wife left | my husband left | they left me | divorce | separation | she filed | he filed | marriage is over",
       "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
       "master_index_integration": "GET /api/journeys/spouse-left; SPA ?j=spouse-left; door chamber /c/wounded",
-      "implementation_notes": "Stages: The wound[blow]=wounded → Whose you are[near]=he-is-for-you → The replay[spiral]=rumination → Abandonment fear[spiral]=fear → Courtroom of the mind[fork]=leave-vengeance-to-the-lord → Do not repay[fork]=do-not-repay-evil-with-evil → Covenant honesty[long_middle]=marriage-covenant → Forgiveness over time[long_middle]=forgive-as-you-have-been-forgiven → Long middle[long_middle]=patience → Release the outcome[remain]=trust-in-the-lord → Keep remaining[remain]=hope-of-glory",
+      "implementation_notes": "Stages: The wound[blow]=wounded → Whose you are[near]=he-is-for-you → The replay[spiral]=rumination → Abandonment fear[spiral]=fear → Courtroom of the mind[fork]=leave-vengeance-to-the-lord → Do not repay[fork]=do-not-repay-evil-with-evil → Covenant honesty[long_middle]=marriage-covenant → Forgiveness over time[long_middle]=forgive-as-you-have-been-forgiven → Long middle[long_middle]=patience → Release the outcome[remain]=trust-in-the-lord → The Rubric[remain]=kill-the-flesh-walk-in-the-spirit → Keep remaining[remain]=hope-of-glory",
       "observation_stats": {
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -4288,7 +4288,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "medium",
       "evaluation_criteria": "User says one of: i was betrayed | they hurt me | i was crushed | deep wound | someone harmed me | abuse | i was wronged",
@@ -4299,7 +4299,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -4324,7 +4324,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "medium",
       "evaluation_criteria": "User says one of: everyone leaves | i can't be alone | abandonment | afraid they will leave | free-fall | terrified of being alone | fear of abandonment",
@@ -4335,7 +4335,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -4358,7 +4358,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "high",
       "evaluation_criteria": "User says one of: it owns me | i'm addicted | i can't stop | addiction | it masters me | substance | i'm trapped in a habit",
@@ -4369,7 +4369,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -4393,7 +4393,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "high",
       "evaluation_criteria": "User says one of: i can't stop replaying | stuck on loop | obsessing | rumination | my mind won't stop | i keep going over it | can't stop thinking about it",
@@ -4404,13 +4404,13 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
     {
       "name": "bedrock-journey-control-grip",
-      "definition": "Bedrock core journey \"Control grip\" (control-grip, family=will, wave=2). Open the hand. Trust is not passivity. Self-control rules you — not them. Critical to healing: your emotional state is your own — not dependent on them. Refuse them the remote. Adult position. Hold it. Door: control. Path: Name the grip[blow]=control → Trust[near]=trust-in-the-lord → Patience[long_middle]=patience → Wait[long_middle]=wait-on-the-lord → Self-control[fork]=self-control → Walk by the Spirit[remain]=walk-by-the-spirit. Plain speech: i have to fix it | i have to fix them | i can't let go | control | everything must go my way | i grip the outcome | open hand | my emotional state.",
+      "definition": "Bedrock core journey \"Control grip\" (control-grip, family=will, wave=2). Open the hand. Trust is not passivity. Self-control rules you — not them. Critical: emotional state is your own; refuse the remote. Operational standard: Kill the Flesh. Walk in the Spirit. — return to your side of the street. Door: control. Path: Name the grip[blow]=control → Trust[near]=trust-in-the-lord → Patience[long_middle]=patience → Wait[long_middle]=wait-on-the-lord → Self-control[fork]=self-control → Walk by the Spirit[fork]=walk-by-the-spirit → The Rubric[remain]=kill-the-flesh-walk-in-the-spirit. Plain speech: i have to fix it | i have to fix them | i can't let go | control | everything must go my way | i grip the outcome | open hand | my emotional state.",
       "example_inference_snippet": "i have to fix it | i have to fix them | i can't let go | control | everything must go my way | i grip the outcome | open hand | my emotional state",
       "tags": [
         "bedrock",
@@ -4428,18 +4428,18 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "medium",
       "evaluation_criteria": "User says one of: i have to fix it | i have to fix them | i can't let go | control | everything must go my way | i grip the outcome | open hand | my emotional state",
       "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
       "master_index_integration": "GET /api/journeys/control-grip; SPA ?j=control-grip; door chamber /c/control",
-      "implementation_notes": "Stages: Name the grip[blow]=control → Trust[near]=trust-in-the-lord → Patience[long_middle]=patience → Wait[long_middle]=wait-on-the-lord → Self-control[fork]=self-control → Walk by the Spirit[remain]=walk-by-the-spirit",
+      "implementation_notes": "Stages: Name the grip[blow]=control → Trust[near]=trust-in-the-lord → Patience[long_middle]=patience → Wait[long_middle]=wait-on-the-lord → Self-control[fork]=self-control → Walk by the Spirit[fork]=walk-by-the-spirit → The Rubric[remain]=kill-the-flesh-walk-in-the-spirit",
       "observation_stats": {
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -4462,7 +4462,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "medium",
       "evaluation_criteria": "User says one of: i'm jealous | jealousy | i can't stand them having | envy | rivalry | possessive",
@@ -4473,7 +4473,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -4497,7 +4497,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "high",
       "evaluation_criteria": "User says one of: i fell | i blew it | i sinned | i can't face myself | i failed again | i'm ashamed | i collapsed",
@@ -4508,7 +4508,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -4531,7 +4531,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "medium",
       "evaluation_criteria": "User says one of: i cheated | adultery | sexual sin | lust owns me | porn | i broke the marriage bed | affair",
@@ -4542,7 +4542,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -4566,7 +4566,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "medium",
       "evaluation_criteria": "User says one of: i can't undo it | regret | i keep regretting | if only i had | i can't forgive myself | stuck in the past",
@@ -4577,7 +4577,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -4600,7 +4600,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "medium",
       "evaluation_criteria": "User says one of: persecution | hated for his name | they're against me for my faith | suffering for christ | rejected for believing",
@@ -4611,7 +4611,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -4635,7 +4635,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "medium",
       "evaluation_criteria": "User says one of: spiritual warfare | under attack | oppression | something is attacking my mind | the enemy | spiritual fog",
@@ -4646,7 +4646,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -4671,7 +4671,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "high",
       "evaluation_criteria": "User says one of: nothing moves | i'm waiting forever | out of control | can't force it | life is chaos | drowning in wait | everything is stuck | i feel lost",
@@ -4682,7 +4682,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -4703,7 +4703,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "medium",
       "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
@@ -4714,7 +4714,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -4735,7 +4735,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "medium",
       "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
@@ -4746,7 +4746,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -4767,7 +4767,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "medium",
       "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
@@ -4778,7 +4778,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -4799,7 +4799,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "medium",
       "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
@@ -4810,7 +4810,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -4831,7 +4831,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "medium",
       "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
@@ -4842,7 +4842,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -4863,7 +4863,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "medium",
       "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
@@ -4874,7 +4874,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -4895,7 +4895,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "medium",
       "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
@@ -4906,7 +4906,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -4926,7 +4926,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "medium",
       "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
@@ -4937,7 +4937,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -4958,7 +4958,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "medium",
       "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
@@ -4969,7 +4969,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -4989,7 +4989,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "medium",
       "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
@@ -5000,7 +5000,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -5021,7 +5021,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "medium",
       "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
@@ -5032,7 +5032,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -5053,7 +5053,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "medium",
       "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
@@ -5064,7 +5064,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -5085,7 +5085,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "medium",
       "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
@@ -5096,7 +5096,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -5116,7 +5116,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "medium",
       "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
@@ -5127,7 +5127,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -5146,7 +5146,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "medium",
       "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
@@ -5157,7 +5157,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -5176,7 +5176,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "medium",
       "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
@@ -5187,7 +5187,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -5206,7 +5206,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "medium",
       "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
@@ -5217,13 +5217,13 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
     {
       "name": "bedrock-chamber-wounded",
-      "definition": "Chamber \"Wounded\" (wounded): You were harmed — God sees; He is near the crushed. Under fire: You were harmed. Do not steal a total blame that is false — and do not make hatred your shelter. · Their leaving does not cancel whose you are — and does not own your emotional state. You are His; cry Abba, Father.",
+      "definition": "Chamber \"Wounded\" (wounded): You were harmed — God sees; He is near the crushed. Under fire: You were harmed. Do not steal a total blame that is false — and do not make hatred your shelter. · Their leaving does not cancel whose you are. Your emotional state is your own — not dependent on them. You are His; cry Abba, Father.",
       "example_inference_snippet": "Chamber \"Wounded\" (wounded): You were harmed — God sees; He is near the crushed. Under fire: You were harmed. Do not steal a total blame that is false — and do not make hatred your shelter. · Their le",
       "tags": [
         "bedrock",
@@ -5236,7 +5236,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "medium",
       "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
@@ -5247,7 +5247,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -5266,7 +5266,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "medium",
       "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
@@ -5277,7 +5277,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -5296,7 +5296,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "medium",
       "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
@@ -5307,7 +5307,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -5326,7 +5326,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "medium",
       "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
@@ -5337,7 +5337,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -5356,7 +5356,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "medium",
       "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
@@ -5367,7 +5367,7 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     },
@@ -5386,7 +5386,7 @@
       "batches": [
         "bedrock-load-2026-07-28"
       ],
-      "first_seen": "2026-07-28",
+      "first_seen": "2026-08-04",
       "status": "validated",
       "priority": "medium",
       "evaluation_criteria": "Task or user language matches this Bedrock product primitive or journey entry speech.",
@@ -5397,7 +5397,40 @@
         "observation_count": 5,
         "avg_confidence": 0.88,
         "max_confidence": 0.95,
-        "last_seen": "2026-07-28T15:01:28.227Z",
+        "last_seen": "2026-08-04T17:52:08.158Z",
+        "governance_forced_count": 1
+      }
+    },
+    {
+      "name": "bedrock-rubric-kill-flesh-walk-spirit",
+      "definition": "Bedrock operational rubric: Kill the Flesh. Walk in the Spirit. Thought capture; combat fear with Peace + Shield of Faith; refuse works of the flesh; self-control; love without self-erasure; honest trust assessment; contact boundaries; return to your side of the street; redirect statements; success is staying in the Spirit — not their return. Emotional state is your own — not dependent on them. Chamber id: kill-the-flesh-walk-in-the-spirit.",
+      "example_inference_snippet": "return to your side of the street · kill the flesh · refuse the remote · shield of faith · no contact is protection",
+      "tags": [
+        "bedrock",
+        "product-context",
+        "field-guide",
+        "rubric",
+        "walk-by-the-spirit",
+        "works-of-the-flesh",
+        "side-of-the-street",
+        "healing",
+        "under-fire"
+      ],
+      "batches": [
+        "bedrock-load-2026-07-28"
+      ],
+      "first_seen": "2026-08-04",
+      "status": "validated",
+      "priority": "high",
+      "evaluation_criteria": "User under fire in marriage/limbo/jealousy/control/fear needs a forged rule-set, not only abstract truth.",
+      "validation_experiment": "Route a Bedrock task describing this state; matched signal should appear in get_task_confidence / search_primitives.",
+      "master_index_integration": "/c/kill-the-flesh-walk-in-the-spirit · journeys spouse-left + control-grip",
+      "implementation_notes": "Prefer journey path over single chamber when ground-shaking life is described.",
+      "observation_stats": {
+        "observation_count": 5,
+        "avg_confidence": 0.88,
+        "max_confidence": 0.95,
+        "last_seen": "2026-08-04T17:52:08.158Z",
         "governance_forced_count": 1
       }
     }
