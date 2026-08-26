@@ -138,10 +138,10 @@ describe('MCP stdio smoke (Hermes path)', () => {
       const names = tools.tools.map((tool) => tool.name).sort();
 
       expect(names).toEqual([
-        'repertoire__get_high_confidence_signals',
-        'repertoire__get_task_confidence',
-        'repertoire__ingest_feedback',
-        'repertoire__search_primitives',
+        'get_high_confidence_signals',
+        'get_task_confidence',
+        'ingest_feedback',
+        'search_primitives',
       ]);
     } finally {
       await closeMcpSession(session);
@@ -161,7 +161,7 @@ describe('MCP stdio smoke (Hermes path)', () => {
 
     try {
       const result = await session.client.callTool({
-        name: 'repertoire__get_task_confidence',
+        name: 'get_task_confidence',
         arguments: {
           description: TRAP_DESCRIPTION,
           type: 'governance',

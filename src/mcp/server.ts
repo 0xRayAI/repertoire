@@ -31,9 +31,10 @@ function serviceOptionsFromEnv(): RepertoireServiceOptions {
 
 const service = new RepertoireService(serviceOptionsFromEnv());
 
+/** Unprefixed names — Grok TUI namespaces as repertoire__<name> and drops names that already contain __. */
 const TOOLS = [
   {
-    name: 'repertoire__get_high_confidence_signals',
+    name: 'get_high_confidence_signals',
     description:
       'List curated signals at or above a confidence threshold, optionally filtered by tags',
     inputSchema: {
@@ -55,7 +56,7 @@ const TOOLS = [
     },
   },
   {
-    name: 'repertoire__get_task_confidence',
+    name: 'get_task_confidence',
     description:
       'Evaluate confidence context for a task description (trap detection, complexity boost, matched signals)',
     inputSchema: {
@@ -69,7 +70,7 @@ const TOOLS = [
     },
   },
   {
-    name: 'repertoire__search_primitives',
+    name: 'search_primitives',
     description:
       'Search curated primitives by text using registry observation_stats confidence',
     inputSchema: {
@@ -88,7 +89,7 @@ const TOOLS = [
     },
   },
   {
-    name: 'repertoire__ingest_feedback',
+    name: 'ingest_feedback',
     description: 'Record orchestrator routing outcome for meta-inference feedback loop',
     inputSchema: {
       type: 'object',
@@ -130,6 +131,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const a = (args ?? {}) as Record<string, unknown>;
 
   switch (name) {
+    case 'get_high_confidence_signals':
     case 'repertoire__get_high_confidence_signals': {
       const tags = Array.isArray(a.tags)
         ? a.tags.filter((tag): tag is string => typeof tag === 'string')
@@ -143,6 +145,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         }),
       );
     }
+    case 'get_task_confidence':
     case 'repertoire__get_task_confidence': {
       return jsonResult(
         service.getTaskConfidence({
@@ -152,6 +155,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         }),
       );
     }
+    case 'search_primitives':
     case 'repertoire__search_primitives': {
       return jsonResult(
         service.searchPrimitives(String(a.query), {
@@ -161,6 +165,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         }),
       );
     }
+    case 'ingest_feedback':
     case 'repertoire__ingest_feedback': {
       const result = service.ingestOrchestratorFeedback({
         timestamp: new Date().toISOString(),

@@ -108,7 +108,7 @@ if (!existsSync(repertoireServer)) {
   try {
     const out = await mcpStdioProbe({
       serverPath: repertoireServer,
-      toolName: 'repertoire__get_task_confidence',
+      toolName: 'get_task_confidence',
       args: { description: 'Confirm 0xRay suit worn after reboot' },
     });
     const ok =
