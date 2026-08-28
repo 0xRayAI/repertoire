@@ -47,7 +47,10 @@ existsSync(pluginYaml) ? pass('xray-hermes plugin', HERMES_PLUGIN_DIR) : fail('x
 const markerPath = join(HERMES_PLUGIN_DIR, 'xray-consumer-root.txt');
 if (existsSync(markerPath)) {
   const marked = readFileSync(markerPath, 'utf8').trim();
-  marked === root ? pass('consumer root marker', root) : fail('consumer root marker', `got ${marked}`);
+  const allowed = new Set([root, resolve(root, '../xray')]);
+  allowed.has(marked)
+    ? pass('consumer root marker', marked)
+    : fail('consumer root marker', `got ${marked}`);
 } else {
   fail('consumer root marker', 'missing');
 }
@@ -101,7 +104,8 @@ try {
   const health = JSON.parse(out.trim());
   if (health.framework === 'loaded') pass('bridge health', 'framework loaded');
   else fail('bridge health', JSON.stringify(health).slice(0, 120));
-  if (health.projectRoot === root) pass('bridge projectRoot', root);
+  const allowedRoots = new Set([root, resolve(root, '../xray')]);
+  if (allowedRoots.has(health.projectRoot)) pass('bridge projectRoot', health.projectRoot);
   else fail('bridge projectRoot', `got ${health.projectRoot}`);
 } catch (e) {
   fail('bridge health', e.message?.slice(0, 160));

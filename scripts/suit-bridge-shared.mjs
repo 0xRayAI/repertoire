@@ -67,18 +67,29 @@ export function readInstalledXrayVersion() {
   }
 }
 
+/** Prefer unpublished sibling 4.0 CLI over npm 3.5.x. */
+export function resolveLocalXrayCli() {
+  const local = resolve(packageRoot, '../xray/dist/cli/index.js');
+  if (existsSync(local)) return `node ${JSON.stringify(local)}`;
+  return 'npx 0xray';
+}
+
 /** Re-run native install when xray-consumer-root.txt points at wrong cwd (e.g. npx cache). */
 export function ensureConsumerRootMarker(markerPath, installCmd) {
   const consumerRoot = resolveConsumerRoot();
+  const siblingXray = resolve(packageRoot, '../xray');
   let marked = '';
   if (existsSync(markerPath)) {
     marked = readFileSync(markerPath, 'utf8').trim();
-    if (marked === consumerRoot) return consumerRoot;
+    if (marked === consumerRoot || marked === siblingXray) return marked || consumerRoot;
   }
+  const cmd = installCmd.includes('npx 0xray')
+    ? installCmd.replace('npx 0xray', resolveLocalXrayCli())
+    : installCmd;
   process.stdout.write(
-    `⚠  consumer root ${marked ? `drift (${marked})` : 'missing'} — running ${installCmd}\n`,
+    `⚠  consumer root ${marked ? `drift (${marked})` : 'missing'} — running ${cmd}\n`,
   );
-  execSync(installCmd, { cwd: consumerRoot, stdio: 'inherit' });
+  execSync(cmd, { cwd: consumerRoot, stdio: 'inherit' });
   return consumerRoot;
 }
 

@@ -44,7 +44,10 @@ existsSync(consumerConfig)
 const markerPath = join(OPENCLAW_STATE, 'xray-consumer-root.txt');
 if (existsSync(markerPath)) {
   const marked = readFileSync(markerPath, 'utf8').trim();
-  marked === root ? pass('consumer root marker', root) : fail('consumer root marker', `got ${marked}`);
+  const allowed = new Set([root, resolve(root, '../xray')]);
+  allowed.has(marked)
+    ? pass('consumer root marker', marked)
+    : fail('consumer root marker', `got ${marked}`);
 } else {
   fail('consumer root marker', 'missing');
 }
@@ -77,10 +80,12 @@ try {
   else fail('openclaw.json mcp.servers xray', `${xrayCount}/7`);
   if (servers[REPERTOIRE_MCP.name]) pass('openclaw.json mcp.servers repertoire');
   else fail('openclaw.json mcp.servers repertoire', 'missing');
-  if (servers['xray-enforcer']?.env?.XRAY_ROOT === root) {
-    pass('openclaw mcp XRAY_ROOT', root);
+  const xrayRoot = servers['xray-enforcer']?.env?.XRAY_ROOT;
+  const allowedRoots = new Set([root, resolve(root, '../xray')]);
+  if (xrayRoot && allowedRoots.has(xrayRoot)) {
+    pass('openclaw mcp XRAY_ROOT', xrayRoot);
   } else {
-    fail('openclaw mcp XRAY_ROOT', `got ${servers['xray-enforcer']?.env?.XRAY_ROOT}`);
+    fail('openclaw mcp XRAY_ROOT', `got ${xrayRoot}`);
   }
 } catch (e) {
   fail('openclaw.json mcp.servers', e.message?.slice(0, 160));
