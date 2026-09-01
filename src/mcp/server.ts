@@ -12,20 +12,27 @@ import {
 import { RepertoireService } from '../RepertoireService.js';
 import type { RepertoireServiceOptions } from '../RepertoireService.js';
 import {
-  DEFAULT_DATA_DIR,
-  DEFAULT_FEEDBACK_DIR,
-  DEFAULT_LOG_DIR,
   DEFAULT_SIGNALS_PATH,
-  DEFAULT_STATE_PATH,
+  defaultProjectStateDir,
+  isRepertoirePackageCwd,
 } from '../paths.js';
+import { join } from 'node:path';
 
 function serviceOptionsFromEnv(): RepertoireServiceOptions {
+  const cwd = process.cwd();
+  const projectState = defaultProjectStateDir(cwd);
+  const inOrganRepo = isRepertoirePackageCwd(cwd);
   return {
-    dataDir: process.env.REPERTOIRE_DATA_DIR ?? DEFAULT_DATA_DIR,
+    dataDir: process.env.REPERTOIRE_DATA_DIR ?? (inOrganRepo ? undefined : projectState),
     signalsPath: process.env.CURATED_SIGNALS_PATH ?? DEFAULT_SIGNALS_PATH,
-    statePath: process.env.REPERTOIRE_STATE_PATH ?? DEFAULT_STATE_PATH,
-    logDir: process.env.REPERTOIRE_LOG_DIR ?? DEFAULT_LOG_DIR,
-    feedbackDir: process.env.REPERTOIRE_FEEDBACK_DIR ?? DEFAULT_FEEDBACK_DIR,
+    statePath:
+      process.env.REPERTOIRE_STATE_PATH ??
+      (inOrganRepo ? undefined : join(projectState, 'inference-state.json')),
+    logDir:
+      process.env.REPERTOIRE_LOG_DIR ?? (inOrganRepo ? undefined : join(projectState, 'logs')),
+    feedbackDir:
+      process.env.REPERTOIRE_FEEDBACK_DIR ??
+      (inOrganRepo ? undefined : join(projectState, 'feedback')),
   };
 }
 
@@ -108,7 +115,7 @@ const TOOLS = [
 ] as const;
 
 const server = new Server(
-  { name: 'repertoire', version: '0.1.0' },
+  { name: 'repertoire', version: '0.2.0' },
   { capabilities: { tools: {} } },
 );
 

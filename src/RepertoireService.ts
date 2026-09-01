@@ -20,6 +20,9 @@ import {
   DEFAULT_LOG_DIR,
   DEFAULT_SIGNALS_PATH,
   DEFAULT_STATE_PATH,
+  defaultProjectStateDir,
+  hydrateWritableSignals,
+  isRepertoirePackageCwd,
 } from './paths.js';
 import type {
   AgentCapability,
@@ -39,6 +42,7 @@ export interface RepertoireServiceOptions {
   signalsPath?: string;
   statePath?: string;
   feedbackDir?: string;
+  projectRoot?: string;
 }
 
 export class RepertoireService {
@@ -51,22 +55,33 @@ export class RepertoireService {
   private readonly logDir: string;
 
   constructor(options: RepertoireServiceOptions = {}) {
-    const dataDir = options.dataDir ?? DEFAULT_DATA_DIR;
-    this.logDir = options.logDir ?? DEFAULT_LOG_DIR;
+    const cwd = options.projectRoot ?? process.cwd();
+    const inOrganRepo = isRepertoirePackageCwd(cwd);
+    const projectState = defaultProjectStateDir(cwd);
+    const dataDir = options.dataDir ?? (inOrganRepo ? DEFAULT_DATA_DIR : projectState);
+    this.logDir = options.logDir ?? (inOrganRepo ? DEFAULT_LOG_DIR : join(projectState, 'logs'));
 
-    this.signalsManager = new CuratedSignalsManager(
-      options.signalsPath ?? (options.dataDir ? join(dataDir, 'curated_signals.json') : DEFAULT_SIGNALS_PATH),
-    );
+    const seed =
+      options.signalsPath ??
+      (options.dataDir ? join(dataDir, 'curated_signals.json') : DEFAULT_SIGNALS_PATH);
+    this.signalsManager = new CuratedSignalsManager(hydrateWritableSignals(seed, cwd));
     this.stateManager = new InferenceStateManager(
-      options.statePath ?? (options.dataDir ? join(dataDir, 'inference-state.json') : DEFAULT_STATE_PATH),
+      options.statePath ??
+        (inOrganRepo
+          ? options.dataDir
+            ? join(dataDir, 'inference-state.json')
+            : DEFAULT_STATE_PATH
+          : join(projectState, 'inference-state.json')),
     );
     this.orchestratorBridge = new RepertoireOrchestratorBridge(this.signalsManager);
     this.metaInference = new MetaInferenceEngine({
       logDir: this.logDir,
-      statePath: options.statePath ?? DEFAULT_STATE_PATH,
+      statePath:
+        options.statePath ??
+        (inOrganRepo ? DEFAULT_STATE_PATH : join(projectState, 'inference-state.json')),
     });
     this.feedbackIngester = new OrchestratorFeedbackIngester(
-      options.feedbackDir ?? DEFAULT_FEEDBACK_DIR,
+      options.feedbackDir ?? (inOrganRepo ? DEFAULT_FEEDBACK_DIR : join(projectState, 'feedback')),
     );
   }
 

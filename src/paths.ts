@@ -1,8 +1,9 @@
-import { dirname, join } from 'node:path';
+import { copyFileSync, existsSync, mkdirSync, readFileSync } from 'node:fs';
+import { dirname, join, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 /** Compiled to dist/paths.js — one level below package root. */
-const PACKAGE_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
+export const PACKAGE_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 export const DEFAULT_DATA_DIR = join(PACKAGE_ROOT, 'data');
 export const DEFAULT_SIGNALS_PATH = join(PACKAGE_ROOT, 'data', 'curated_signals.json');
@@ -16,3 +17,71 @@ export const DEFAULT_PROVIDER_PATH = join(
   'provider',
   'memory-routing-provider.js',
 );
+
+export function defaultProjectStateDir(cwd = process.cwd()): string {
+  return join(cwd, '.xray', 'state', 'repertoire');
+}
+
+export function isRepertoirePackageCwd(cwd: string): boolean {
+  try {
+    const pkg = JSON.parse(readFileSync(join(cwd, 'package.json'), 'utf8')) as { name?: string };
+    return pkg.name === '@0xray/repertoire' || pkg.name === 'repertoire';
+  } catch {
+    return false;
+  }
+}
+
+export function isImmutablePackagePath(filePath: string): boolean {
+  const normalized = resolve(filePath);
+  const root = resolve(PACKAGE_ROOT);
+  if (normalized === root || normalized.startsWith(root + sep)) return true;
+  return normalized.includes(`${sep}node_modules${sep}@0xray${sep}repertoire${sep}`);
+}
+
+/** Signals seed is readable; missing consumer path may fall back to the package file. */
+export function resolveReadableConfigPath(
+  configured: string | undefined,
+  cwd: string,
+  packageDefault: string,
+): string {
+  if (!configured) return packageDefault;
+  const fromCwd = resolve(cwd, configured);
+  if (existsSync(fromCwd)) return fromCwd;
+  if (existsSync(configured)) return resolve(configured);
+  if (existsSync(packageDefault)) return packageDefault;
+  return fromCwd;
+}
+
+/** State/feedback paths must not silently fall back into the package. */
+export function resolveWritableConfigPath(
+  configured: string | undefined,
+  cwd: string,
+  fallback: string,
+): string {
+  if (!configured) return fallback;
+  if (configured.startsWith('/') || /^[A-Za-z]:[\\/]/.test(configured)) return configured;
+  return resolve(cwd, configured);
+}
+
+/**
+ * Package seed stays read-only. Consumer cwd hydrates `.xray/state/repertoire/curated_signals.json`.
+ * Running inside this repo keeps the seed path (tests + organ development).
+ */
+export function hydrateWritableSignals(seedPath: string, cwd = process.cwd()): string {
+  if (!isImmutablePackagePath(seedPath)) {
+    return seedPath;
+  }
+  const seed = existsSync(seedPath) ? seedPath : DEFAULT_SIGNALS_PATH;
+  if (isRepertoirePackageCwd(cwd)) {
+    return seed;
+  }
+  const dest = join(defaultProjectStateDir(cwd), 'curated_signals.json');
+  mkdirSync(dirname(dest), { recursive: true });
+  if (!existsSync(dest) && existsSync(seed)) {
+    copyFileSync(seed, dest);
+  }
+  return dest;
+}
+
+/** @deprecated use resolveReadableConfigPath */
+export const resolveProviderConfigPath = resolveReadableConfigPath;
