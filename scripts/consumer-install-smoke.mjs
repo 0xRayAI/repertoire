@@ -21,8 +21,9 @@ function assert(label, ok, detail = '') {
 }
 
 assert('package name', pkg.name === '@0xray/repertoire');
-assert('version present', typeof pkg.version === 'string' && pkg.version.length > 0);
+assert('version 0.2+', typeof pkg.version === 'string' && pkg.version.startsWith('0.2'));
 assert('files field defined', Array.isArray(pkg.files) && pkg.files.length > 0);
+assert('no runtime 0xray dependency', !pkg.dependencies || pkg.dependencies['0xray'] == null);
 
 const requiredPaths = [
   'dist/index.js',
@@ -69,12 +70,18 @@ assert(
 const mcpScript = pkg.scripts?.mcp ?? '';
 assert('mcp npm script', mcpScript.includes('dist/mcp/server.js'));
 
-const { resolveConsumerRoot, readInstalledXrayVersion, XRAY_MCP_SERVERS } = await import(
-  pathToFileURL(join(repoRoot, 'scripts/suit-bridge-shared.mjs')).href
+const signals = JSON.parse(readFileSync(join(repoRoot, 'data/curated_signals.json'), 'utf8'));
+const names = (signals.signals || []).map((s) => s.name);
+assert('factory seed size', names.length >= 8 && names.length <= 24, `got ${names.length}`);
+assert(
+  'factory seed has no bedrock signals',
+  !names.some((n) => String(n).toLowerCase().startsWith('bedrock')),
 );
-assert('resolveConsumerRoot', typeof resolveConsumerRoot() === 'string');
-assert('bridge-mcp-wiring SSOT', Array.isArray(XRAY_MCP_SERVERS) && XRAY_MCP_SERVERS.length > 0);
-assert('0xray version resolved', readInstalledXrayVersion() !== 'unknown');
+assert('seed includes attestation-as-map', names.includes('attestation-as-map'));
+assert(
+  'seed includes consumption-boundary-revalidation-gate',
+  names.includes('consumption-boundary-revalidation-gate'),
+);
 
 const failed = checks.filter((c) => !c.ok);
 if (failed.length > 0) {

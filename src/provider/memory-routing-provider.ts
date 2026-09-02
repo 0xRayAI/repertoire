@@ -6,13 +6,18 @@
  */
 
 import { existsSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { join } from 'node:path';
 import {
   DEFAULT_DATA_DIR,
   DEFAULT_FEEDBACK_DIR,
   DEFAULT_LOG_DIR,
   DEFAULT_SIGNALS_PATH,
   DEFAULT_STATE_PATH,
+  defaultProjectStateDir,
+  hydrateWritableSignals,
+  isRepertoirePackageCwd,
+  resolveReadableConfigPath,
+  resolveWritableConfigPath,
 } from '../paths.js';
 import { RepertoireService } from '../RepertoireService.js';
 import type {
@@ -93,6 +98,7 @@ export interface MemoryRoutingProviderConfig {
   logDir?: string;
   statePath?: string;
   feedbackDir?: string;
+  projectRoot?: string;
 }
 
 export interface MemoryRoutingProvider {
@@ -173,19 +179,7 @@ export interface ProviderAvailabilityStatus {
   signalsPath: string;
 }
 
-/** Resolve config path: consumer-relative first, then package default fallback. */
-export function resolveProviderConfigPath(
-  configured: string | undefined,
-  cwd: string,
-  packageDefault: string,
-): string {
-  if (!configured) return packageDefault;
-  const fromCwd = resolve(cwd, configured);
-  if (existsSync(fromCwd)) return fromCwd;
-  if (existsSync(configured)) return resolve(configured);
-  if (existsSync(packageDefault)) return packageDefault;
-  return fromCwd;
-}
+export { resolveReadableConfigPath as resolveProviderConfigPath } from '../paths.js';
 
 function toInheritedContext(ctx: RepertoireInheritedContext): MemoryInheritedContext {
   return {
@@ -208,23 +202,34 @@ export class RepertoireMemoryRoutingProvider implements MemoryRoutingProvider {
   readonly signalsPath: string;
 
   constructor(config: MemoryRoutingProviderConfig = {}) {
-    const cwd = process.cwd();
-    this.signalsPath = resolveProviderConfigPath(
-      config.signalsPath,
-      cwd,
-      DEFAULT_SIGNALS_PATH,
-    );
-    const dataDir = resolveProviderConfigPath(
-      config.dataDir,
-      cwd,
-      DEFAULT_DATA_DIR,
-    );
+    const cwd = typeof config.projectRoot === 'string' ? config.projectRoot : process.cwd();
+    const inOrganRepo = isRepertoirePackageCwd(cwd);
+    const projectState = defaultProjectStateDir(cwd);
+    const seed = resolveReadableConfigPath(config.signalsPath, cwd, DEFAULT_SIGNALS_PATH);
+    this.signalsPath = hydrateWritableSignals(seed, cwd);
     this.service = new RepertoireService({
-      dataDir,
+      projectRoot: cwd,
+      dataDir: resolveWritableConfigPath(
+        config.dataDir,
+        cwd,
+        inOrganRepo ? DEFAULT_DATA_DIR : projectState,
+      ),
       signalsPath: this.signalsPath,
-      statePath: resolveProviderConfigPath(config.statePath, cwd, DEFAULT_STATE_PATH),
-      logDir: resolveProviderConfigPath(config.logDir, cwd, DEFAULT_LOG_DIR),
-      feedbackDir: resolveProviderConfigPath(config.feedbackDir, cwd, DEFAULT_FEEDBACK_DIR),
+      statePath: resolveWritableConfigPath(
+        config.statePath,
+        cwd,
+        inOrganRepo ? DEFAULT_STATE_PATH : join(projectState, 'inference-state.json'),
+      ),
+      logDir: resolveWritableConfigPath(
+        config.logDir,
+        cwd,
+        inOrganRepo ? DEFAULT_LOG_DIR : join(projectState, 'logs'),
+      ),
+      feedbackDir: resolveWritableConfigPath(
+        config.feedbackDir,
+        cwd,
+        inOrganRepo ? DEFAULT_FEEDBACK_DIR : join(projectState, 'feedback'),
+      ),
     });
   }
 

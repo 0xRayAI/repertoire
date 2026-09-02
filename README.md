@@ -1,8 +1,8 @@
 # @0xray/repertoire
 
-Deep memory, synthesis, and orchestrator enrichment for the [0xRay](https://github.com/0xRayAI/xray) / Groover stack.
+Factory memory organ for [0xRay](https://github.com/0xRayAI/xray): seed primitives, in-process memory routing, extra MCP (not an 8th `xray-*` server).
 
-**v0.1.3** · integrates with **0xRay v3.5.0+** (loop closure + memory routing)
+**v0.2.0** · 0xRay **4.0** wear. Runtime does **not** depend on `0xray` (optional peer for suit-verify scripts).
 
 ## Install
 
@@ -10,7 +10,7 @@ Deep memory, synthesis, and orchestrator enrichment for the [0xRay](https://gith
 npm install @0xray/repertoire
 ```
 
-Pulls `0xray@^3.5.0` as a dependency. After install, refresh Grok hooks:
+Does not install `0xray`. After 0xray wear, refresh Grok hooks:
 
 ```bash
 npx 0xray grok install --force

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { mkdtempSync, writeFileSync, mkdirSync, rmSync } from 'node:fs';
+import { mkdtempSync, writeFileSync, mkdirSync, rmSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import {
@@ -37,6 +37,27 @@ describe('memory-routing-provider path resolution', () => {
     expect(status.available).toBe(true);
     expect(status.reason).toBe('ok');
     expect(status.signalCount).toBeGreaterThan(0);
+  });
+
+  it('ingestFeedback from a consumer cwd does not mutate the package seed', () => {
+    const consumer = mkdtempSync(join(tmpdir(), 'repertoire-consumer-cwd-'));
+    writeFileSync(join(consumer, 'package.json'), JSON.stringify({ name: 'demo-app' }));
+    const seedBefore = readFileSync(DEFAULT_SIGNALS_PATH, 'utf8');
+    const provider = createMemoryRoutingProvider({ projectRoot: consumer });
+    provider.ingestFeedback?.({
+      timestamp: new Date().toISOString(),
+      sessionId: 's1',
+      taskId: 't1',
+      assignedAgent: 'station',
+      memorySignals: ['attestation-as-map'],
+      complexity: 0,
+      success: true,
+      durationMs: 1,
+    });
+    expect(readFileSync(DEFAULT_SIGNALS_PATH, 'utf8')).toBe(seedBefore);
+    const copy = join(consumer, '.xray', 'state', 'repertoire', 'curated_signals.json');
+    expect(readFileSync(copy, 'utf8').length).toBeGreaterThan(0);
+    rmSync(consumer, { recursive: true, force: true });
   });
 
   it('reports empty_registry when signals file exists but has no entries', () => {

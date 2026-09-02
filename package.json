@@ -1,7 +1,7 @@
 {
   "name": "@0xray/repertoire",
-  "version": "0.1.8",
-  "description": "Deep memory, synthesis, and orchestrator enrichment for the 0xRay/Groover stack",
+  "version": "0.2.0",
+  "description": "Factory memory organ for 0xRay — seed primitives, memory routing, extra MCP",
   "type": "module",
   "license": "MIT",
   "readme": "README.md",
@@ -36,6 +36,7 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./package.json": "./package.json",
     "./provider/memory-routing-provider": {
       "types": "./dist/provider/memory-routing-provider.d.ts",
       "import": "./dist/provider/memory-routing-provider.js"
@@ -103,10 +104,18 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.12.0",
-    "0xray": "file:../xray"
+    "@modelcontextprotocol/sdk": "^1.12.0"
+  },
+  "peerDependencies": {
+    "0xray": ">=3.5.5"
+  },
+  "peerDependenciesMeta": {
+    "0xray": {
+      "optional": true
+    }
   },
   "devDependencies": {
+    "0xray": "file:../xray",
     "@types/node": "^22.15.0",
     "tsx": "^4.19.0",
     "typescript": "^5.6.0",
