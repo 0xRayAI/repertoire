@@ -23,6 +23,16 @@ function assert(label, ok, detail = '') {
 assert('package name', pkg.name === '@0xray/repertoire');
 assert('version present', typeof pkg.version === 'string' && pkg.version.length > 0);
 assert('files field defined', Array.isArray(pkg.files) && pkg.files.length > 0);
+assert(
+  'published dependencies do not pin file:../xray',
+  !String(pkg.dependencies?.['0xray'] ?? '').startsWith('file:'),
+  String(pkg.dependencies?.['0xray'] ?? ''),
+);
+assert(
+  '0xray is a peerDependency, not a hard install',
+  pkg.dependencies?.['0xray'] === undefined,
+  '0xray must not ship in dependencies — it breaks consumer npm ci',
+);
 
 const requiredPaths = [
   'dist/index.js',
