@@ -4,7 +4,9 @@
  * without sibling-repo paths or env overrides.
  */
 
-import { existsSync, readFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
@@ -32,6 +34,36 @@ assert(
   '0xray is a peerDependency, not a hard install',
   pkg.dependencies?.['0xray'] === undefined,
   '0xray must not ship in dependencies — it breaks consumer npm ci',
+);
+
+function packedManifest() {
+  const raw = execFileSync('npm', ['pack', '--json', '--ignore-scripts'], {
+    cwd: repoRoot,
+    encoding: 'utf8',
+  });
+  const parsed = JSON.parse(raw);
+  const filename = Array.isArray(parsed) ? parsed[0].filename : parsed.filename;
+  const tgz = join(repoRoot, filename);
+  const dir = mkdtempSync(join(tmpdir(), 'repertoire-pack-'));
+  try {
+    execFileSync('tar', ['-xzf', tgz, '-C', dir]);
+    return JSON.parse(readFileSync(join(dir, 'package', 'package.json'), 'utf8'));
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+    if (existsSync(tgz)) rmSync(tgz);
+  }
+}
+
+const packed = packedManifest();
+assert(
+  'packed tarball has no 0xray dependency',
+  packed.dependencies?.['0xray'] === undefined,
+  JSON.stringify(packed.dependencies ?? {}),
+);
+assert(
+  'packed tarball has no file: dependency specifiers',
+  !JSON.stringify(packed.dependencies ?? {}).includes('file:'),
+  JSON.stringify(packed.dependencies ?? {}),
 );
 
 const requiredPaths = [
