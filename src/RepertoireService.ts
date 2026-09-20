@@ -16,14 +16,9 @@ import {
 import { DEFAULT_MIN_CONFIDENCE_GATE } from './orchestrator-bridge/confidence-gate.js';
 import { effectiveSignalConfidence } from './registry/confidence-decay.js';
 import {
-  DEFAULT_DATA_DIR,
-  DEFAULT_FEEDBACK_DIR,
-  DEFAULT_LOG_DIR,
   DEFAULT_SIGNALS_PATH,
-  DEFAULT_STATE_PATH,
-  defaultProjectStateDir,
+  defaultWritablePaths,
   hydrateWritableSignals,
-  isRepertoirePackageCwd,
 } from './paths.js';
 import type {
   AgentCapability,
@@ -57,32 +52,22 @@ export class RepertoireService {
 
   constructor(options: RepertoireServiceOptions = {}) {
     const cwd = options.projectRoot ?? process.cwd();
-    const inOrganRepo = isRepertoirePackageCwd(cwd);
-    const projectState = defaultProjectStateDir(cwd);
-    const dataDir = options.dataDir ?? (inOrganRepo ? DEFAULT_DATA_DIR : projectState);
-    this.logDir = options.logDir ?? (inOrganRepo ? DEFAULT_LOG_DIR : join(projectState, 'logs'));
+    const writable = defaultWritablePaths(cwd);
+    const dataDir = options.dataDir ?? writable.dataDir;
+    this.logDir = options.logDir ?? writable.logDir;
 
     const seed =
       options.signalsPath ??
       (options.dataDir ? join(dataDir, 'curated_signals.json') : DEFAULT_SIGNALS_PATH);
     this.signalsManager = new CuratedSignalsManager(hydrateWritableSignals(seed, cwd));
-    this.stateManager = new InferenceStateManager(
-      options.statePath ??
-        (inOrganRepo
-          ? options.dataDir
-            ? join(dataDir, 'inference-state.json')
-            : DEFAULT_STATE_PATH
-          : join(projectState, 'inference-state.json')),
-    );
+    this.stateManager = new InferenceStateManager(options.statePath ?? writable.statePath);
     this.orchestratorBridge = new RepertoireOrchestratorBridge(this.signalsManager);
     this.metaInference = new MetaInferenceEngine({
       logDir: this.logDir,
-      statePath:
-        options.statePath ??
-        (inOrganRepo ? DEFAULT_STATE_PATH : join(projectState, 'inference-state.json')),
+      statePath: options.statePath ?? writable.statePath,
     });
     this.feedbackIngester = new OrchestratorFeedbackIngester(
-      options.feedbackDir ?? (inOrganRepo ? DEFAULT_FEEDBACK_DIR : join(projectState, 'feedback')),
+      options.feedbackDir ?? writable.feedbackDir,
     );
   }
 

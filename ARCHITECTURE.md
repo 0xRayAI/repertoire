@@ -18,7 +18,7 @@ flowchart TB
 
   subgraph Repertoire["Repertoire"]
     I["GrooverLogIngester\n(enriched-only)"]
-    R["CuratedSignalsManager\ndata/curated_signals.json"]
+    R["CuratedSignalsManager\n.xray/state/repertoire/"]
     S["RepertoireService"]
     B["RepertoireOrchestratorBridge\nconfidence-gate + signal-injector"]
     I --> R
@@ -229,10 +229,12 @@ Repertoire exposes two complementary surfaces. They share `RepertoireService` lo
 "memory_routing": {
   "enabled": true,
   "provider": "repertoire",
-  "module_path": "../repertoire/dist/provider/memory-routing-provider.js",
+  "module_path": "./dist/provider/memory-routing-provider.js",
   "config": {
-    "signalsPath": "../repertoire/data/curated_signals.json",
-    "logDir": "../repertoire/logs/groover-inference"
+    "signalsPath": ".xray/state/repertoire/curated_signals.json",
+    "statePath": ".xray/state/repertoire/inference-state.json",
+    "feedbackDir": ".xray/state/repertoire/feedback",
+    "logDir": ".xray/state/repertoire/logs"
   }
 }
 ```

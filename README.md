@@ -49,9 +49,11 @@ Override with env:
 
 | Env | Default |
 |-----|---------|
-| `CURATED_SIGNALS_PATH` | `<package>/data/curated_signals.json` |
-| `REPERTOIRE_DATA_DIR` | `<package>/data` |
-| `REPERTOIRE_LOG_DIR` | `<package>/logs/groover-inference` |
+| `CURATED_SIGNALS_PATH` | factory seed (hydrated to `.xray/state/repertoire/curated_signals.json`) |
+| `REPERTOIRE_DATA_DIR` | `.xray/state/repertoire` |
+| `REPERTOIRE_STATE_PATH` | `.xray/state/repertoire/inference-state.json` |
+| `REPERTOIRE_LOG_DIR` | `.xray/state/repertoire/logs` |
+| `REPERTOIRE_FEEDBACK_DIR` | `.xray/state/repertoire/feedback` |
 
 ### Tools
 
@@ -80,8 +82,10 @@ In `.xray/features.json` or `xray/features.json`:
 
 ```json
 "config": {
-  "signalsPath": ".xray/curated_signals.json",
-  "logDir": "logs/groover-inference"
+  "signalsPath": ".xray/state/repertoire/curated_signals.json",
+  "statePath": ".xray/state/repertoire/inference-state.json",
+  "feedbackDir": ".xray/state/repertoire/feedback",
+  "logDir": ".xray/state/repertoire/logs"
 }
 ```
 

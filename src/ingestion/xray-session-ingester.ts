@@ -1,6 +1,7 @@
 import { readFileSync, appendFileSync, existsSync, mkdirSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { CuratedSignalsManager } from '../registry/CuratedSignalsManager.js';
+import { defaultWritablePaths } from '../paths.js';
 import type { InferenceEntry } from '../types.js';
 
 export interface XraySessionFile {
@@ -26,7 +27,7 @@ export class XraySessionIngester {
 
   constructor(options: XraySessionIngesterOptions) {
     this.sourceDir = options.sourceDir;
-    this.targetDir = options.targetDir ?? 'logs/groover-inference';
+    this.targetDir = options.targetDir ?? defaultWritablePaths().logDir;
     this.signalsManager = options.signalsManager ?? new CuratedSignalsManager();
   }
 

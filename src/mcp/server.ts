@@ -11,28 +11,16 @@ import {
 } from '@modelcontextprotocol/sdk/types.js';
 import { RepertoireService } from '../RepertoireService.js';
 import type { RepertoireServiceOptions } from '../RepertoireService.js';
-import {
-  DEFAULT_SIGNALS_PATH,
-  defaultProjectStateDir,
-  isRepertoirePackageCwd,
-} from '../paths.js';
-import { join } from 'node:path';
+import { DEFAULT_SIGNALS_PATH, defaultWritablePaths } from '../paths.js';
 
 function serviceOptionsFromEnv(): RepertoireServiceOptions {
-  const cwd = process.cwd();
-  const projectState = defaultProjectStateDir(cwd);
-  const inOrganRepo = isRepertoirePackageCwd(cwd);
+  const writable = defaultWritablePaths(process.cwd());
   return {
-    dataDir: process.env.REPERTOIRE_DATA_DIR ?? (inOrganRepo ? undefined : projectState),
+    dataDir: process.env.REPERTOIRE_DATA_DIR ?? writable.dataDir,
     signalsPath: process.env.CURATED_SIGNALS_PATH ?? DEFAULT_SIGNALS_PATH,
-    statePath:
-      process.env.REPERTOIRE_STATE_PATH ??
-      (inOrganRepo ? undefined : join(projectState, 'inference-state.json')),
-    logDir:
-      process.env.REPERTOIRE_LOG_DIR ?? (inOrganRepo ? undefined : join(projectState, 'logs')),
-    feedbackDir:
-      process.env.REPERTOIRE_FEEDBACK_DIR ??
-      (inOrganRepo ? undefined : join(projectState, 'feedback')),
+    statePath: process.env.REPERTOIRE_STATE_PATH ?? writable.statePath,
+    logDir: process.env.REPERTOIRE_LOG_DIR ?? writable.logDir,
+    feedbackDir: process.env.REPERTOIRE_FEEDBACK_DIR ?? writable.feedbackDir,
   };
 }
 

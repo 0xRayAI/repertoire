@@ -1,6 +1,7 @@
 import { readFileSync, appendFileSync, existsSync, mkdirSync, readdirSync } from 'node:fs';
 import { join, basename } from 'node:path';
 import { CuratedSignalsManager } from '../registry/CuratedSignalsManager.js';
+import { defaultWritablePaths } from '../paths.js';
 import {
   buildInferenceEntryFromGrooverLog,
   EnrichedGrooverLogError,
@@ -32,7 +33,7 @@ export class GrooverLogIngester {
 
   constructor(options: GrooverIngesterOptions) {
     this.sourceDir = options.sourceDir;
-    this.targetDir = options.targetDir ?? 'logs/groover-inference';
+    this.targetDir = options.targetDir ?? defaultWritablePaths().logDir;
     this.signalsManager = options.signalsManager ?? new CuratedSignalsManager();
     this.promoteAfterIngest = options.promoteAfterIngest ?? true;
     this.dryRun = options.dryRun ?? false;

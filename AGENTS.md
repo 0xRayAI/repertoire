@@ -74,9 +74,11 @@ Configure in `.xray/features.json`:
 "memory_routing": {
   "enabled": true,
   "provider": "repertoire",
-  "module_path": "../repertoire/dist/provider/memory-routing-provider.js",
+  "module_path": "./dist/provider/memory-routing-provider.js",
   "config": {
-    "signalsPath": "../repertoire/data/curated_signals.json"
+    "signalsPath": ".xray/state/repertoire/curated_signals.json",
+    "statePath": ".xray/state/repertoire/inference-state.json",
+    "feedbackDir": ".xray/state/repertoire/feedback"
   }
 }
 ```
