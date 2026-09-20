@@ -8,7 +8,7 @@ import { RepertoireService } from '../src/RepertoireService.js';
 import { CuratedSignalsManager } from '../src/registry/CuratedSignalsManager.js';
 import { GrooverLogIngester } from '../src/ingestion/groover-log-ingester.js';
 import { pruneSignals } from '../src/registry/signal-prune.js';
-import { DEFAULT_LOG_DIR, DEFAULT_SIGNALS_PATH } from '../src/paths.js';
+import { DEFAULT_LOG_DIR, DEFAULT_SIGNALS_PATH, hydrateWritableSignals } from '../src/paths.js';
 
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
@@ -25,12 +25,13 @@ if (!dryRun && !commit) {
   process.exit(1);
 }
 
-const manager = new CuratedSignalsManager(DEFAULT_SIGNALS_PATH);
+const signalsPath = hydrateWritableSignals(DEFAULT_SIGNALS_PATH);
+const manager = new CuratedSignalsManager(signalsPath);
 const before = manager.load();
 const beforeNames = new Set(before.signals.map((s) => s.name));
 const beforeCount = before.signals.length;
 
-const service = new RepertoireService({ signalsPath: DEFAULT_SIGNALS_PATH });
+const service = new RepertoireService({ signalsPath });
 const ingester = new GrooverLogIngester({
   sourceDir,
   targetDir: DEFAULT_LOG_DIR,

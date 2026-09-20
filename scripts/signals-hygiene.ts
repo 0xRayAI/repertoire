@@ -4,14 +4,18 @@ import {
   effectiveSignalConfidence,
   shouldDemoteValidatedSignal,
 } from '../src/registry/confidence-decay.js';
-import { isRepertoirePackageCwd } from '../src/paths.js';
+import {
+  DEFAULT_SIGNALS_PATH,
+  hydrateWritableSignals,
+  isRepertoirePackageCwd,
+} from '../src/paths.js';
 import { pruneSignals } from '../src/registry/signal-prune.js';
 
-const forceSeed = process.argv.includes('--i-mean-it');
+const forceWrite = process.argv.includes('--i-mean-it');
 const dryRun =
   process.argv.includes('--dry-run') ||
-  (isRepertoirePackageCwd(process.cwd()) && !forceSeed);
-const manager = new CuratedSignalsManager();
+  (isRepertoirePackageCwd(process.cwd()) && !forceWrite);
+const manager = new CuratedSignalsManager(hydrateWritableSignals(DEFAULT_SIGNALS_PATH));
 const demoted = dryRun
   ? manager
       .load()
