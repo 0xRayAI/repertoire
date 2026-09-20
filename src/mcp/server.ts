@@ -104,7 +104,7 @@ const TOOLS = [
 ] as const;
 
 const server = new Server(
-  { name: 'repertoire', version: '0.2.0' },
+  { name: 'repertoire', version: '0.2.1' },
   { capabilities: { tools: {} } },
 );
 
