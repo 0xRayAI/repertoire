@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## [0.2.2] - 2026-09-20
+
 ### Added
 
 - Committed `data/stack-overlay.json` (stack language + this-wake laws). `hydrateWritableSignals` copies the 8-name factory seed then merges overlay names additively into `.xray/state/repertoire/curated_signals.json`. Existing project names keep their stats. Factory seed SHA is unchanged.
