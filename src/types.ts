@@ -130,9 +130,13 @@ export interface SignalMatch {
 
 export interface SignalConfidenceDetail {
   name: string;
+  /** Routing confidence (decayed excess-above-gate when source is registry). */
   confidence: number;
   source: 'registry' | 'task-metadata';
   matchedVia?: SignalMatch['matchedOn'];
+  storedConfidence?: number;
+  decayFactor?: number;
+  staleDays?: number;
 }
 
 export interface TaskConfidenceContext {

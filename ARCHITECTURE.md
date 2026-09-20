@@ -74,6 +74,8 @@ Each **curated signal** carries:
 
 Confidence values always originate from `observation_stats` or explicit task metadata (`memorySignalConfidences`). There are no text-score conversions or `0.5` fallbacks.
 
+**Time-weighting (0.2 steward loop):** routing uses *effective* confidence — excess above the 0.55 gate fades after a 14-day grace with a 60-day half-life (`src/registry/confidence-decay.ts`). Factory seed sitting on the gate keeps routing. Project-local `validated` signals with &lt;100 observations can demote to `proposed` when *raw* (unfloored) decay drops under the gate (`demoteStaleValidatedSignals`, also via `npm run signals:hygiene`).
+
 ---
 
 ## 3. Enriched-Only Ingestion Policy
@@ -368,6 +370,7 @@ This path does not depend on `MemoryRoutingProvider` being loaded in the LLM hos
 | Groover parser (enriched gate) | `src/ingestion/groover-log-parser.ts` |
 | Groover ingester | `src/ingestion/groover-log-ingester.ts` |
 | Signal registry | `src/registry/CuratedSignalsManager.ts` |
+| Confidence decay | `src/registry/confidence-decay.ts` |
 | Confidence gate | `src/orchestrator-bridge/confidence-gate.ts` |
 | Signal injection / scoring | `src/orchestrator-bridge/signal-injector.ts` |
 | Orchestrator bridge | `src/orchestrator-bridge/RepertoireOrchestratorBridge.ts` |
@@ -421,11 +424,11 @@ This path does not depend on `MemoryRoutingProvider` being loaded in the LLM hos
 | Item | Rationale |
 |------|-----------|
 | MCP-primary validation | Live trap test via `repertoire__get_task_confidence` + `xray-researcher`, not in-process harness alone |
-| Researcher subprocess init | `initializeMemoryRouting()` not yet called in `researcher.server.ts`; internal wiring may no-op in MCP mode |
+| Researcher subprocess init | Cross-repo: xray `researcher.server.ts` now calls `initializeMemoryRouting()`; keep this row until a live MCP-mode receipt exists |
 | MCP fallback inside researcher | Deferred; LLM-driven MCP calls are the near-term Hermes path |
 | Pre-`abeafbb` log backfill | Unstructured logs lack `match_confidence`; would dilute signal integrity |
 | security-auditor / code-review trap wiring | Researcher is first consumer; same pattern can extend to other governance skills |
-| Confidence history / decay | No time-weighting on `observation_stats` yet |
+| Confidence history / decay | **Shipped:** excess-above-gate fade + local demotion. Full observation history series still deferred |
 | Live Groover engage validation | Awaiting first enriched log in production Groover output |
 | Threshold tuning | 0.55 gate is stable; adjust only with observation data |
 
@@ -450,4 +453,4 @@ This path does not depend on `MemoryRoutingProvider` being loaded in the LLM hos
 
 ---
 
-*Last updated: June 2026 — reflects strict enriched-only mode, researcher in-process wiring, and E2E-verified confidence loop.*
+*Last updated: September 2026 — excess-above-gate confidence decay + local demotion; factory seed stays on the 0.55 floor.*

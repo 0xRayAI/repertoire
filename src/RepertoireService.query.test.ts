@@ -82,4 +82,39 @@ describe('RepertoireService MCP query helpers', () => {
     expect(results[0].confidence).toBeGreaterThanOrEqual(0.55);
     expect(results[0].observationCount).toBe(2);
   });
+
+  it('ranks fresh field conviction above a stale high stored score', () => {
+    setupService();
+    service.signalsManager.addSignal({
+      name: 'stale-high-score',
+      definition: 'Old field conviction that should fade.',
+      tags: ['ontological-trap'],
+      priority: 'high',
+      status: 'validated',
+      evaluation_criteria: 'criteria',
+      validation_experiment: 'experiment',
+      master_index_integration: 'integration',
+      implementation_notes: 'notes',
+    });
+    service.signalsManager.recordPrimitiveObservations(
+      [
+        { name: 'stale-high-score', confidence: 0.99 },
+        { name: 'stale-high-score', confidence: 0.99 },
+      ],
+      { governanceForced: true },
+    );
+    const data = service.signalsManager.load();
+    const stale = data.signals.find((entry) => entry.name === 'stale-high-score');
+    if (stale?.observation_stats) {
+      stale.observation_stats.last_seen = '2025-01-01T00:00:00.000Z';
+    }
+    service.signalsManager.save(data);
+
+    const results = service.getHighConfidenceSignals({ minConfidence: 0.55, limit: 5 });
+    const fresh = results.find((entry) => entry.name === 'attestation-as-map');
+    const faded = results.find((entry) => entry.name === 'stale-high-score');
+    expect(fresh).toBeDefined();
+    expect(faded).toBeDefined();
+    expect(faded!.effectiveConfidence).toBeLessThan(fresh!.effectiveConfidence);
+  });
 });

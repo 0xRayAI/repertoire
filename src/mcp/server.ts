@@ -51,7 +51,8 @@ const TOOLS = [
           type: 'number',
           minimum: 0,
           maximum: 1,
-          description: 'Minimum avg_confidence from observation_stats (default 0.55)',
+          description:
+            'Minimum effective confidence (decayed excess-above-gate; default 0.55)',
         },
         tags: {
           type: 'array',

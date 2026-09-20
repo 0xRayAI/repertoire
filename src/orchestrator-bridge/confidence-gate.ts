@@ -2,6 +2,7 @@ import {
   CuratedSignalsManager,
   DEFAULT_PROMOTION_MIN_CONFIDENCE,
 } from '../registry/CuratedSignalsManager.js';
+import { effectiveSignalConfidence } from '../registry/confidence-decay.js';
 import type { OrchestrationTask, TaskConfidenceContext } from '../types.js';
 
 export const DEFAULT_MIN_CONFIDENCE_GATE = DEFAULT_PROMOTION_MIN_CONFIDENCE;
@@ -17,8 +18,9 @@ export function resolveSignalConfidence(
   }
 
   const signal = signalsManager.getByName(signalName);
-  if (signal?.observation_stats?.avg_confidence !== undefined) {
-    return signal.observation_stats.avg_confidence;
+  const decayed = signal ? effectiveSignalConfidence(signal) : null;
+  if (decayed) {
+    return decayed.effectiveConfidence;
   }
 
   return null;
@@ -38,18 +40,30 @@ export function getConfidenceForTask(
   const metadataConfidences = task.metadata?.memorySignalConfidences ?? {};
   const signals = textMatches
     .map((match) => {
-      const confidence = resolveSignalConfidence(
-        match.signal.name,
-        signalsManager,
-        metadataConfidences[match.signal.name],
-      );
-      if (confidence === null) return null;
+      const metadata = metadataConfidences[match.signal.name];
+      if (typeof metadata === 'number') {
+        return {
+          name: match.signal.name,
+          confidence: metadata,
+          source: 'task-metadata' as const,
+          matchedVia: match.matchedOn,
+          storedConfidence: metadata,
+          decayFactor: 1,
+          staleDays: 0,
+        };
+      }
+
+      const decayed = effectiveSignalConfidence(match.signal);
+      if (!decayed) return null;
 
       return {
         name: match.signal.name,
-        confidence,
+        confidence: decayed.effectiveConfidence,
         source: 'registry' as const,
         matchedVia: match.matchedOn,
+        storedConfidence: decayed.storedConfidence,
+        decayFactor: decayed.decayFactor,
+        staleDays: decayed.staleDays,
       };
     })
     .filter((entry): entry is NonNullable<typeof entry> => entry !== null)

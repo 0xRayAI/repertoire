@@ -14,6 +14,7 @@ import {
   type GovernWithSolarFn,
 } from './governance/ontological-trap-enforcer.js';
 import { DEFAULT_MIN_CONFIDENCE_GATE } from './orchestrator-bridge/confidence-gate.js';
+import { effectiveSignalConfidence } from './registry/confidence-decay.js';
 import {
   DEFAULT_DATA_DIR,
   DEFAULT_FEEDBACK_DIR,
@@ -197,7 +198,9 @@ export class RepertoireService {
       })
       .map((signal) => ({
         ...signal,
-        effectiveConfidence: signal.observation_stats!.avg_confidence,
+        effectiveConfidence:
+          effectiveSignalConfidence(signal)?.effectiveConfidence ??
+          signal.observation_stats!.avg_confidence,
       }))
       .sort(
         (a, b) =>
@@ -240,7 +243,8 @@ export class RepertoireService {
     return matches
       .map((match) => {
         const stats = match.signal.observation_stats;
-        const confidence = stats?.avg_confidence;
+        const decayed = effectiveSignalConfidence(match.signal);
+        const confidence = decayed?.effectiveConfidence ?? stats?.avg_confidence;
         if (stats === undefined || confidence === undefined) return null;
 
         return {

@@ -62,6 +62,8 @@ Override with env:
 | `repertoire__get_high_confidence_signals` | Validated signals above threshold |
 | `repertoire__ingest_feedback` | Record orchestrator outcomes |
 
+Routing confidence is **time-weighted**: excess above the 0.55 gate fades after a 14-day grace (60-day half-life). Factory seed sitting on the gate keeps routing. `npm run signals:hygiene` reports decay and can demote stale *project-local* signals; it dry-runs against the organ seed unless `--i-mean-it`.
+
 ## 0xRay memory routing (in-process)
 
 In `.xray/features.json` or `xray/features.json`:

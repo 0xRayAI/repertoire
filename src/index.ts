@@ -1,6 +1,16 @@
 export { RepertoireService } from './RepertoireService.js';
 export { CuratedSignalsManager } from './registry/CuratedSignalsManager.js';
 export { pruneSignals, shouldPruneSignal } from './registry/signal-prune.js';
+export {
+  decayFactorForAge,
+  effectiveObservationConfidence,
+  effectiveSignalConfidence,
+  rawDecayedConfidence,
+  shouldDemoteValidatedSignal,
+  DEFAULT_DECAY_GRACE_DAYS,
+  DEFAULT_DECAY_HALF_LIFE_DAYS,
+  DEFAULT_DEMOTION_MIN_OBSERVATIONS,
+} from './registry/confidence-decay.js';
 export { InferenceStateManager } from './registry/InferenceStateManager.js';
 export { MetaInferenceEngine } from './synthesis/meta-inference-engine.js';
 export { GrooverLogIngester } from './ingestion/groover-log-ingester.js';

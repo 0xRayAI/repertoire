@@ -9,6 +9,11 @@ import type {
   SignalPriority,
   SignalStatus,
 } from '../types.js';
+import {
+  effectiveSignalConfidence,
+  shouldDemoteValidatedSignal,
+  type DecayOptions,
+} from './confidence-decay.js';
 
 export interface PromotionGateOptions {
   minAvgConfidence?: number;
@@ -233,10 +238,36 @@ export class CuratedSignalsManager {
     return promoted;
   }
 
-  getSignalsAboveConfidence(minAvgConfidence = DEFAULT_PROMOTION_MIN_CONFIDENCE): CuratedSignal[] {
-    return this.load().signals.filter(
-      (signal) => (signal.observation_stats?.avg_confidence ?? 0) >= minAvgConfidence,
-    );
+  getSignalsAboveConfidence(
+    minAvgConfidence = DEFAULT_PROMOTION_MIN_CONFIDENCE,
+    options: DecayOptions = {},
+  ): CuratedSignal[] {
+    return this.load().signals.filter((signal) => {
+      const decayed = effectiveSignalConfidence(signal, options);
+      return (decayed?.effectiveConfidence ?? 0) >= minAvgConfidence;
+    });
+  }
+
+  /**
+   * Demote project-local validated signals whose raw (unfloored) decay
+   * dropped below the gate. Factory-scale corpora (≥100 observations) stay.
+   */
+  demoteStaleValidatedSignals(options: DecayOptions = {}): string[] {
+    const data = this.load();
+    const demoted: string[] = [];
+
+    for (const signal of data.signals) {
+      if (shouldDemoteValidatedSignal(signal, options)) {
+        signal.status = 'proposed';
+        demoted.push(signal.name);
+      }
+    }
+
+    if (demoted.length > 0) {
+      this.save(data);
+    }
+
+    return demoted;
   }
 
   /**

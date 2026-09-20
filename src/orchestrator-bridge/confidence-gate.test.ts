@@ -58,6 +58,35 @@ describe('confidence gate', () => {
     expect(context.recommendedAgent).toBe('architect');
   });
 
+  it('uses decayed excess so stale high scores boost less than fresh ones', () => {
+    const manager = createManager();
+    const signal = manager.getByName('attestation-as-map');
+    expect(signal?.observation_stats).toBeDefined();
+    const data = manager.load();
+    const stored = data.signals.find((entry) => entry.name === 'attestation-as-map');
+    if (stored?.observation_stats) {
+      stored.observation_stats.last_seen = '2025-01-01T00:00:00.000Z';
+      stored.observation_stats.avg_confidence = 0.95;
+    }
+    manager.save(data);
+
+    const stale = getConfidenceForTask(
+      {
+        id: 'task-stale',
+        description: 'TYPE: ontological-trap attestation-as-map',
+        type: 'governance',
+      },
+      manager,
+    );
+    const detail = stale.signals.find((entry) => entry.name === 'attestation-as-map');
+
+    expect(stale.highConfidenceTrapPresent).toBe(true);
+    expect(detail?.storedConfidence).toBeCloseTo(0.95, 5);
+    expect(detail?.confidence).toBeLessThan(0.95);
+    expect(detail?.confidence).toBeGreaterThanOrEqual(0.55);
+    expect(detail?.staleDays).toBeGreaterThan(14);
+  });
+
   it('boosts trap-capable agents when high-confidence trap is present', () => {
     const context = getConfidenceForTask(
       {
