@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## [0.2.1] - 2026-09-20
+
 ### Added
 
 - Excess-above-gate confidence decay (14-day grace, 60-day half-life). Factory seed on the 0.55 gate stays routable. Project-local `validated` signals with fewer than 100 observations can demote when raw decay falls under the gate.
