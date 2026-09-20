@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "hooks": {
+    "preToolUse": [
+      {
+        "command": "XRAY_AI_PATH=\"${XRAY_AI_PATH:-../xray}\" node \"${XRAY_AI_PATH:-../xray}/src/integrations/cursor/hooks/pre-tool-use.js\""
+      }
+    ],
+    "preCompact": [
+      {
+        "command": "XRAY_AI_PATH=\"${XRAY_AI_PATH:-../xray}\" node \"${XRAY_AI_PATH:-../xray}/src/integrations/cursor/hooks/pre-compact.js\""
+      }
+    ],
+    "afterFileEdit": [
+      {
+        "command": "XRAY_AI_PATH=\"${XRAY_AI_PATH:-../xray}\" node \"${XRAY_AI_PATH:-../xray}/src/integrations/cursor/hooks/after-file-edit.js\""
+      }
+    ]
+  }
+}

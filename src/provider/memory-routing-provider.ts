@@ -6,16 +6,10 @@
  */
 
 import { existsSync } from 'node:fs';
-import { join } from 'node:path';
 import {
-  DEFAULT_DATA_DIR,
-  DEFAULT_FEEDBACK_DIR,
-  DEFAULT_LOG_DIR,
   DEFAULT_SIGNALS_PATH,
-  DEFAULT_STATE_PATH,
-  defaultProjectStateDir,
+  defaultWritablePaths,
   hydrateWritableSignals,
-  isRepertoirePackageCwd,
   resolveReadableConfigPath,
   resolveWritableConfigPath,
 } from '../paths.js';
@@ -203,33 +197,16 @@ export class RepertoireMemoryRoutingProvider implements MemoryRoutingProvider {
 
   constructor(config: MemoryRoutingProviderConfig = {}) {
     const cwd = typeof config.projectRoot === 'string' ? config.projectRoot : process.cwd();
-    const inOrganRepo = isRepertoirePackageCwd(cwd);
-    const projectState = defaultProjectStateDir(cwd);
+    const writable = defaultWritablePaths(cwd);
     const seed = resolveReadableConfigPath(config.signalsPath, cwd, DEFAULT_SIGNALS_PATH);
     this.signalsPath = hydrateWritableSignals(seed, cwd);
     this.service = new RepertoireService({
       projectRoot: cwd,
-      dataDir: resolveWritableConfigPath(
-        config.dataDir,
-        cwd,
-        inOrganRepo ? DEFAULT_DATA_DIR : projectState,
-      ),
+      dataDir: resolveWritableConfigPath(config.dataDir, cwd, writable.dataDir),
       signalsPath: this.signalsPath,
-      statePath: resolveWritableConfigPath(
-        config.statePath,
-        cwd,
-        inOrganRepo ? DEFAULT_STATE_PATH : join(projectState, 'inference-state.json'),
-      ),
-      logDir: resolveWritableConfigPath(
-        config.logDir,
-        cwd,
-        inOrganRepo ? DEFAULT_LOG_DIR : join(projectState, 'logs'),
-      ),
-      feedbackDir: resolveWritableConfigPath(
-        config.feedbackDir,
-        cwd,
-        inOrganRepo ? DEFAULT_FEEDBACK_DIR : join(projectState, 'feedback'),
-      ),
+      statePath: resolveWritableConfigPath(config.statePath, cwd, writable.statePath),
+      logDir: resolveWritableConfigPath(config.logDir, cwd, writable.logDir),
+      feedbackDir: resolveWritableConfigPath(config.feedbackDir, cwd, writable.feedbackDir),
     });
   }
 

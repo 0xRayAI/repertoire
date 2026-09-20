@@ -142,11 +142,13 @@
   "memory_routing": {
     "enabled": true,
     "provider": "repertoire",
-    "module_path": "../repertoire/dist/provider/memory-routing-provider.js",
+    "module_path": "./dist/provider/memory-routing-provider.js",
     "config": {
-      "dataDir": "../repertoire/data",
-      "signalsPath": "../repertoire/data/curated_signals.json",
-      "logDir": "../repertoire/logs/groover-inference"
+      "dataDir": ".xray/state/repertoire",
+      "signalsPath": ".xray/state/repertoire/curated_signals.json",
+      "statePath": ".xray/state/repertoire/inference-state.json",
+      "feedbackDir": ".xray/state/repertoire/feedback",
+      "logDir": ".xray/state/repertoire/logs"
     }
   },
   "synthesis": {

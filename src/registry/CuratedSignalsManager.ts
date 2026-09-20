@@ -1,5 +1,9 @@
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
-import { isFactorySeedFile } from '../paths.js';
+import {
+  DEFAULT_SIGNALS_PATH,
+  hydrateWritableSignals,
+  isFactorySeedFile,
+} from '../paths.js';
 import type {
   CuratedSignal,
   CuratedSignalsFile,
@@ -36,10 +40,10 @@ export interface FeedbackOutcomeResult {
 }
 
 export class CuratedSignalsManager {
-  private readonly filePath: string;
+  readonly filePath: string;
 
-  constructor(filePath = 'data/curated_signals.json') {
-    this.filePath = filePath;
+  constructor(filePath?: string) {
+    this.filePath = filePath ?? hydrateWritableSignals(DEFAULT_SIGNALS_PATH);
   }
 
   load(): CuratedSignalsFile {

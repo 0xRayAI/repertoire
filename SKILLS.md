@@ -34,6 +34,8 @@ Full request/response shapes: see [src/mcp/server.ts](src/mcp/server.ts).
 | Host | Use |
 |------|-----|
 | **Hermes / OpenCode / external LLM** | Skills in this file + MCP tools (`repertoire__*`) |
+| **Cursor Cloud** | Project `.cursor/hooks.json` (sibling xray src via `XRAY_AI_PATH`). Read Station after compact. |
+| **Peer lead** | Worn 0xRay `LEAD-CADENCE.md` + Station + these names. No command stream. |
 | **0xRay ExecutionPlanner / thinDispatch** | In-process `MemoryRoutingProvider` — not skills; see [ARCHITECTURE.md](ARCHITECTURE.md) |
 
 ---

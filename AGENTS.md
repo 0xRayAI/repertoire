@@ -74,9 +74,11 @@ Configure in `.xray/features.json`:
 "memory_routing": {
   "enabled": true,
   "provider": "repertoire",
-  "module_path": "../repertoire/dist/provider/memory-routing-provider.js",
+  "module_path": "./dist/provider/memory-routing-provider.js",
   "config": {
-    "signalsPath": "../repertoire/data/curated_signals.json"
+    "signalsPath": ".xray/state/repertoire/curated_signals.json",
+    "statePath": ".xray/state/repertoire/inference-state.json",
+    "feedbackDir": ".xray/state/repertoire/feedback"
   }
 }
 ```
@@ -95,6 +97,8 @@ Without Repertoire: `{ "enabled": false, "provider": "null" }`.
 Tools: `repertoire__get_task_confidence`, `repertoire__get_high_confidence_signals`, `repertoire__search_primitives`, `repertoire__ingest_feedback`.
 
 Factory seed (`data/curated_signals.json`) is read-only. Live writes hydrate `.xray/state/repertoire/` even when cwd is this organ repo. Do not pin 0.1.8. Station is the survive-the-cut card — not this organ.
+
+Lead cadence lives in worn 0xRay (`grok-bot/ops/LEAD-CADENCE.md` + `orchestrator` skill). Project-local names `lead-cadence-syncopation`, `live-loop-not-pacer`, `peer-wears-without-commands` must route on this copy. A peer continues from Station + these names — no command stream.
 
 ## Codex OS (always on — not optional)
 

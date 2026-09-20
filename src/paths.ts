@@ -22,6 +22,24 @@ export function defaultProjectStateDir(cwd = process.cwd()): string {
   return join(cwd, '.xray', 'state', 'repertoire');
 }
 
+/** Writable organ paths — always project-local, including when cwd is this repo. */
+export function defaultWritablePaths(cwd = process.cwd()): {
+  dataDir: string;
+  signalsPath: string;
+  statePath: string;
+  logDir: string;
+  feedbackDir: string;
+} {
+  const dataDir = defaultProjectStateDir(cwd);
+  return {
+    dataDir,
+    signalsPath: join(dataDir, 'curated_signals.json'),
+    statePath: join(dataDir, 'inference-state.json'),
+    logDir: join(dataDir, 'logs'),
+    feedbackDir: join(dataDir, 'feedback'),
+  };
+}
+
 export function isRepertoirePackageCwd(cwd: string): boolean {
   try {
     const pkg = JSON.parse(readFileSync(join(cwd, 'package.json'), 'utf8')) as { name?: string };
