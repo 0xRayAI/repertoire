@@ -1,4 +1,4 @@
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
@@ -91,6 +91,23 @@ describe('factory path helpers', () => {
     expect(names).toContain('seat-local-extra');
     expect(names).toContain('clean-ticks-every-cycle');
     expect(names.filter((name) => name === 'station-survives-the-cut')).toHaveLength(1);
+  });
+
+  it('merges overlay when signalsPath is already the project dest', () => {
+    tmp = mkdtempSync(join(tmpdir(), 'repertoire-existing-dest-'));
+    writeFileSync(join(tmp, 'package.json'), JSON.stringify({ name: 'consumer-app' }));
+    const dest = join(defaultProjectStateDir(tmp), 'curated_signals.json');
+    mkdirSync(join(tmp, '.xray', 'state', 'repertoire'), { recursive: true });
+    const seedBefore = readFileSync(DEFAULT_SIGNALS_PATH, 'utf8');
+    writeFileSync(dest, seedBefore);
+    expect(hydrateWritableSignals(dest, tmp)).toBe(dest);
+    const names = (
+      JSON.parse(readFileSync(dest, 'utf8')) as { signals: Array<{ name: string }> }
+    ).signals.map((signal) => signal.name);
+    expect(names).toContain('attestation-as-map');
+    expect(names).toContain('repertoire-is-long-running-kb');
+    expect(names).toContain('clean-ticks-every-cycle');
+    expect(readFileSync(DEFAULT_SIGNALS_PATH, 'utf8')).toBe(seedBefore);
   });
 
   it('refuses to merge overlay onto the factory seed file', () => {

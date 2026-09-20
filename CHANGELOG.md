@@ -6,6 +6,7 @@
 
 - Committed `data/stack-overlay.json` (stack language + this-wake laws). `hydrateWritableSignals` copies the 8-name factory seed then merges overlay names additively into `.xray/state/repertoire/curated_signals.json`. Existing project names keep their stats. Factory seed SHA is unchanged.
 - Overlay names ship on the 0.55 gate so `getTaskConfidence` routes stack language on a fresh clone. Do not pin 0.1.8.
+- `hydrateWritableSignals` also merges the overlay when `signalsPath` is already the project dest (the wear path). Factory seed still refused.
 
 ## [0.2.1] - 2026-09-20
 

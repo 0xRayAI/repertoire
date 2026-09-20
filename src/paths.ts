@@ -151,8 +151,15 @@ export function mergeStackOverlay(
  * mutate `data/curated_signals.json` (the tarball). After copy, merge
  * `data/stack-overlay.json` additively so stack language survives a new clone.
  */
+function isProjectSignalsDest(filePath: string, cwd: string): boolean {
+  return resolve(filePath) === resolve(join(defaultProjectStateDir(cwd), 'curated_signals.json'));
+}
+
 export function hydrateWritableSignals(seedPath: string, cwd = process.cwd()): string {
   if (!isImmutablePackagePath(seedPath)) {
+    if (isProjectSignalsDest(seedPath, cwd)) {
+      mergeStackOverlay(seedPath);
+    }
     return seedPath;
   }
   const seed = existsSync(seedPath) ? seedPath : DEFAULT_SIGNALS_PATH;
