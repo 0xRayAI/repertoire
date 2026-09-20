@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { PACKAGE_ROOT } from './paths.js';
+import { CuratedSignalsManager } from './registry/CuratedSignalsManager.js';
 import { createMemoryRoutingProvider } from './provider/memory-routing-provider.js';
 
 describe('factory seed registry', () => {
@@ -44,5 +45,28 @@ describe('factory seed registry', () => {
     });
     expect(conf?.highConfidenceTrapPresent).toBe(true);
     expect(conf?.recommendedAgent).toBe('architect');
+  });
+
+  it('refuses to write the factory seed file', () => {
+    const manager = new CuratedSignalsManager(join(PACKAGE_ROOT, 'data', 'curated_signals.json'));
+    const seedBefore = readFileSync(join(PACKAGE_ROOT, 'data', 'curated_signals.json'), 'utf8');
+    expect(() => manager.save(JSON.parse(seedBefore))).toThrow(/factory seed/);
+    expect(readFileSync(join(PACKAGE_ROOT, 'data', 'curated_signals.json'), 'utf8')).toBe(seedBefore);
+  });
+
+  it('ingestFeedback from organ cwd does not mutate the tarball seed', () => {
+    const seedBefore = readFileSync(join(PACKAGE_ROOT, 'data', 'curated_signals.json'), 'utf8');
+    const provider = createMemoryRoutingProvider({ projectRoot: PACKAGE_ROOT });
+    provider.ingestFeedback?.({
+      timestamp: new Date().toISOString(),
+      sessionId: 'seed-hydrate-test',
+      taskId: 'seed-hydrate-test',
+      assignedAgent: 'architect',
+      memorySignals: ['attestation-as-map'],
+      complexity: 21,
+      success: true,
+      durationMs: 1,
+    });
+    expect(readFileSync(join(PACKAGE_ROOT, 'data', 'curated_signals.json'), 'utf8')).toBe(seedBefore);
   });
 });

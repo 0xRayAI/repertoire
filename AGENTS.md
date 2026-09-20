@@ -94,6 +94,8 @@ Without Repertoire: `{ "enabled": false, "provider": "null" }`.
 
 Tools: `repertoire__get_task_confidence`, `repertoire__get_high_confidence_signals`, `repertoire__search_primitives`, `repertoire__ingest_feedback`.
 
+Factory seed (`data/curated_signals.json`) is read-only. Live writes hydrate `.xray/state/repertoire/` even when cwd is this organ repo. Do not pin 0.1.8. Station is the survive-the-cut card — not this organ.
+
 ## Codex OS (always on — not optional)
 
 The Universal Development Codex (`.xray/codex.json`, **69 terms**) is enforced by **PreToolUse** (blocks) and this section (brain). MCP enforcer is audit — not the gate.

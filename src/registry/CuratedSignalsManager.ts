@@ -1,4 +1,5 @@
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { isFactorySeedFile } from '../paths.js';
 import type {
   CuratedSignal,
   CuratedSignalsFile,
@@ -44,6 +45,11 @@ export class CuratedSignalsManager {
   }
 
   save(data: CuratedSignalsFile): void {
+    if (isFactorySeedFile(this.filePath)) {
+      throw new Error(
+        `Refusing to write factory seed (${this.filePath}). Hydrate a project copy under .xray/state/repertoire/.`,
+      );
+    }
     data.last_updated = new Date().toISOString();
     writeFileSync(this.filePath, JSON.stringify(data, null, 2));
   }

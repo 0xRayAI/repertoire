@@ -38,6 +38,15 @@ export function isImmutablePackagePath(filePath: string): boolean {
   return normalized.includes(`${sep}node_modules${sep}@0xray${sep}repertoire${sep}`);
 }
 
+/** Tarball registry only — not project-local `.xray/state/repertoire/` even inside this repo. */
+export function isFactorySeedFile(filePath: string): boolean {
+  const normalized = resolve(filePath);
+  if (normalized === resolve(DEFAULT_SIGNALS_PATH)) return true;
+  return normalized.includes(
+    `${sep}node_modules${sep}@0xray${sep}repertoire${sep}data${sep}curated_signals.json`,
+  );
+}
+
 /** Signals seed is readable; missing consumer path may fall back to the package file. */
 export function resolveReadableConfigPath(
   configured: string | undefined,
@@ -64,17 +73,15 @@ export function resolveWritableConfigPath(
 }
 
 /**
- * Package seed stays read-only. Consumer cwd hydrates `.xray/state/repertoire/curated_signals.json`.
- * Running inside this repo keeps the seed path (tests + organ development).
+ * Package seed stays read-only. Any cwd — consumer or this organ repo — hydrates
+ * `.xray/state/repertoire/curated_signals.json`. Dogfooding the package must not
+ * mutate `data/curated_signals.json` (the tarball).
  */
 export function hydrateWritableSignals(seedPath: string, cwd = process.cwd()): string {
   if (!isImmutablePackagePath(seedPath)) {
     return seedPath;
   }
   const seed = existsSync(seedPath) ? seedPath : DEFAULT_SIGNALS_PATH;
-  if (isRepertoirePackageCwd(cwd)) {
-    return seed;
-  }
   const dest = join(defaultProjectStateDir(cwd), 'curated_signals.json');
   mkdirSync(dirname(dest), { recursive: true });
   if (!existsSync(dest) && existsSync(seed)) {

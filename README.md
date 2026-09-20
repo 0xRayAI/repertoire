@@ -43,7 +43,9 @@ Default operating model: **`autonomy-command`** — lead dev, phased todos, suba
 }
 ```
 
-Bundled `data/curated_signals.json` is used by default. Override with env:
+Bundled `data/curated_signals.json` is **read-only**. The provider hydrates a project copy under `.xray/state/repertoire/curated_signals.json` — including when cwd is this organ repo. Feedback never writes the tarball seed.
+
+Override with env:
 
 | Env | Default |
 |-----|---------|

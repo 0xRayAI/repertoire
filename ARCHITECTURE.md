@@ -55,7 +55,8 @@ flowchart TB
 
 | Artifact | Location | Role |
 |----------|----------|------|
-| Primitive registry | `data/curated_signals.json` | Canonical signal definitions, tags, `observation_stats` |
+| Primitive registry (tarball) | `data/curated_signals.json` | Read-only factory seed. `save()` refuses this path. |
+| Primitive registry (live) | `.xray/state/repertoire/curated_signals.json` | Hydrated copy for ingest/feedback — including when cwd is this organ repo |
 | Inference state | `data/inference-state.json` | Processed comment/session IDs for idempotent ingest |
 | Groover logs (canonical) | `logs/groover-inference/*.jsonl` | Normalized enriched entries after ingest |
 | Meta-inference | `logs/meta-inference/synthesis.md` | Optional synthesis excerpt injected into task metadata |

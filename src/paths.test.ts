@@ -6,6 +6,7 @@ import {
   DEFAULT_SIGNALS_PATH,
   defaultProjectStateDir,
   hydrateWritableSignals,
+  isFactorySeedFile,
   isImmutablePackagePath,
   isRepertoirePackageCwd,
   resolveWritableConfigPath,
@@ -20,15 +21,22 @@ describe('factory path helpers', () => {
 
   it('treats the package seed as immutable', () => {
     expect(isImmutablePackagePath(DEFAULT_SIGNALS_PATH)).toBe(true);
+    expect(isFactorySeedFile(DEFAULT_SIGNALS_PATH)).toBe(true);
+    expect(isFactorySeedFile(join(defaultProjectStateDir(process.cwd()), 'curated_signals.json'))).toBe(
+      false,
+    );
   });
 
   it('detects this repo as the organ package cwd', () => {
     expect(isRepertoirePackageCwd(process.cwd())).toBe(true);
   });
 
-  it('does not hydrate when cwd is the organ repo', () => {
+  it('hydrates a project copy even when cwd is the organ repo', () => {
+    const seedBefore = readFileSync(DEFAULT_SIGNALS_PATH, 'utf8');
     const resolved = hydrateWritableSignals(DEFAULT_SIGNALS_PATH, process.cwd());
-    expect(resolved).toBe(DEFAULT_SIGNALS_PATH);
+    expect(resolved).toBe(join(defaultProjectStateDir(process.cwd()), 'curated_signals.json'));
+    expect(resolved).not.toBe(DEFAULT_SIGNALS_PATH);
+    expect(readFileSync(DEFAULT_SIGNALS_PATH, 'utf8')).toBe(seedBefore);
   });
 
   it('hydrates a project copy for consumer cwd and leaves the seed unchanged', () => {

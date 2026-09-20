@@ -23,7 +23,7 @@ These tools are registered via `repertoire-mcp`, not invoked by skill name direc
 | `repertoire__get_task_confidence` | Trap detection, `matchedSignals`, `complexityBoost`, `recommendedAgent` |
 | `repertoire__search_primitives` | Text search against registry (`observation_stats` only, default gate 0.55) |
 | `repertoire__get_high_confidence_signals` | List validated signals above threshold, optional tag filter |
-| `repertoire__ingest_feedback` | Record orchestrator outcomes for the feedback loop |
+| `repertoire__ingest_feedback` | Record orchestrator outcomes onto the **hydrated** project copy (never the tarball seed) |
 
 Full request/response shapes: see [src/mcp/server.ts](src/mcp/server.ts).
 
