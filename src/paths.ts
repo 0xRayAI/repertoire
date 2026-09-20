@@ -1,4 +1,4 @@
-import { copyFileSync, existsSync, mkdirSync, readFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -7,6 +7,7 @@ export const PACKAGE_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 export const DEFAULT_DATA_DIR = join(PACKAGE_ROOT, 'data');
 export const DEFAULT_SIGNALS_PATH = join(PACKAGE_ROOT, 'data', 'curated_signals.json');
+export const DEFAULT_STACK_OVERLAY_PATH = join(PACKAGE_ROOT, 'data', 'stack-overlay.json');
 export const DEFAULT_STATE_PATH = join(PACKAGE_ROOT, 'data', 'inference-state.json');
 export const DEFAULT_LOG_DIR = join(PACKAGE_ROOT, 'logs', 'groover-inference');
 export const DEFAULT_FEEDBACK_DIR = join(PACKAGE_ROOT, 'logs', 'orchestrator-feedback');
@@ -90,13 +91,75 @@ export function resolveWritableConfigPath(
   return resolve(cwd, configured);
 }
 
+interface OverlaySignalRecord {
+  name: string;
+  definition: string;
+}
+
+function isOverlaySignalRecord(value: unknown): value is OverlaySignalRecord {
+  if (typeof value !== 'object' || value === null) return false;
+  const rec = value as Record<string, unknown>;
+  return typeof rec.name === 'string' && rec.name.length > 0 && typeof rec.definition === 'string';
+}
+
+/**
+ * Additive merge of `data/stack-overlay.json` into a project copy.
+ * Existing names keep their stats. Missing overlay names are appended.
+ * Refuses the factory tarball path.
+ */
+export function mergeStackOverlay(
+  destPath: string,
+  overlayPath = DEFAULT_STACK_OVERLAY_PATH,
+): number {
+  if (isFactorySeedFile(destPath)) {
+    return 0;
+  }
+  if (!existsSync(destPath) || !existsSync(overlayPath)) {
+    return 0;
+  }
+  const destRaw = JSON.parse(readFileSync(destPath, 'utf8')) as {
+    last_updated?: string;
+    signals?: unknown;
+  };
+  const overlayRaw = JSON.parse(readFileSync(overlayPath, 'utf8')) as { signals?: unknown };
+  if (!Array.isArray(destRaw.signals) || !Array.isArray(overlayRaw.signals)) {
+    return 0;
+  }
+  const have = new Set(
+    destRaw.signals
+      .filter(isOverlaySignalRecord)
+      .map((signal) => signal.name),
+  );
+  const incoming = overlayRaw.signals.filter(isOverlaySignalRecord);
+  let added = 0;
+  for (const signal of incoming) {
+    if (have.has(signal.name)) continue;
+    destRaw.signals.push(signal);
+    have.add(signal.name);
+    added += 1;
+  }
+  if (added > 0) {
+    destRaw.last_updated = new Date().toISOString();
+    writeFileSync(destPath, `${JSON.stringify(destRaw, null, 2)}\n`);
+  }
+  return added;
+}
+
 /**
  * Package seed stays read-only. Any cwd — consumer or this organ repo — hydrates
  * `.xray/state/repertoire/curated_signals.json`. Dogfooding the package must not
- * mutate `data/curated_signals.json` (the tarball).
+ * mutate `data/curated_signals.json` (the tarball). After copy, merge
+ * `data/stack-overlay.json` additively so stack language survives a new clone.
  */
+function isProjectSignalsDest(filePath: string, cwd: string): boolean {
+  return resolve(filePath) === resolve(join(defaultProjectStateDir(cwd), 'curated_signals.json'));
+}
+
 export function hydrateWritableSignals(seedPath: string, cwd = process.cwd()): string {
   if (!isImmutablePackagePath(seedPath)) {
+    if (isProjectSignalsDest(seedPath, cwd)) {
+      mergeStackOverlay(seedPath);
+    }
     return seedPath;
   }
   const seed = existsSync(seedPath) ? seedPath : DEFAULT_SIGNALS_PATH;
@@ -104,6 +167,9 @@ export function hydrateWritableSignals(seedPath: string, cwd = process.cwd()): s
   mkdirSync(dirname(dest), { recursive: true });
   if (!existsSync(dest) && existsSync(seed)) {
     copyFileSync(seed, dest);
+  }
+  if (existsSync(dest)) {
+    mergeStackOverlay(dest);
   }
   return dest;
 }

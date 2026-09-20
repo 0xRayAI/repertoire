@@ -1,7 +1,8 @@
+import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { PACKAGE_ROOT } from './paths.js';
+import { DEFAULT_STACK_OVERLAY_PATH, PACKAGE_ROOT } from './paths.js';
 import { CuratedSignalsManager } from './registry/CuratedSignalsManager.js';
 import { createMemoryRoutingProvider } from './provider/memory-routing-provider.js';
 
@@ -15,8 +16,29 @@ describe('factory seed registry', () => {
 
   it('is a small factory seed, not a plant dump', () => {
     expect(file.source).toBe('factory-seed-4.0');
-    expect(file.signals.length).toBeGreaterThanOrEqual(8);
-    expect(file.signals.length).toBeLessThanOrEqual(24);
+    expect(file.signals.length).toBe(8);
+    const sha = createHash('sha256')
+      .update(readFileSync(join(PACKAGE_ROOT, 'data', 'curated_signals.json')))
+      .digest('hex');
+    expect(sha).toBe('162a961b8cae221bfc74fd060794e3564eb319f43ea2496ae8f8fe234682816f');
+  });
+
+  it('keeps stack language in the overlay, not the factory seed', () => {
+    const overlay = JSON.parse(readFileSync(DEFAULT_STACK_OVERLAY_PATH, 'utf8')) as {
+      source: string;
+      signals: Array<{ name: string; observation_stats?: { avg_confidence: number } }>;
+    };
+    expect(overlay.source).toBe('stack-overlay-4.0');
+    const factoryNames = new Set(file.signals.map((signal) => signal.name));
+    const overlayNames = overlay.signals.map((signal) => signal.name);
+    expect(overlayNames).toContain('repertoire-is-long-running-kb');
+    expect(overlayNames).toContain('clean-ticks-every-cycle');
+    expect(overlayNames).toContain('mill-gate-a-through-d');
+    expect(overlayNames).toContain('both-path-live-verify');
+    expect(overlayNames.some((name) => factoryNames.has(name))).toBe(false);
+    expect(overlay.signals.every((signal) => signal.observation_stats?.avg_confidence === 0.55)).toBe(
+      true,
+    );
   });
 
   it('contains routing primitives and no bedrock names', () => {
@@ -45,6 +67,25 @@ describe('factory seed registry', () => {
     });
     expect(conf?.highConfidenceTrapPresent).toBe(true);
     expect(conf?.recommendedAgent).toBe('architect');
+  });
+
+  it('getTaskConfidence matches stack language after overlay hydrate', () => {
+    const provider = createMemoryRoutingProvider();
+    const conf = provider.getTaskConfidence?.({
+      id: 'stack-kb',
+      description:
+        'Factory seed is not the brain. Wear the project copy. Repertoire is the long-running KB. Clean ticks every cycle. Unsubscribe then resubscribe.',
+      type: 'general',
+    });
+    expect(conf?.matchedSignals?.length ?? 0).toBeGreaterThan(0);
+    expect(conf?.matchedSignals).toEqual(
+      expect.arrayContaining([
+        'factory-seed-is-not-the-brain',
+        'repertoire-is-long-running-kb',
+        'clean-ticks-every-cycle',
+      ]),
+    );
+    expect(conf?.highConfidenceTrapPresent).toBe(false);
   });
 
   it('refuses to write the factory seed file', () => {

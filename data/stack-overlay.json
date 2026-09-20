@@ -1,0 +1,725 @@
+{
+  "description": "Stack-language overlay for 0xRay 4.0 memory routing. Additive to the 8-name factory seed. Not a plant diary and not the 0.1.8 brain.",
+  "last_updated": "2026-09-20T00:00:00.000Z",
+  "source": "stack-overlay-4.0",
+  "schema_version": "1.1",
+  "implementation_guidance": {
+    "how_to_use": "hydrateWritableSignals copies the factory seed then merges these names into .xray/state/repertoire/curated_signals.json when missing. Existing project names keep their stats.",
+    "integration_points": [
+      "hydrateWritableSignals",
+      "MemoryRoutingProvider",
+      "repertoire MCP"
+    ],
+    "priority_order": "stack language after factory traps. Overlay never mutates data/curated_signals.json."
+  },
+  "signals": [
+    {
+      "name": "station-survives-the-cut",
+      "definition": "Station.md is the survive-compact / host-swap card. Read it first. Do not cold-start. Compaction and host change are the same cut. Station is cascade, not the long-running KB.",
+      "tags": [
+        "station",
+        "compact",
+        "continuity",
+        "suit"
+      ],
+      "priority": "high",
+      "status": "proposed",
+      "first_seen": "2026-09-20",
+      "evaluation_criteria": "Reply Reads Station and continues the ticket instead of restarting.",
+      "validation_experiment": "Compact the host and check whether the next wake Reads Station and keeps the same bc.",
+      "master_index_integration": "Project-local curated_signals after hydrateWritableSignals merges data/stack-overlay.json. Never write the factory tarball.",
+      "implementation_notes": "Station is cascade. Not the long-running KB. Do not encode OP-PROC onto Station.",
+      "example_inference_snippet": "Continue this card. Compaction and host change are the same cut. Do not cold-start.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-20T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "repertoire-is-long-running-kb",
+      "definition": "Repertoire is the judgment organ and long-running knowledge base. Station survives the cut; Repertoire remembers named invariants across cuts. Do not pin 0.1.8. Factory seed is read-only; live writes hydrate .xray/state/repertoire/.",
+      "tags": [
+        "repertoire",
+        "memory",
+        "compact",
+        "organ"
+      ],
+      "priority": "high",
+      "status": "proposed",
+      "first_seen": "2026-09-20",
+      "evaluation_criteria": "Reply treats Repertoire as the KB and Station as the cascade card.",
+      "validation_experiment": "After compact, probe stack language and expect project-local matches, not only factory traps.",
+      "master_index_integration": "Project-local curated_signals after hydrateWritableSignals merges data/stack-overlay.json. Never write the factory tarball.",
+      "implementation_notes": "Grow stack names via data/stack-overlay.json merge. Never write the tarball.",
+      "example_inference_snippet": "Station is cascade. Repertoire is the long-running KB.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-20T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "critic-seat-continuity",
+      "definition": "The board critic is one seat with memory. Resume bc-dd800001-2652-5e3e-b8d2-eac05b29ee86. Never spawn a second critic. Every wake they Read Station first \u2014 that is wearing the suit.",
+      "tags": [
+        "critic",
+        "board",
+        "suit",
+        "continuity"
+      ],
+      "priority": "high",
+      "status": "proposed",
+      "first_seen": "2026-09-20",
+      "evaluation_criteria": "Parent resumes the same critic id and the critic Reads Station before reviewing.",
+      "validation_experiment": "Spawn a twin critic and treat that as a seat defect.",
+      "master_index_integration": "Project-local curated_signals after hydrateWritableSignals merges data/stack-overlay.json. Never write the factory tarball.",
+      "implementation_notes": "Same critic. Wear the suit. Survive.",
+      "example_inference_snippet": "Resume the standing critic. They Read Station first.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-20T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "lead-cadence-syncopation",
+      "definition": "The lead is the conductor above grok-bot seats. Cadence is syncopation: live ticks, human cuts, compact rests, board call-and-response. Encode on disk so a peer continues without a command stream.",
+      "tags": [
+        "cadence",
+        "lead",
+        "syncopation",
+        "op-proc"
+      ],
+      "priority": "high",
+      "status": "proposed",
+      "first_seen": "2026-09-20",
+      "evaluation_criteria": "Reply treats cadence as disk-encoded lead OP-PROC, not a new skill.",
+      "validation_experiment": "Probe getTaskConfidence on peer/live-loop language and expect these names.",
+      "master_index_integration": "Project-local curated_signals after hydrateWritableSignals merges data/stack-overlay.json. Never write the factory tarball.",
+      "implementation_notes": "Grow names on the project copy. Never write the tarball. Codex 69.",
+      "example_inference_snippet": "Keep the lead cadence. Live tick, not a pacer. Peer wears 0xRay and continues.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-20T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "live-loop-not-pacer",
+      "definition": "Cloud /loop runs work now then a short timer. A 12-minute idle pacer is starvation theater. Unsubscribe before changing delay. Name stays loop-<purpose>.",
+      "tags": [
+        "loop",
+        "cadence",
+        "pacer",
+        "live"
+      ],
+      "priority": "high",
+      "status": "proposed",
+      "first_seen": "2026-09-20",
+      "evaluation_criteria": "Reply treats cadence as disk-encoded lead OP-PROC, not a new skill.",
+      "validation_experiment": "Probe getTaskConfidence on peer/live-loop language and expect these names.",
+      "master_index_integration": "Project-local curated_signals after hydrateWritableSignals merges data/stack-overlay.json. Never write the factory tarball.",
+      "implementation_notes": "Unsubscribe then resubscribe. Name-dedupe is not a rewrite.",
+      "example_inference_snippet": "Cancel the 12min pacer. We are live loops.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-20T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "peer-wears-without-commands",
+      "definition": "A second lead instance given only worn 0xRay, Station, and Repertoire must continue the ticket. If they wait for the human to restate the rules, the encode failed.",
+      "tags": [
+        "peer",
+        "wear",
+        "station",
+        "encode"
+      ],
+      "priority": "high",
+      "status": "proposed",
+      "first_seen": "2026-09-20",
+      "evaluation_criteria": "Reply treats cadence as disk-encoded lead OP-PROC, not a new skill.",
+      "validation_experiment": "Probe getTaskConfidence on peer/live-loop language and expect these names.",
+      "master_index_integration": "Project-local curated_signals after hydrateWritableSignals merges data/stack-overlay.json. Never write the factory tarball.",
+      "implementation_notes": "Four-line dispatch. Wear, then boot.",
+      "example_inference_snippet": "Spin a peer. They should do it with 0xRay and without the detailed commands.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-20T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "dummy-tests-skills-md",
+      "definition": "Dummy subagents exist to prove worn SKILLS.md. They Read Station, wear the suit, and exercise the catalog without product side effects. If a dummy cannot run the playbook from disk, the encode failed.",
+      "tags": [
+        "dummy",
+        "skills",
+        "wear",
+        "cadence"
+      ],
+      "priority": "high",
+      "status": "proposed",
+      "first_seen": "2026-09-20",
+      "evaluation_criteria": "Reply uses a dummy to prove the worn catalog, not to ship product.",
+      "validation_experiment": "Resume dummy id, Read Station, invoke a SKILLS.md playbook, expect no npm/Railway.",
+      "master_index_integration": "Project-local curated_signals after hydrateWritableSignals merges data/stack-overlay.json. Never write the factory tarball.",
+      "implementation_notes": "Dummy is a catalog probe. Same critic is the board.",
+      "example_inference_snippet": "Dummy subagents to test SKILLS.md.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-20T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "same-sess-wear-station",
+      "definition": "Context-aware subagents resume the same sess / bc id, wear the suit, and hold a Station.md card. Do not spawn a twin critic. Compact and host-swap are the same cut.",
+      "tags": [
+        "session",
+        "wear",
+        "station",
+        "continuity"
+      ],
+      "priority": "high",
+      "status": "proposed",
+      "first_seen": "2026-09-20",
+      "evaluation_criteria": "Reply resumes known ids and Reads Station before work.",
+      "validation_experiment": "After compact, resume critic and dummy ids; expect Station keys present.",
+      "master_index_integration": "Project-local curated_signals after hydrateWritableSignals merges data/stack-overlay.json. Never write the factory tarball.",
+      "implementation_notes": "Same id. Wear first. Never twin the critic.",
+      "example_inference_snippet": "Same subagents by sess id to maintain context that wear the suite and have a station.md card.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-20T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "npm-otp-then-poll",
+      "definition": "When npm publish is allowed: run npm publish --access public in the live TTY. Paste the clickable auth/cli URL. Never ask for a 6-digit authenticator code. Never npm logout to force a URL. If the URL expires, Ctrl-C and rerun. Wait for + pkg@version then poll npm view until live.",
+      "tags": [
+        "npm",
+        "otp",
+        "publish",
+        "gate"
+      ],
+      "priority": "high",
+      "status": "proposed",
+      "first_seen": "2026-09-20",
+      "evaluation_criteria": "Reply holds after publish until npm view shows the version and does not ask for a 6-digit code.",
+      "validation_experiment": "Publish then immediately start next cut without npm view \u2014 treat as fail.",
+      "master_index_integration": "Project-local curated_signals after hydrateWritableSignals merges data/stack-overlay.json. Never write the factory tarball.",
+      "implementation_notes": "Lead stays on the CLI. No VM browser. No subagent publish.",
+      "example_inference_snippet": "Run npm publish --access public. Paste the clickable auth/cli URL. Poll npm view.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-20T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "branch-worktree-pr",
+      "definition": "Always implement on a branch, isolate parallel streams with worktrees or user asides, and open a PR. Docs and builds ride the PR. Rollback is close or revert. Never wreck production from main.",
+      "tags": [
+        "git",
+        "branch",
+        "worktree",
+        "pr"
+      ],
+      "priority": "high",
+      "status": "proposed",
+      "first_seen": "2026-09-20",
+      "evaluation_criteria": "Reply never implements on the default branch.",
+      "validation_experiment": "Direct main commit of product work \u2014 treat as fail.",
+      "master_index_integration": "Project-local curated_signals after hydrateWritableSignals merges data/stack-overlay.json. Never write the factory tarball.",
+      "implementation_notes": "cursor/<name>-<sess>. PR is the rollback wall.",
+      "example_inference_snippet": "Always use branches, worktrees, and PRs.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-20T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "loop-until-station-done",
+      "definition": "The close is Station.md done \u2014 ticket closed, working line empty, unfinished path cleared or filed. Compact is not done. Chat summary is not done.",
+      "tags": [
+        "station",
+        "loop",
+        "close",
+        "cadence"
+      ],
+      "priority": "high",
+      "status": "proposed",
+      "first_seen": "2026-09-20",
+      "evaluation_criteria": "Reply treats Station done as the close, not a timer.",
+      "validation_experiment": "Declare done while Station Working is still open \u2014 treat as fail.",
+      "master_index_integration": "Project-local curated_signals after hydrateWritableSignals merges data/stack-overlay.json. Never write the factory tarball.",
+      "implementation_notes": "Continue the card. Do not cold-start.",
+      "example_inference_snippet": "Loop until station.md is done.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-20T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "workstreams-keep-moving",
+      "definition": "Do not use pacer timeouts as the work clock. Keep every open workstream moving. A 12-minute idle pacer is starvation theater. Park only on a human gate or a finished close.",
+      "tags": [
+        "loop",
+        "pacer",
+        "workstream",
+        "live"
+      ],
+      "priority": "high",
+      "status": "proposed",
+      "first_seen": "2026-09-20",
+      "evaluation_criteria": "Reply works a real close instead of waiting on an idle timer.",
+      "validation_experiment": "Re-arm a 12min idle pacer while streams are open \u2014 treat as fail.",
+      "master_index_integration": "Project-local curated_signals after hydrateWritableSignals merges data/stack-overlay.json. Never write the factory tarball.",
+      "implementation_notes": "Live tick after a real close. Unsubscribe before changing delay.",
+      "example_inference_snippet": "Dont use pacer timeouts. Keep workstreams moving.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-20T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "hangar-is-not-suit",
+      "definition": "A hangar is an end product (clearing, blips, groover mint). Usually no AI. Fastening a mill is optional wear, not the hangar identity. Do not invent Station on a hangar.",
+      "tags": [
+        "hangar",
+        "suit",
+        "parity"
+      ],
+      "priority": "high",
+      "status": "proposed",
+      "first_seen": "2026-09-20",
+      "evaluation_criteria": "Reply treats the name as a stack invariant, not a factory trap.",
+      "validation_experiment": "Probe getTaskConfidence with the example snippet and expect this name.",
+      "master_index_integration": "Project-local curated_signals after hydrateWritableSignals merges data/stack-overlay.json. Never write the factory tarball.",
+      "implementation_notes": "Grow on the project copy. Never write the tarball.",
+      "example_inference_snippet": "Hangar is not the suit. Clearing can stay unsuitied.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-20T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "jelly-is-dormant",
+      "definition": "Jelly and jelly-engine are the old no-code container vision. Dormant. Not the current hangar story.",
+      "tags": [
+        "jelly",
+        "dormant",
+        "hangar"
+      ],
+      "priority": "high",
+      "status": "proposed",
+      "first_seen": "2026-09-20",
+      "evaluation_criteria": "Reply treats the name as a stack invariant, not a factory trap.",
+      "validation_experiment": "Probe getTaskConfidence with the example snippet and expect this name.",
+      "master_index_integration": "Project-local curated_signals after hydrateWritableSignals merges data/stack-overlay.json. Never write the factory tarball.",
+      "implementation_notes": "Grow on the project copy. Never write the tarball.",
+      "example_inference_snippet": "Jelly is dormant. Do not treat it as the hangar.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-20T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "cursor-host-no-inject",
+      "definition": "Cursor does not inject STATION.md. Grok Reads. OpenCode injects. Wear on this host is an explicit Read of the card after compact or host-swap.",
+      "tags": [
+        "cursor",
+        "station",
+        "wear"
+      ],
+      "priority": "high",
+      "status": "proposed",
+      "first_seen": "2026-09-20",
+      "evaluation_criteria": "Reply treats the name as a stack invariant, not a factory trap.",
+      "validation_experiment": "Probe getTaskConfidence with the example snippet and expect this name.",
+      "master_index_integration": "Project-local curated_signals after hydrateWritableSignals merges data/stack-overlay.json. Never write the factory tarball.",
+      "implementation_notes": "Grow on the project copy. Never write the tarball.",
+      "example_inference_snippet": "Cursor host does not inject Station. Read the card.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-20T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "cursor-fifth-wear",
+      "definition": "Cursor is the fifth host wear. Project .cursor/hooks.json runs preToolUse, preCompact, afterFileEdit. Existing consumer file is left alone. Not a fifth chat TUI.",
+      "tags": [
+        "cursor",
+        "wear",
+        "hooks"
+      ],
+      "priority": "high",
+      "status": "proposed",
+      "first_seen": "2026-09-20",
+      "evaluation_criteria": "Reply treats the name as a stack invariant, not a factory trap.",
+      "validation_experiment": "Probe getTaskConfidence with the example snippet and expect this name.",
+      "master_index_integration": "Project-local curated_signals after hydrateWritableSignals merges data/stack-overlay.json. Never write the factory tarball.",
+      "implementation_notes": "Grow on the project copy. Never write the tarball.",
+      "example_inference_snippet": "Fasten Cursor hooks on consumer postinstall.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-20T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "factory-seed-is-not-the-brain",
+      "definition": "The 0.2 factory tarball is 8 trap names. The living brain is the project copy under .xray/state/repertoire/. data/stack-overlay.json ships stack language into that copy. Do not pin 0.1.8. Do not read node_modules seed after hydrate.",
+      "tags": [
+        "repertoire",
+        "factory",
+        "memory"
+      ],
+      "priority": "high",
+      "status": "proposed",
+      "first_seen": "2026-09-20",
+      "evaluation_criteria": "Reply treats the name as a stack invariant, not a factory trap.",
+      "validation_experiment": "Probe getTaskConfidence with the example snippet and expect this name.",
+      "master_index_integration": "Project-local curated_signals after hydrateWritableSignals merges data/stack-overlay.json. Never write the factory tarball.",
+      "implementation_notes": "Factory seed SHA stays 8 names. Overlay is additive.",
+      "example_inference_snippet": "Factory seed is not the brain. Wear the project copy.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-20T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "board-is-seats-not-clocks",
+      "definition": "The critique board is the standing critic seat plus the lead on the main thread. Resume the same critic. Dummy tests SKILLS.md. A clock is not a reviewer.",
+      "tags": [
+        "board",
+        "critic",
+        "cadence"
+      ],
+      "priority": "high",
+      "status": "proposed",
+      "first_seen": "2026-09-20",
+      "evaluation_criteria": "Reply treats the name as a stack invariant, not a factory trap.",
+      "validation_experiment": "Probe getTaskConfidence with the example snippet and expect this name.",
+      "master_index_integration": "Project-local curated_signals after hydrateWritableSignals merges data/stack-overlay.json. Never write the factory tarball.",
+      "implementation_notes": "Grow on the project copy. Never write the tarball.",
+      "example_inference_snippet": "Board is seats, not clocks. Resume the critic.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-20T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "event-wake-not-dual-pacer",
+      "definition": "Wake the lead on GitHub PR events. Two idle pacers (reviewer + reader) inflate context and cause compact. One live tick only after a real close. A pacer never merges or deploys.",
+      "tags": [
+        "board",
+        "pacer",
+        "cadence"
+      ],
+      "priority": "high",
+      "status": "proposed",
+      "first_seen": "2026-09-20",
+      "evaluation_criteria": "Reply treats the name as a stack invariant, not a factory trap.",
+      "validation_experiment": "Probe getTaskConfidence with the example snippet and expect this name.",
+      "master_index_integration": "Project-local curated_signals after hydrateWritableSignals merges data/stack-overlay.json. Never write the factory tarball.",
+      "implementation_notes": "Grow on the project copy. Never write the tarball.",
+      "example_inference_snippet": "Do not set two idle pacers. Subscribe to the PR and resume the critic.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-20T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "compact-rekey-from-disk",
+      "definition": "After compact, rekey from Station + COMPACT-SURVIVAL.md + project Repertoire names. Chat summary is not the mind. Probe stack language before acting.",
+      "tags": [
+        "compact",
+        "rekey",
+        "repertoire"
+      ],
+      "priority": "high",
+      "status": "proposed",
+      "first_seen": "2026-09-20",
+      "evaluation_criteria": "Reply treats the name as a stack invariant, not a factory trap.",
+      "validation_experiment": "Probe getTaskConfidence with the example snippet and expect this name.",
+      "master_index_integration": "Project-local curated_signals after hydrateWritableSignals merges data/stack-overlay.json. Never write the factory tarball.",
+      "implementation_notes": "Grow on the project copy. Never write the tarball.",
+      "example_inference_snippet": "Rekey from disk. Push knowledge into Repertoire before the next compact.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-20T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "human-gate-deploy",
+      "definition": "Spend, credentials, deletes, taste, and mint-rotate stay Ask-first. A board pacer never publishes. Mill-gate A through D is the ship criteria, not green CI alone.",
+      "tags": [
+        "npm",
+        "railway",
+        "gate"
+      ],
+      "priority": "high",
+      "status": "proposed",
+      "first_seen": "2026-09-20",
+      "evaluation_criteria": "Reply treats the name as a stack invariant, not a factory trap.",
+      "validation_experiment": "Probe getTaskConfidence with the example snippet and expect this name.",
+      "master_index_integration": "Project-local curated_signals after hydrateWritableSignals merges data/stack-overlay.json. Never write the factory tarball.",
+      "implementation_notes": "Ask-first for spend. Mill-gate for ship.",
+      "example_inference_snippet": "Green CI is not publish. Human gate then OTP then poll.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-20T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "critic-reads-disk-not-commands",
+      "definition": "The standing critic Reads Station and SEATS.md Reviewer. The lead cards ticket plus PR URLs plus Wear then review. A command novel means the encode failed.",
+      "tags": [
+        "critic",
+        "dispatch",
+        "encode"
+      ],
+      "priority": "high",
+      "status": "proposed",
+      "first_seen": "2026-09-20",
+      "evaluation_criteria": "Reply treats the name as a stack invariant.",
+      "validation_experiment": "Probe getTaskConfidence with the example snippet.",
+      "master_index_integration": "Project-local curated_signals after hydrateWritableSignals merges data/stack-overlay.json. Never write the factory tarball.",
+      "implementation_notes": "Four-line dispatch. Wear, then review.",
+      "example_inference_snippet": "Do not give the critic direct commands each time. They read the seat from disk.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-20T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "encode-when-spoken-twice",
+      "definition": "When a law has to be spoken twice, write it to SEATS.md or LEAD-CADENCE.md or an existing skill this wake. Grow a project-local Repertoire name. Do not thicken Station. Codex 69: no new SKILL.md.",
+      "tags": [
+        "encode",
+        "cadence",
+        "codex-69"
+      ],
+      "priority": "high",
+      "status": "proposed",
+      "first_seen": "2026-09-20",
+      "evaluation_criteria": "Reply treats the name as a stack invariant.",
+      "validation_experiment": "Probe getTaskConfidence with the example snippet.",
+      "master_index_integration": "Project-local curated_signals after hydrateWritableSignals merges data/stack-overlay.json. Never write the factory tarball.",
+      "implementation_notes": "Hooks and listeners, not Station.",
+      "example_inference_snippet": "Monitor yourself as knowledge grows and update OP-PROC skills and docs.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-20T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "station-refresh-this-wake",
+      "definition": "After compact, refresh Station Working, Git SHA, and Repertoire count this wake via existing hooks. A stale card is a failed encode. Chat summary is host memory, not the organ. Do not hand-write OP-PROC onto Station.",
+      "tags": [
+        "compact",
+        "station",
+        "encode"
+      ],
+      "priority": "high",
+      "status": "proposed",
+      "first_seen": "2026-09-20",
+      "evaluation_criteria": "Reply treats the name as a stack invariant.",
+      "validation_experiment": "Probe getTaskConfidence with the example snippet and expect this name.",
+      "master_index_integration": "Project-local curated_signals after hydrateWritableSignals merges data/stack-overlay.json. Never write the factory tarball.",
+      "implementation_notes": "Hook heat. Do not encode OP-PROC onto Station.",
+      "example_inference_snippet": "Refresh Station this wake so the next cut is not stale. Chat summary is not the organ.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-20T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "clean-ticks-every-cycle",
+      "definition": "Every cycle unsubscribe then resubscribe the live /loop timer so the prompt matches metal. subscribe_timer name-dedupe returns created false and keeps the old prompt. A delivered tick that contradicts metal is dirty \u2014 wear, rewrite, do not act.",
+      "tags": [
+        "loop",
+        "ticks",
+        "cadence"
+      ],
+      "priority": "high",
+      "status": "proposed",
+      "first_seen": "2026-09-20",
+      "evaluation_criteria": "Reply rewrites the live tick after metal changes instead of trusting name-dedupe.",
+      "validation_experiment": "Change metal, fire a same-name subscribe without unsubscribe, then treat a stale prompt as fail.",
+      "master_index_integration": "Project-local curated_signals after hydrateWritableSignals merges data/stack-overlay.json. Never write the factory tarball.",
+      "implementation_notes": "Name-dedupe is not a rewrite.",
+      "example_inference_snippet": "Clean ticks every cycle. Unsubscribe then resubscribe.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-20T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "mill-gate-a-through-d",
+      "definition": "Ship is mill-gate A through D: A PR+CI, B pack assert-packed-dist-cli plus consumer smoke, C npm run release:docs-check, D merge plus foundry gate or foundry release --i-mean-it plus live verify. Green CI is only A.",
+      "tags": [
+        "ship",
+        "mill-gate",
+        "release"
+      ],
+      "priority": "high",
+      "status": "proposed",
+      "first_seen": "2026-09-20",
+      "evaluation_criteria": "Reply treats green CI as A, not ship.",
+      "validation_experiment": "Call a green check ship without B C D \u2014 treat as fail.",
+      "master_index_integration": "Project-local curated_signals after hydrateWritableSignals merges data/stack-overlay.json. Never write the factory tarball.",
+      "implementation_notes": "Do not republish until a new D cut exists.",
+      "example_inference_snippet": "Green CI is only A. Ship is mill-gate A through D.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-20T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "hangar-website-not-suit-tarball",
+      "definition": "The factory website hangar is groover/website. Do not attach the 0xray tarball to website, blips, zigzag, clearing, or registry. Hangar source is not the suit.",
+      "tags": [
+        "hangar",
+        "website",
+        "railway"
+      ],
+      "priority": "high",
+      "status": "proposed",
+      "first_seen": "2026-09-20",
+      "evaluation_criteria": "Reply keeps hangar deploys on hangar source.",
+      "validation_experiment": "Attach 0xRayAI/xray to the website service \u2014 treat as fail.",
+      "master_index_integration": "Project-local curated_signals after hydrateWritableSignals merges data/stack-overlay.json. Never write the factory tarball.",
+      "implementation_notes": "Website /suit is hangar UI. Governance MCP is the suit.",
+      "example_inference_snippet": "Do not deploy the xray tarball onto the website hangar.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-20T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "ship-notice-strips-hold-npm",
+      "definition": "When the tarball is live, Durable cannot keep saying Hold npm. cursorBootNeedsRefresh and the wear check strip that phrase. Do not write the notice onto Station.",
+      "tags": [
+        "ship",
+        "durable",
+        "hooks"
+      ],
+      "priority": "high",
+      "status": "proposed",
+      "first_seen": "2026-09-20",
+      "evaluation_criteria": "Reply treats a live tarball plus Hold npm as stale heat.",
+      "validation_experiment": "Leave Hold npm on a card after npm view shows the version \u2014 treat as fail.",
+      "master_index_integration": "Project-local curated_signals after hydrateWritableSignals merges data/stack-overlay.json. Never write the factory tarball.",
+      "implementation_notes": "Existing cursorBootNeedsRefresh plus wear check. Codex 69.",
+      "example_inference_snippet": "Strip Hold npm after the tarball is live. Hook, not Station.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-20T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "both-path-live-verify",
+      "definition": "After a version is live, clean-room registry install both paths: brand-new install and upgrade of an existing install. npm view is not an install. Wear-check validate on both.",
+      "tags": [
+        "npm",
+        "verify",
+        "install"
+      ],
+      "priority": "high",
+      "status": "proposed",
+      "first_seen": "2026-09-20",
+      "evaluation_criteria": "Reply treats both-path install as live-verify, not npm view alone.",
+      "validation_experiment": "Ship after npm view without a clean-room install \u2014 treat as fail.",
+      "master_index_integration": "Project-local curated_signals after hydrateWritableSignals merges data/stack-overlay.json. Never write the factory tarball.",
+      "implementation_notes": "Fresh plus upgrade. Then poll wear.",
+      "example_inference_snippet": "Install from the registry both fresh and upgrade. npm view is not an install.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-20T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    }
+  ]
+}

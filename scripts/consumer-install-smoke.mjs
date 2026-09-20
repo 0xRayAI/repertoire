@@ -64,6 +64,7 @@ const requiredPaths = [
   'scripts/verify-grok-suit.mjs',
   'scripts/suit-bridge-shared.mjs',
   'data/curated_signals.json',
+  'data/stack-overlay.json',
   'LICENSE',
   'README.md',
 ];
@@ -104,7 +105,7 @@ assert('mcp npm script', mcpScript.includes('dist/mcp/server.js'));
 
 const signals = JSON.parse(readFileSync(join(repoRoot, 'data/curated_signals.json'), 'utf8'));
 const names = (signals.signals || []).map((s) => s.name);
-assert('factory seed size', names.length >= 8 && names.length <= 24, `got ${names.length}`);
+assert('factory seed size', names.length === 8, `got ${names.length}`);
 assert(
   'factory seed has no bedrock signals',
   !names.some((n) => String(n).toLowerCase().startsWith('bedrock')),
@@ -113,6 +114,28 @@ assert('seed includes attestation-as-map', names.includes('attestation-as-map'))
 assert(
   'seed includes consumption-boundary-revalidation-gate',
   names.includes('consumption-boundary-revalidation-gate'),
+);
+
+const overlay = JSON.parse(readFileSync(join(repoRoot, 'data/stack-overlay.json'), 'utf8'));
+const overlayNames = (overlay.signals || []).map((s) => s.name);
+assert('stack overlay size', overlayNames.length >= 24, `got ${overlayNames.length}`);
+assert('overlay includes repertoire-is-long-running-kb', overlayNames.includes('repertoire-is-long-running-kb'));
+assert('overlay includes clean-ticks-every-cycle', overlayNames.includes('clean-ticks-every-cycle'));
+assert(
+  'overlay does not duplicate factory names',
+  !overlayNames.some((n) => names.includes(n)),
+);
+
+const stackTask = {
+  id: 'consumer-smoke-stack',
+  description: 'Factory seed is not the brain. Wear the project copy. Repertoire is the long-running KB.',
+  type: 'general',
+};
+const stackConfidence = provider.getTaskConfidence?.(stackTask);
+assert(
+  'stack language matches after hydrate',
+  Array.isArray(stackConfidence?.matchedSignals) && stackConfidence.matchedSignals.length > 0,
+  `got ${JSON.stringify(stackConfidence?.matchedSignals ?? [])}`,
 );
 
 const failed = checks.filter((c) => !c.ok);

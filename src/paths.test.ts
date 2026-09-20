@@ -1,16 +1,18 @@
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import {
   DEFAULT_DATA_DIR,
   DEFAULT_SIGNALS_PATH,
+  DEFAULT_STACK_OVERLAY_PATH,
   defaultProjectStateDir,
   defaultWritablePaths,
   hydrateWritableSignals,
   isFactorySeedFile,
   isImmutablePackagePath,
   isRepertoirePackageCwd,
+  mergeStackOverlay,
   resolveWritableConfigPath,
 } from './paths.js';
 import { CuratedSignalsManager } from './registry/CuratedSignalsManager.js';
@@ -49,7 +51,68 @@ describe('factory path helpers', () => {
     const seedBefore = readFileSync(DEFAULT_SIGNALS_PATH, 'utf8');
     const dest = hydrateWritableSignals(DEFAULT_SIGNALS_PATH, tmp);
     expect(dest).toBe(join(defaultProjectStateDir(tmp), 'curated_signals.json'));
-    expect(readFileSync(dest, 'utf8')).toBe(seedBefore);
+    expect(readFileSync(DEFAULT_SIGNALS_PATH, 'utf8')).toBe(seedBefore);
+    const destFile = JSON.parse(readFileSync(dest, 'utf8')) as {
+      signals: Array<{ name: string }>;
+    };
+    const seedFile = JSON.parse(seedBefore) as { signals: Array<{ name: string }> };
+    const overlayFile = JSON.parse(readFileSync(DEFAULT_STACK_OVERLAY_PATH, 'utf8')) as {
+      signals: Array<{ name: string }>;
+    };
+    const destNames = destFile.signals.map((signal) => signal.name);
+    expect(destNames).toEqual(
+      expect.arrayContaining(seedFile.signals.map((signal) => signal.name)),
+    );
+    expect(destNames).toEqual(
+      expect.arrayContaining(overlayFile.signals.map((signal) => signal.name)),
+    );
+    expect(destNames.length).toBe(seedFile.signals.length + overlayFile.signals.length);
+    expect(readFileSync(dest, 'utf8')).not.toBe(seedBefore);
+  });
+
+  it('merges overlay additively and does not rewrite existing names', () => {
+    tmp = mkdtempSync(join(tmpdir(), 'repertoire-overlay-'));
+    writeFileSync(join(tmp, 'package.json'), JSON.stringify({ name: 'consumer-app' }));
+    const dest = hydrateWritableSignals(DEFAULT_SIGNALS_PATH, tmp);
+    const first = JSON.parse(readFileSync(dest, 'utf8')) as {
+      signals: Array<{ name: string; definition: string }>;
+    };
+    first.signals.push({
+      name: 'seat-local-extra',
+      definition: 'A name that lives only on this project copy.',
+    });
+    writeFileSync(dest, `${JSON.stringify(first, null, 2)}\n`);
+    expect(mergeStackOverlay(dest)).toBe(0);
+    expect(hydrateWritableSignals(DEFAULT_SIGNALS_PATH, tmp)).toBe(dest);
+    const second = JSON.parse(readFileSync(dest, 'utf8')) as {
+      signals: Array<{ name: string }>;
+    };
+    const names = second.signals.map((signal) => signal.name);
+    expect(names).toContain('seat-local-extra');
+    expect(names).toContain('clean-ticks-every-cycle');
+    expect(names.filter((name) => name === 'station-survives-the-cut')).toHaveLength(1);
+  });
+
+  it('merges overlay when signalsPath is already the project dest', () => {
+    tmp = mkdtempSync(join(tmpdir(), 'repertoire-existing-dest-'));
+    writeFileSync(join(tmp, 'package.json'), JSON.stringify({ name: 'consumer-app' }));
+    const dest = join(defaultProjectStateDir(tmp), 'curated_signals.json');
+    mkdirSync(join(tmp, '.xray', 'state', 'repertoire'), { recursive: true });
+    const seedBefore = readFileSync(DEFAULT_SIGNALS_PATH, 'utf8');
+    writeFileSync(dest, seedBefore);
+    expect(hydrateWritableSignals(dest, tmp)).toBe(dest);
+    const names = (
+      JSON.parse(readFileSync(dest, 'utf8')) as { signals: Array<{ name: string }> }
+    ).signals.map((signal) => signal.name);
+    expect(names).toContain('attestation-as-map');
+    expect(names).toContain('repertoire-is-long-running-kb');
+    expect(names).toContain('clean-ticks-every-cycle');
+    expect(readFileSync(DEFAULT_SIGNALS_PATH, 'utf8')).toBe(seedBefore);
+  });
+
+  it('refuses to merge overlay onto the factory seed file', () => {
+    const seedBefore = readFileSync(DEFAULT_SIGNALS_PATH, 'utf8');
+    expect(mergeStackOverlay(DEFAULT_SIGNALS_PATH)).toBe(0);
     expect(readFileSync(DEFAULT_SIGNALS_PATH, 'utf8')).toBe(seedBefore);
   });
 
