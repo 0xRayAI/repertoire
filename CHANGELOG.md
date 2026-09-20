@@ -6,6 +6,7 @@
 
 - Excess-above-gate confidence decay (14-day grace, 60-day half-life). Factory seed on the 0.55 gate stays routable. Project-local `validated` signals with fewer than 100 observations can demote when raw decay falls under the gate.
 - Project `.cursor/hooks.json` wears sibling xray Cursor hooks (`XRAY_AI_PATH` override, default `../xray`) so the organ heats Station on Cursor Cloud.
+- Project-local cadence names (`lead-cadence-syncopation`, `live-loop-not-pacer`, `peer-wears-without-commands`) so a peer lead routes the beat after compact.
 
 ### Fixed
 
