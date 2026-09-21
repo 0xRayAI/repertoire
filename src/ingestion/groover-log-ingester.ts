@@ -1,6 +1,7 @@
 import { readFileSync, appendFileSync, existsSync, mkdirSync, readdirSync } from 'node:fs';
 import { join, basename } from 'node:path';
 import { CuratedSignalsManager } from '../registry/CuratedSignalsManager.js';
+import { InferenceStateManager } from '../registry/InferenceStateManager.js';
 import { defaultWritablePaths } from '../paths.js';
 import {
   buildInferenceEntryFromGrooverLog,
@@ -13,6 +14,7 @@ export interface GrooverIngesterOptions {
   sourceDir: string;
   targetDir?: string;
   signalsManager?: CuratedSignalsManager;
+  stateManager?: InferenceStateManager;
   promoteAfterIngest?: boolean;
   /** Preview counts only — no log append, observation writes, or promotion. */
   dryRun?: boolean;
@@ -28,6 +30,7 @@ export class GrooverLogIngester {
   private readonly sourceDir: string;
   private readonly targetDir: string;
   private readonly signalsManager: CuratedSignalsManager;
+  private readonly stateManager: InferenceStateManager | undefined;
   private readonly promoteAfterIngest: boolean;
   private readonly dryRun: boolean;
 
@@ -35,6 +38,7 @@ export class GrooverLogIngester {
     this.sourceDir = options.sourceDir;
     this.targetDir = options.targetDir ?? defaultWritablePaths().logDir;
     this.signalsManager = options.signalsManager ?? new CuratedSignalsManager();
+    this.stateManager = options.stateManager;
     this.promoteAfterIngest = options.promoteAfterIngest ?? true;
     this.dryRun = options.dryRun ?? false;
   }
@@ -82,6 +86,7 @@ export class GrooverLogIngester {
           const targetFile = join(this.targetDir, basename(file));
           appendFileSync(targetFile, JSON.stringify(entry) + '\n');
           this.recordObservations(entry);
+          this.markState(entry);
 
           if (id) existingIds.add(id);
           imported++;
@@ -116,6 +121,13 @@ export class GrooverLogIngester {
     this.signalsManager.recordPrimitiveObservations(matches, {
       governanceForced: entry.governance_forced,
     });
+  }
+
+  private markState(entry: InferenceEntry): void {
+    if (!this.stateManager) return;
+    if (entry.comment_id) this.stateManager.markProcessed([entry.comment_id], 'comment');
+    if (entry.post_id) this.stateManager.markProcessed([entry.post_id], 'post');
+    if (entry.session_id) this.stateManager.markProcessed([entry.session_id], 'session');
   }
 
   private loadExistingIds(): Set<string> {

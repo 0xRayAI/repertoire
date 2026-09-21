@@ -106,7 +106,14 @@ provider.getTaskConfidence?.({
 
 ## Field actuation add-ons (optional)
 
-Repertoire has **no Moltbook dependency**. It ingests **enriched JSONL** from any producer (`matched_primitives` + `match_confidence`) and closes the memory loop via consult, feedback, and post-tick ingest.
+Repertoire has **no Moltbook dependency**. It ingests **enriched JSONL** from any producer (`matched_primitives` + `match_confidence`) and **grows the project dest** — unknown primitives that pass the 0.55 gate are proposed as `field-observed`. That is the subject-domain brain. The factory seed stays 8 names. Do not pin `0.1.8` or copy a 145-name dump.
+
+```bash
+npm run ingest -- --source groover
+npm run health:repertoire
+```
+
+`ingest` without `--path` discovers sibling Groover logs (`research/groover-inference-logs-enriched` or `../groover/…`). Override with `REPERTOIRE_FIELD_LOGS`. Health reads `.xray/state/repertoire/`, not the package tarball.
 
 Each project activates its own public field surface if it wants one:
 

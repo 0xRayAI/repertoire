@@ -2,6 +2,21 @@
 
 ## Unreleased
 
+### Added
+
+- Field memory loop on the **project dest**: `recordPrimitiveObservations` proposes unknown enriched names that pass the 0.55 gate (`field-observed`). Heading-dump names (`phase-3-…`, `7-final-statement`) are refused.
+- `discoverFieldLogDirs` + `RepertoireService.syncFieldMemory` ingest sibling Groover JSONL (`research/groover-inference-logs-enriched`, `../groover/…`, `REPERTOIRE_FIELD_LOGS`). Auto-sync is on outside Vitest.
+- Ingest marks `processedPostIds` / comments / sessions on the project inference-state file.
+
+### Fixed
+
+- `health:repertoire`, `ingest`, and `enrich` read `.xray/state/repertoire/` (writable dest + logs), not package `logs/groover-inference` or `data/inference-state.json`.
+- `verify-synthesis-dogfood` no longer sets `REPERTOIRE_EXPECTED_SIGNALS=145` (old dump-parity). Health is dest-available, not a 145 count.
+
+### Not this
+
+- Do not pin `0.1.8`. Do not copy Groover's 145-name `repertoire-brain` dump. Factory seed stays 8 names.
+
 ## [0.2.2] - 2026-09-20
 
 ### Added

@@ -107,6 +107,7 @@ export interface CuratedSignalsFile {
 export interface InferenceState {
   processedCommentIds: string[];
   processedSessionIds: string[];
+  processedPostIds: string[];
   lastRun: string | null;
 }
 

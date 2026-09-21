@@ -96,6 +96,7 @@ function createTestWorkspace(): TestWorkspace {
   writeFileSync(join(dataDir, 'inference-state.json'), JSON.stringify({
     processedCommentIds: [],
     processedSessionIds: [],
+    processedPostIds: [],
     lastRun: null,
   }));
 

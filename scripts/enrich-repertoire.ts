@@ -8,7 +8,12 @@ import { RepertoireService } from '../src/RepertoireService.js';
 import { CuratedSignalsManager } from '../src/registry/CuratedSignalsManager.js';
 import { GrooverLogIngester } from '../src/ingestion/groover-log-ingester.js';
 import { pruneSignals } from '../src/registry/signal-prune.js';
-import { DEFAULT_LOG_DIR, DEFAULT_SIGNALS_PATH, hydrateWritableSignals } from '../src/paths.js';
+import {
+  DEFAULT_SIGNALS_PATH,
+  defaultWritablePaths,
+  discoverFieldLogDirs,
+  hydrateWritableSignals,
+} from '../src/paths.js';
 
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
@@ -16,11 +21,13 @@ const commit = args.includes('--commit');
 const skipMeta = args.includes('--skip-meta-inference');
 const skipPrune = args.includes('--skip-prune');
 const sourceIdx = args.indexOf('--path');
-const sourceDir = sourceIdx >= 0 ? args[sourceIdx + 1]! : DEFAULT_LOG_DIR;
+const discovered = discoverFieldLogDirs();
+const sourceDir =
+  sourceIdx >= 0 ? args[sourceIdx + 1]! : (discovered[0] ?? defaultWritablePaths().logDir);
 
 if (!dryRun && !commit) {
-  console.error(
-    'Usage: npm run enrich -- --dry-run|--commit [--path <jsonl-dir>] [--skip-meta-inference] [--skip-prune]',
+  process.stderr.write(
+    'Usage: npm run enrich -- --dry-run|--commit [--path <jsonl-dir>] [--skip-meta-inference] [--skip-prune]\n',
   );
   process.exit(1);
 }
@@ -31,11 +38,13 @@ const before = manager.load();
 const beforeNames = new Set(before.signals.map((s) => s.name));
 const beforeCount = before.signals.length;
 
-const service = new RepertoireService({ signalsPath });
+const writable = defaultWritablePaths();
+const service = new RepertoireService({ signalsPath, syncField: false });
 const ingester = new GrooverLogIngester({
   sourceDir,
-  targetDir: DEFAULT_LOG_DIR,
+  targetDir: writable.logDir,
   signalsManager: manager,
+  stateManager: service.stateManager,
   dryRun,
 });
 const ingest = ingester.ingest();
