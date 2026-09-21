@@ -2,10 +2,12 @@
 
 ## Unreleased
 
+## [0.2.3] - 2026-09-21
+
 ### Added
 
 - Field memory loop on the **project dest**: `recordPrimitiveObservations` proposes unknown enriched names that pass the 0.55 gate (`field-observed`). Heading-dump names (`phase-3-…`, `7-final-statement`) are refused.
-- `discoverFieldLogDirs` + `RepertoireService.syncFieldMemory` ingest sibling Groover JSONL (`research/groover-inference-logs-enriched`, `../groover/…`, `REPERTOIRE_FIELD_LOGS`). Auto-sync is on outside Vitest.
+- `discoverFieldLogDirs` + `RepertoireService.syncFieldMemory` ingest **explicit** field JSONL (`REPERTOIRE_FIELD_LOGS`). Auto-sync is on outside Vitest. **Groover is not Repertoire** — sibling `../groover/` and `research/groover-inference-logs*` are not default sources.
 - Ingest marks `processedPostIds` / comments / sessions on the project inference-state file.
 
 ### Fixed
@@ -16,6 +18,7 @@
 ### Not this
 
 - Do not pin `0.1.8`. Do not copy Groover's 145-name `repertoire-brain` dump. Factory seed stays 8 names.
+- Groover was a broken experiment of how this organ was supposed to work. Growing dest from Groover field is not Repertoire becoming real.
 
 ## [0.2.2] - 2026-09-20
 

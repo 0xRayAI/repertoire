@@ -35,6 +35,7 @@ describe('factory seed registry', () => {
     expect(overlayNames).toContain('clean-ticks-every-cycle');
     expect(overlayNames).toContain('mill-gate-a-through-d');
     expect(overlayNames).toContain('both-path-live-verify');
+    expect(overlayNames).toContain('groover-is-not-repertoire');
     expect(overlayNames.some((name) => factoryNames.has(name))).toBe(false);
     expect(overlay.signals.every((signal) => signal.observation_stats?.avg_confidence === 0.55)).toBe(
       true,

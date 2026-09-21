@@ -1,6 +1,6 @@
 {
   "name": "@0xray/repertoire",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Factory memory organ for 0xRay — seed primitives, memory routing, extra MCP",
   "type": "module",
   "license": "MIT",

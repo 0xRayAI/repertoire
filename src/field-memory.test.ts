@@ -107,13 +107,23 @@ describe('field memory (domain dest, not 0.1.8 dump)', () => {
     );
   });
 
-  it('discoverFieldLogDirs finds sibling jsonl and ignores empty dirs', () => {
+  it('discoverFieldLogDirs uses REPERTOIRE_FIELD_LOGS only — Groover is not Repertoire', () => {
     tmp = mkdtempSync(join(tmpdir(), 'repertoire-discover-'));
-    const enriched = join(tmp, 'research', 'groover-inference-logs-enriched');
-    mkdirSync(enriched, { recursive: true });
-    mkdirSync(join(tmp, 'research', 'groover-inference-logs'), { recursive: true });
-    writeFileSync(join(enriched, 'day.jsonl'), '{"matched_primitives":["attestation-as-map"]}\n');
-    expect(discoverFieldLogDirs(tmp)).toEqual([enriched]);
+    const groover = join(tmp, 'research', 'groover-inference-logs-enriched');
+    const explicit = join(tmp, 'research', 'project-field-logs');
+    mkdirSync(groover, { recursive: true });
+    mkdirSync(explicit, { recursive: true });
+    writeFileSync(join(groover, 'day.jsonl'), '{"matched_primitives":["attestation-as-map"]}\n');
+    writeFileSync(join(explicit, 'day.jsonl'), '{"matched_primitives":["attestation-as-map"]}\n');
+    expect(discoverFieldLogDirs(tmp)).toEqual([]);
+    const prev = process.env.REPERTOIRE_FIELD_LOGS;
+    process.env.REPERTOIRE_FIELD_LOGS = explicit;
+    try {
+      expect(discoverFieldLogDirs(tmp)).toEqual([explicit]);
+    } finally {
+      if (prev === undefined) delete process.env.REPERTOIRE_FIELD_LOGS;
+      else process.env.REPERTOIRE_FIELD_LOGS = prev;
+    }
   });
 
   it('shouldAutoSyncField stays off under Vitest unless forced', () => {
