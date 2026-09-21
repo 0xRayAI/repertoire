@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## [0.2.3] - 2026-09-21
+
 ### Added
 
 - Field memory loop on the **project dest**: `recordPrimitiveObservations` proposes unknown enriched names that pass the 0.55 gate (`field-observed`). Heading-dump names (`phase-3-…`, `7-final-statement`) are refused.
