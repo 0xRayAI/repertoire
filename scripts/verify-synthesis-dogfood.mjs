@@ -31,8 +31,8 @@ async function main() {
   }
 
   try {
-    execSync('npm run health:repertoire', { cwd: root, stdio: 'pipe', env: { ...process.env, REPERTOIRE_EXPECTED_SIGNALS: '145' } });
-    pass('health:repertoire', '145 signals drift gate');
+    execSync('npm run health:repertoire', { cwd: root, stdio: 'pipe' });
+    pass('health:repertoire', 'provider available on project dest');
   } catch (e) {
     fail('health:repertoire', e.stderr?.toString() || e.message);
   }

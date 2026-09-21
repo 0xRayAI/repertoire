@@ -11,6 +11,7 @@
 ### Fixed
 
 - `health:repertoire`, `ingest`, and `enrich` read `.xray/state/repertoire/` (writable dest + logs), not package `logs/groover-inference` or `data/inference-state.json`.
+- `verify-synthesis-dogfood` no longer sets `REPERTOIRE_EXPECTED_SIGNALS=145` (old dump-parity). Health is dest-available, not a 145 count.
 
 ### Not this
 
