@@ -720,6 +720,31 @@
         "last_seen": "2026-09-20T00:00:00.000Z",
         "governance_forced_count": 0
       }
+    },
+    {
+      "name": "groover-is-not-repertoire",
+      "definition": "Groover was a broken experiment of how Repertoire was supposed to work. Groover is not the organ. Do not grow dest from Groover field (145-name repertoire-brain, sibling groover-inference-logs) as if that is Repertoire becoming real. Name a producer with REPERTOIRE_FIELD_LOGS.",
+      "tags": [
+        "repertoire",
+        "groover",
+        "organ",
+        "hangar"
+      ],
+      "priority": "high",
+      "status": "proposed",
+      "first_seen": "2026-09-21",
+      "evaluation_criteria": "Reply treats Groover as a broken experiment, not the KB.",
+      "validation_experiment": "Auto-ingest sibling Groover JSONL into dest and call that Repertoire \u2014 treat as fail.",
+      "master_index_integration": "Project-local curated_signals after hydrateWritableSignals merges data/stack-overlay.json. Never write the factory tarball.",
+      "implementation_notes": "discoverFieldLogDirs is env-only. Codex 69 rewire.",
+      "example_inference_snippet": "Groover is not Repertoire. Do not grow dest from Groover field.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-21T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
     }
   ]
 }

@@ -156,21 +156,16 @@ function isProjectSignalsDest(filePath: string, cwd: string): boolean {
 }
 
 /**
- * Field JSONL producers next to this mill. Never the 145-name brain dump.
- * `REPERTOIRE_FIELD_LOGS` is a colon-separated override.
+ * Explicit field JSONL producers. Groover is not Repertoire — do not walk
+ * sibling `../groover/` or `research/groover-inference-logs*` by default.
+ * `REPERTOIRE_FIELD_LOGS` is a colon-separated list of dirs.
  */
-export function discoverFieldLogDirs(cwd = process.cwd()): string[] {
+export function discoverFieldLogDirs(_cwd = process.cwd()): string[] {
   const fromEnv = (process.env.REPERTOIRE_FIELD_LOGS ?? '')
     .split(':')
     .map((entry) => entry.trim())
     .filter((entry) => entry.length > 0);
-  const candidates = [
-    ...fromEnv,
-    join(cwd, 'research', 'groover-inference-logs-enriched'),
-    join(cwd, 'research', 'groover-inference-logs'),
-    join(cwd, '..', 'groover', 'research', 'groover-inference-logs-enriched'),
-    join(cwd, '..', 'groover', 'research', 'groover-inference-logs'),
-  ];
+  const candidates = [...fromEnv];
   const seen = new Set<string>();
   const found: string[] = [];
   for (const dir of candidates) {

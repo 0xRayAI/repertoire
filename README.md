@@ -106,14 +106,14 @@ provider.getTaskConfidence?.({
 
 ## Field actuation add-ons (optional)
 
-Repertoire has **no Moltbook dependency**. It ingests **enriched JSONL** from any producer (`matched_primitives` + `match_confidence`) and **grows the project dest** — unknown primitives that pass the 0.55 gate are proposed as `field-observed`. That is the subject-domain brain. The factory seed stays 8 names. Do not pin `0.1.8` or copy a 145-name dump.
+Repertoire has **no Moltbook dependency**. It ingests **enriched JSONL** from an **explicit** producer (`matched_primitives` + `match_confidence`) and can grow the project dest — unknown primitives that pass the 0.55 gate are proposed as `field-observed`. **Groover is not Repertoire.** Groover was a broken experiment of how this organ was supposed to work. Do not treat Groover field (145-name `repertoire-brain`, sibling inference JSONL) as the dest becoming real. The factory seed stays 8 names. Do not pin `0.1.8`.
 
 ```bash
-npm run ingest -- --source groover
+REPERTOIRE_FIELD_LOGS=/path/to/this-project/enriched npm run ingest
 npm run health:repertoire
 ```
 
-`ingest` without `--path` discovers sibling Groover logs (`research/groover-inference-logs-enriched` or `../groover/…`). Override with `REPERTOIRE_FIELD_LOGS`. Health reads `.xray/state/repertoire/`, not the package tarball.
+`ingest` without `--path` reads `REPERTOIRE_FIELD_LOGS` only. It does **not** walk `../groover/`. Health reads `.xray/state/repertoire/`, not the package tarball.
 
 Each project activates its own public field surface if it wants one:
 
