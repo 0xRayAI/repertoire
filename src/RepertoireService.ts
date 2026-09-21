@@ -18,7 +18,9 @@ import { effectiveSignalConfidence } from './registry/confidence-decay.js';
 import {
   DEFAULT_SIGNALS_PATH,
   defaultWritablePaths,
+  discoverFieldLogDirs,
   hydrateWritableSignals,
+  shouldAutoSyncField,
 } from './paths.js';
 import type {
   AgentCapability,
@@ -39,6 +41,8 @@ export interface RepertoireServiceOptions {
   statePath?: string;
   feedbackDir?: string;
   projectRoot?: string;
+  /** Grow dest from sibling field JSONL. Default on outside Vitest. */
+  syncField?: boolean;
 }
 
 export class RepertoireService {
@@ -49,9 +53,11 @@ export class RepertoireService {
   readonly feedbackIngester: OrchestratorFeedbackIngester;
 
   private readonly logDir: string;
+  private readonly projectRoot: string;
 
   constructor(options: RepertoireServiceOptions = {}) {
     const cwd = options.projectRoot ?? process.cwd();
+    this.projectRoot = cwd;
     const writable = defaultWritablePaths(cwd);
     const dataDir = options.dataDir ?? writable.dataDir;
     this.logDir = options.logDir ?? writable.logDir;
@@ -69,6 +75,28 @@ export class RepertoireService {
     this.feedbackIngester = new OrchestratorFeedbackIngester(
       options.feedbackDir ?? writable.feedbackDir,
     );
+
+    if (shouldAutoSyncField(options.syncField)) {
+      this.syncFieldMemory();
+    }
+  }
+
+  syncFieldMemory(
+    sourceDirs?: string[],
+  ): { imported: number; skipped: number; promoted: string[]; sources: string[] } {
+    const sources = sourceDirs ?? discoverFieldLogDirs(this.projectRoot);
+    let imported = 0;
+    let skipped = 0;
+    const promoted: string[] = [];
+    for (const sourceDir of sources) {
+      const result = this.ingestGrooverLogs(sourceDir);
+      imported += result.imported;
+      skipped += result.skipped;
+      for (const name of result.promoted) {
+        if (!promoted.includes(name)) promoted.push(name);
+      }
+    }
+    return { imported, skipped, promoted, sources };
   }
 
   ingestGrooverLogs(
@@ -79,6 +107,7 @@ export class RepertoireService {
       sourceDir,
       targetDir: this.logDir,
       signalsManager: this.signalsManager,
+      stateManager: this.stateManager,
       dryRun: options.dryRun,
     });
     return ingester.ingest();

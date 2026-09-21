@@ -32,6 +32,33 @@ export const FEEDBACK_SUCCESS_CONFIDENCE_BOOST = 0.002;
 export const FEEDBACK_FAILURE_CONFIDENCE_PENALTY = 0.005;
 export const FEEDBACK_MIN_CONFIDENCE = DEFAULT_PROMOTION_MIN_CONFIDENCE;
 
+const FIELD_PRIMITIVE_NAME = /^[A-Za-z][A-Za-z0-9_-]{2,119}$/;
+
+/** Enriched JSONL names only — not June heading dumps (`phase-3-…`, `7-final-statement`). */
+export function isFieldPrimitiveName(name: string): boolean {
+  if (!FIELD_PRIMITIVE_NAME.test(name)) return false;
+  if (/^phase-\d/i.test(name)) return false;
+  if (/^\d/.test(name)) return false;
+  return true;
+}
+
+export function proposeFieldObservedSignal(name: string, now: string): CuratedSignal {
+  const spoken = name.replace(/[_-]+/g, ' ').trim();
+  return {
+    name,
+    definition: `${spoken}. Field-observed domain primitive grown from enriched JSONL. Not the factory seed.`,
+    tags: ['field-observed', 'domain'],
+    priority: 'medium',
+    status: 'proposed',
+    first_seen: now,
+    evaluation_criteria: `Enriched log named ${name} at or above the 0.55 gate.`,
+    validation_experiment: 'Ingest field JSONL. Promote after two observations.',
+    master_index_integration: 'Project dest only. Factory tarball stays 8 names.',
+    implementation_notes: 'Propose-on-observe. Do not copy the 145-name 0.1.8 dump.',
+    example_inference_snippet: spoken,
+  };
+}
+
 export interface FeedbackOutcomeResult {
   signalName: string;
   previousAvgConfidence: number | null;
@@ -179,8 +206,12 @@ export class CuratedSignalsManager {
     for (const match of matches) {
       if (match.confidence < minConfidence) continue;
 
-      const signal = data.signals.find((entry) => entry.name === match.name);
-      if (!signal) continue;
+      let signal = data.signals.find((entry) => entry.name === match.name);
+      if (!signal) {
+        if (!isFieldPrimitiveName(match.name)) continue;
+        signal = proposeFieldObservedSignal(match.name, now);
+        data.signals.push(signal);
+      }
 
       const previous = signal.observation_stats;
       const observationCount = (previous?.observation_count ?? 0) + 1;

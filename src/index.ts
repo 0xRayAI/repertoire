@@ -1,5 +1,9 @@
 export { RepertoireService } from './RepertoireService.js';
-export { CuratedSignalsManager } from './registry/CuratedSignalsManager.js';
+export {
+  CuratedSignalsManager,
+  isFieldPrimitiveName,
+  proposeFieldObservedSignal,
+} from './registry/CuratedSignalsManager.js';
 export { pruneSignals, shouldPruneSignal } from './registry/signal-prune.js';
 export {
   decayFactorForAge,
@@ -14,6 +18,11 @@ export {
 export { InferenceStateManager } from './registry/InferenceStateManager.js';
 export { MetaInferenceEngine } from './synthesis/meta-inference-engine.js';
 export { GrooverLogIngester } from './ingestion/groover-log-ingester.js';
+export {
+  discoverFieldLogDirs,
+  shouldAutoSyncField,
+  defaultWritablePaths,
+} from './paths.js';
 export {
   aggregateWeightedPrimitives,
   formatWeightedPrimitivesSection,

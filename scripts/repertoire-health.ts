@@ -3,9 +3,8 @@ import { existsSync, readdirSync, readFileSync, appendFileSync, mkdirSync } from
 import { join } from 'node:path';
 import { createMemoryRoutingProvider } from '../src/provider/memory-routing-provider.js';
 import {
-  DEFAULT_SIGNALS_PATH,
-  DEFAULT_LOG_DIR,
-  DEFAULT_STATE_PATH,
+  defaultWritablePaths,
+  discoverFieldLogDirs,
 } from '../src/paths.js';
 
 interface HealthSnapshot {
@@ -17,6 +16,8 @@ interface HealthSnapshot {
   enriched_log_files: number;
   enriched_log_lines: number;
   inference_state_ids: number;
+  field_log_dirs: string[];
+  domain_signal_count: number;
   drift_warning: string | null;
   expected_prod_signals: number | null;
 }
@@ -37,9 +38,12 @@ function countInferenceState(path: string): number {
   const state = JSON.parse(readFileSync(path, 'utf8')) as {
     processedCommentIds?: string[];
     processedPostIds?: string[];
+    processedSessionIds?: string[];
   };
   return (
-    (state.processedCommentIds?.length ?? 0) + (state.processedPostIds?.length ?? 0)
+    (state.processedCommentIds?.length ?? 0) +
+    (state.processedPostIds?.length ?? 0) +
+    (state.processedSessionIds?.length ?? 0)
   );
 }
 
@@ -47,6 +51,7 @@ const prodExpected = process.env.REPERTOIRE_EXPECTED_SIGNALS
   ? Number(process.env.REPERTOIRE_EXPECTED_SIGNALS)
   : null;
 
+const writable = defaultWritablePaths();
 const provider = createMemoryRoutingProvider();
 const status = (
   provider as {
@@ -59,21 +64,34 @@ const status = (
   }
 ).getAvailabilityStatus();
 
-const logs = countJsonlLines(DEFAULT_LOG_DIR);
+const logs = countJsonlLines(writable.logDir);
 let drift: string | null = null;
 if (prodExpected !== null && status.signalCount !== prodExpected) {
   drift = `signal_count ${status.signalCount} !== expected prod ${prodExpected}`;
 }
 
+const destSignals = existsSync(status.signalsPath)
+  ? (
+      JSON.parse(readFileSync(status.signalsPath, 'utf8')) as {
+        signals?: Array<{ tags?: string[] }>;
+      }
+    ).signals ?? []
+  : [];
+const domainSignalCount = destSignals.filter((signal) =>
+  (signal.tags ?? []).includes('field-observed'),
+).length;
+
 const snapshot: HealthSnapshot = {
   timestamp: new Date().toISOString(),
-  signals_path: status.signalsPath || DEFAULT_SIGNALS_PATH,
+  signals_path: status.signalsPath,
   signal_count: status.signalCount,
   provider_available: status.available,
   provider_reason: status.reason,
   enriched_log_files: logs.files,
   enriched_log_lines: logs.lines,
-  inference_state_ids: countInferenceState(DEFAULT_STATE_PATH),
+  inference_state_ids: countInferenceState(writable.statePath),
+  field_log_dirs: discoverFieldLogDirs(),
+  domain_signal_count: domainSignalCount,
   drift_warning: drift,
   expected_prod_signals: prodExpected,
 };
@@ -82,7 +100,7 @@ const outDir = join('logs', 'repertoire');
 mkdirSync(outDir, { recursive: true });
 appendFileSync(join(outDir, 'health.jsonl'), `${JSON.stringify(snapshot)}\n`);
 
-console.log(JSON.stringify(snapshot, null, 2));
+process.stdout.write(`${JSON.stringify(snapshot, null, 2)}\n`);
 
 if (!status.available || drift) {
   process.exit(1);

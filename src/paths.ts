@@ -1,4 +1,4 @@
-import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -153,6 +153,49 @@ export function mergeStackOverlay(
  */
 function isProjectSignalsDest(filePath: string, cwd: string): boolean {
   return resolve(filePath) === resolve(join(defaultProjectStateDir(cwd), 'curated_signals.json'));
+}
+
+/**
+ * Field JSONL producers next to this mill. Never the 145-name brain dump.
+ * `REPERTOIRE_FIELD_LOGS` is a colon-separated override.
+ */
+export function discoverFieldLogDirs(cwd = process.cwd()): string[] {
+  const fromEnv = (process.env.REPERTOIRE_FIELD_LOGS ?? '')
+    .split(':')
+    .map((entry) => entry.trim())
+    .filter((entry) => entry.length > 0);
+  const candidates = [
+    ...fromEnv,
+    join(cwd, 'research', 'groover-inference-logs-enriched'),
+    join(cwd, 'research', 'groover-inference-logs'),
+    join(cwd, '..', 'groover', 'research', 'groover-inference-logs-enriched'),
+    join(cwd, '..', 'groover', 'research', 'groover-inference-logs'),
+  ];
+  const seen = new Set<string>();
+  const found: string[] = [];
+  for (const dir of candidates) {
+    const resolved = resolve(dir);
+    if (seen.has(resolved) || !existsSync(resolved)) continue;
+    let files: string[] = [];
+    try {
+      files = readdirSync(resolved).filter((file) => file.endsWith('.jsonl'));
+    } catch {
+      continue;
+    }
+    if (files.length === 0) continue;
+    seen.add(resolved);
+    found.push(resolved);
+  }
+  return found;
+}
+
+/** Tests stay isolated. CLI / wear syncs when sibling field logs exist. */
+export function shouldAutoSyncField(explicit?: boolean): boolean {
+  if (explicit === true) return true;
+  if (explicit === false) return false;
+  if (process.env.REPERTOIRE_FIELD_SYNC === '0') return false;
+  if (process.env.REPERTOIRE_FIELD_SYNC === '1') return true;
+  return process.env.VITEST !== 'true';
 }
 
 export function hydrateWritableSignals(seedPath: string, cwd = process.cwd()): string {

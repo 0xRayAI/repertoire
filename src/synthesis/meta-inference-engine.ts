@@ -40,6 +40,7 @@ export class MetaInferenceEngine {
     const processed = new Set([
       ...state.processedCommentIds,
       ...state.processedSessionIds,
+      ...state.processedPostIds,
     ]);
 
     if (!existsSync(this.logDir)) {

@@ -49,6 +49,8 @@ flowchart TB
 
 **North-star outcome:** 0xRay routes with memory. Task descriptions that match validated primitives influence complexity scoring, agent selection, and governance evidence — without simulated fallbacks.
 
+**Subject-domain memory** grows on the project dest from enriched field JSONL (`matched_primitives` + `match_confidence`). Unknown names that pass the 0.55 gate are proposed (`field-observed`). The factory tarball stays 8 trap names. The 0.1.8 ~145-name dump is not copied. Heading names (`phase-3-…`) are refused. `discoverFieldLogDirs` finds sibling Groover logs; `syncFieldMemory` / auto-sync (off under Vitest) runs ingest.
+
 ---
 
 ## 2. Core Data Model
@@ -57,9 +59,9 @@ flowchart TB
 |----------|----------|------|
 | Primitive registry (tarball) | `data/curated_signals.json` | Read-only factory seed (8 trap names). `save()` refuses this path. |
 | Stack overlay (tarball) | `data/stack-overlay.json` | Committed stack language. `hydrateWritableSignals` merges additively. Never written. |
-| Primitive registry (live) | `.xray/state/repertoire/curated_signals.json` | Hydrated copy (seed + overlay + local ingest) — including when cwd is this organ repo |
-| Inference state | `data/inference-state.json` | Processed comment/session IDs for idempotent ingest |
-| Groover logs (canonical) | `logs/groover-inference/*.jsonl` | Normalized enriched entries after ingest |
+| Primitive registry (live) | `.xray/state/repertoire/curated_signals.json` | Hydrated copy (seed + overlay + field-observed names) — including when cwd is this organ repo |
+| Inference state | `.xray/state/repertoire/inference-state.json` | Processed comment / post / session IDs for idempotent ingest |
+| Groover logs (canonical) | `.xray/state/repertoire/logs/*.jsonl` | Normalized enriched entries after ingest |
 | Meta-inference | `logs/meta-inference/synthesis.md` | Optional synthesis excerpt injected into task metadata |
 | Pipeline report | `logs/pipeline-run.json` | Ingest + synthesis run summary |
 

@@ -13,6 +13,7 @@ export class InferenceStateManager {
     return {
       processedCommentIds: raw.processedCommentIds ?? [],
       processedSessionIds: raw.processedSessionIds ?? [],
+      processedPostIds: raw.processedPostIds ?? [],
       lastRun: raw.lastRun ?? null,
     };
   }
@@ -25,12 +26,21 @@ export class InferenceStateManager {
 
   isProcessed(id: string): boolean {
     const state = this.load();
-    return state.processedCommentIds.includes(id) || state.processedSessionIds.includes(id);
+    return (
+      state.processedCommentIds.includes(id) ||
+      state.processedSessionIds.includes(id) ||
+      state.processedPostIds.includes(id)
+    );
   }
 
-  markProcessed(ids: string[], kind: 'comment' | 'session' = 'comment'): void {
+  markProcessed(ids: string[], kind: 'comment' | 'session' | 'post' = 'comment'): void {
     const state = this.load();
-    const target = kind === 'comment' ? state.processedCommentIds : state.processedSessionIds;
+    const target =
+      kind === 'comment'
+        ? state.processedCommentIds
+        : kind === 'session'
+          ? state.processedSessionIds
+          : state.processedPostIds;
     for (const id of ids) {
       if (!target.includes(id)) target.push(id);
     }
@@ -38,7 +48,21 @@ export class InferenceStateManager {
     this.save(state);
   }
 
+  countProcessed(): number {
+    const state = this.load();
+    return (
+      state.processedCommentIds.length +
+      state.processedSessionIds.length +
+      state.processedPostIds.length
+    );
+  }
+
   private createEmpty(): InferenceState {
-    return { processedCommentIds: [], processedSessionIds: [], lastRun: null };
+    return {
+      processedCommentIds: [],
+      processedSessionIds: [],
+      processedPostIds: [],
+      lastRun: null,
+    };
   }
 }
