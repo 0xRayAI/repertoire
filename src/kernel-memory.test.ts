@@ -70,6 +70,39 @@ describe('kernel memory + OP-PROC reload', () => {
     );
   });
 
+  it('heats overlay names from Cursor heat approaches', () => {
+    tmp = mkdtempSync(join(tmpdir(), 'repertoire-xray-approaches-'));
+    writeFileSync(join(tmp, 'package.json'), JSON.stringify({ name: 'consumer-app' }));
+    const sourceDir = join(tmp, 'docs', 'inference');
+    mkdirSync(sourceDir, { recursive: true });
+    writeFileSync(
+      join(sourceDir, 'session-heat.json'),
+      JSON.stringify({
+        sessionId: 'session-heat-approaches',
+        timestamp: '2026-09-21T20:00:00.000Z',
+        approaches: [
+          'station-survives-the-cut heat',
+          'compact-rekey-from-disk',
+        ],
+      }),
+    );
+
+    const service = new RepertoireService({
+      projectRoot: tmp,
+      syncField: false,
+      syncXray: false,
+    });
+    const result = service.ingestXraySessions(sourceDir);
+    expect(result.imported).toBe(1);
+    expect(
+      service.signalsManager.getByName('station-survives-the-cut')?.observation_stats?.observation_count,
+    ).toBeGreaterThan(0);
+    const conf = service.getTaskConfidence({
+      description: 'Continue this card. Compaction and host change are the same cut.',
+    });
+    expect(conf.matchedSignals).toEqual(expect.arrayContaining(['station-survives-the-cut']));
+  });
+
   it('discoverXrayKernelDirs skips Groover experiment dirs', () => {
     tmp = mkdtempSync(join(tmpdir(), 'repertoire-xray-discover-'));
     const groover = join(tmp, 'research', 'groover-inference-logs', 'docs', 'inference');

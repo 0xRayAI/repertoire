@@ -149,6 +149,7 @@ export class XraySessionIngester {
     const inferenceParts = [
       `Session: ${session.sessionId}`,
       session.problems?.length ? `Problems: ${session.problems.join('; ')}` : '',
+      session.approaches?.length ? `Approaches: ${session.approaches.join('; ')}` : '',
       session.wrongTurns?.length ? `Wrong turns: ${session.wrongTurns.join('; ')}` : '',
       session.solutions?.length ? `Solutions: ${session.solutions.join('; ')}` : '',
       session.patterns?.length
