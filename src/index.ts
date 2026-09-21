@@ -3,6 +3,8 @@ export {
   CuratedSignalsManager,
   isFieldPrimitiveName,
   proposeFieldObservedSignal,
+  repoPrimitiveName,
+  slugFieldPrimitiveName,
 } from './registry/CuratedSignalsManager.js';
 export { pruneSignals, shouldPruneSignal } from './registry/signal-prune.js';
 export {
@@ -20,7 +22,11 @@ export { MetaInferenceEngine } from './synthesis/meta-inference-engine.js';
 export { GrooverLogIngester } from './ingestion/groover-log-ingester.js';
 export {
   discoverFieldLogDirs,
+  discoverSiblingRepos,
+  discoverXrayKernelDirs,
+  reloadOpProc,
   shouldAutoSyncField,
+  shouldAutoSyncXray,
   defaultWritablePaths,
 } from './paths.js';
 export {

@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+### Added
+
+- **OP-PROC reload:** `reloadOpProc()` hydrates the project dest and lists factory + overlay names. Those names *are* OP-PROC. After compact the suit reloads them from dest / `.xray/state/repertoire-working.json`, not from Station.
+- **0xRay kernel ingest:** `XraySessionIngester` now proposes dest names from session-capture (`session-*.json` patterns + matched primitives) and heats overlay names that appear in the session text. `discoverXrayKernelDirs` walks this project and sibling `docs/inference` / `.xray/inference`. Groover field dirs stay refused.
+- **Workspace map:** `discoverSiblingRepos` / `syncWorkspaceRepos` observe `repo-<slug>` for each sibling `package.json`. Hangars stay hangars — remembered, not suited.
+
+### Not this
+
+- Do not restore the 0.1.8 188-name dump. Do not encode OP-PROC onto Station.md.
+
 ## [0.2.3] - 2026-09-21
 
 ### Added

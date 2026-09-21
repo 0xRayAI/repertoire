@@ -19,8 +19,13 @@ import {
   DEFAULT_SIGNALS_PATH,
   defaultWritablePaths,
   discoverFieldLogDirs,
+  discoverSiblingRepos,
+  discoverXrayKernelDirs,
   hydrateWritableSignals,
+  reloadOpProc,
   shouldAutoSyncField,
+  shouldAutoSyncXray,
+  type OpProcReload,
 } from './paths.js';
 import type {
   AgentCapability,
@@ -43,6 +48,8 @@ export interface RepertoireServiceOptions {
   projectRoot?: string;
   /** Grow dest from sibling field JSONL. Default on outside Vitest. */
   syncField?: boolean;
+  /** Grow dest from 0xRay session-capture + sibling repo map. Default on outside Vitest. */
+  syncXray?: boolean;
 }
 
 export class RepertoireService {
@@ -79,6 +86,10 @@ export class RepertoireService {
     if (shouldAutoSyncField(options.syncField)) {
       this.syncFieldMemory();
     }
+    if (shouldAutoSyncXray(options.syncXray)) {
+      this.syncXrayMemory();
+      this.syncWorkspaceRepos();
+    }
   }
 
   syncFieldMemory(
@@ -113,13 +124,57 @@ export class RepertoireService {
     return ingester.ingest();
   }
 
-  ingestXraySessions(sourceDir: string): { imported: number; skipped: number } {
+  ingestXraySessions(
+    sourceDir: string,
+    options: { repoPrimitive?: string } = {},
+  ): { imported: number; skipped: number; promoted: string[] } {
     const ingester = new XraySessionIngester({
       sourceDir,
       targetDir: this.logDir,
       signalsManager: this.signalsManager,
+      stateManager: this.stateManager,
+      repoPrimitive: options.repoPrimitive,
     });
     return ingester.ingest();
+  }
+
+  syncXrayMemory(
+    sourceDirs?: string[],
+  ): { imported: number; skipped: number; promoted: string[]; sources: string[] } {
+    const sources = sourceDirs ?? discoverXrayKernelDirs(this.projectRoot);
+    let imported = 0;
+    let skipped = 0;
+    const promoted: string[] = [];
+    for (const sourceDir of sources) {
+      const result = this.ingestXraySessions(sourceDir);
+      imported += result.imported;
+      skipped += result.skipped;
+      for (const name of result.promoted) {
+        if (!promoted.includes(name)) promoted.push(name);
+      }
+    }
+    return { imported, skipped, promoted, sources };
+  }
+
+  syncWorkspaceRepos(): { observed: string[]; sources: string[] } {
+    const siblings = discoverSiblingRepos(this.projectRoot);
+    const observed: string[] = [];
+    const sources: string[] = [];
+    const matches = siblings.map((sibling) => {
+      sources.push(sibling.root);
+      return { name: sibling.primitive, confidence: 0.55 };
+    });
+    if (matches.length > 0) {
+      const grown = this.signalsManager.recordPrimitiveObservations(matches);
+      for (const name of grown) {
+        if (!observed.includes(name)) observed.push(name);
+      }
+    }
+    return { observed, sources };
+  }
+
+  reloadOpProc(): OpProcReload {
+    return reloadOpProc(this.projectRoot);
   }
 
   ingestOrchestratorFeedback(entry: OrchestratorFeedbackEntry): {

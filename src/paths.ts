@@ -193,6 +193,168 @@ export function shouldAutoSyncField(explicit?: boolean): boolean {
   return process.env.VITEST !== 'true';
 }
 
+function isGrooverExperimentDir(dir: string): boolean {
+  const normalized = resolve(dir);
+  return (
+    normalized.includes(`${sep}groover-inference-logs`) ||
+    normalized.includes(`${sep}repertoire-brain${sep}`) ||
+    normalized.endsWith(`${sep}repertoire-brain`)
+  );
+}
+
+function hasSessionJson(dir: string): boolean {
+  try {
+    return readdirSync(dir).some((file) => file.startsWith('session-') && file.endsWith('.json'));
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * 0xRay session-capture dirs. Groover field JSONL is not a source.
+ * `REPERTOIRE_XRAY_LOGS` is a colon-separated list. Also walks this project
+ * and sibling `docs/inference` / `.xray/inference` when they hold session-*.json.
+ */
+export function discoverXrayKernelDirs(cwd = process.cwd()): string[] {
+  const fromEnv = (process.env.REPERTOIRE_XRAY_LOGS ?? '')
+    .split(':')
+    .map((entry) => entry.trim())
+    .filter((entry) => entry.length > 0);
+  const candidates = [...fromEnv, join(cwd, 'docs', 'inference'), join(cwd, '.xray', 'inference')];
+  const parent = resolve(cwd, '..');
+  if (existsSync(parent) && shouldWalkSiblingRepos(parent)) {
+    try {
+      for (const name of readdirSync(parent)) {
+        if (name.startsWith('.') || name === 'node_modules') continue;
+        const sibling = join(parent, name);
+        candidates.push(join(sibling, 'docs', 'inference'), join(sibling, '.xray', 'inference'));
+      }
+    } catch {
+      /* parent not listable */
+    }
+  }
+  const seen = new Set<string>();
+  const found: string[] = [];
+  for (const dir of candidates) {
+    const resolved = resolve(dir);
+    if (seen.has(resolved) || isGrooverExperimentDir(resolved) || !existsSync(resolved)) continue;
+    if (!hasSessionJson(resolved)) continue;
+    seen.add(resolved);
+    found.push(resolved);
+  }
+  return found;
+}
+
+export function shouldAutoSyncXray(explicit?: boolean): boolean {
+  if (explicit === true) return true;
+  if (explicit === false) return false;
+  if (process.env.REPERTOIRE_XRAY_SYNC === '0') return false;
+  if (process.env.REPERTOIRE_XRAY_SYNC === '1') return true;
+  return process.env.VITEST !== 'true';
+}
+
+export interface SiblingRepo {
+  root: string;
+  name: string;
+  description: string;
+  primitive: string;
+}
+
+function shouldWalkSiblingRepos(parent: string): boolean {
+  try {
+    const names = new Set(readdirSync(parent));
+    return names.has('xray') || names.has('repertoire') || names.has('clearing');
+  } catch {
+    return false;
+  }
+}
+
+function siblingRepoSlug(raw: string): string | null {
+  const bare = raw.replace(/^@[^/]+\//, '');
+  const slug = bare
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+  if (!/^[a-z][a-z0-9-]{2,119}$/.test(slug)) return null;
+  if (/^phase-\d/.test(slug)) return null;
+  return slug;
+}
+
+function siblingRepoPrimitiveName(pkgName: string, dirName?: string): string | null {
+  const slug = siblingRepoSlug(pkgName) ?? (dirName ? siblingRepoSlug(dirName) : null);
+  if (!slug) return null;
+  const name = slug.startsWith('repo-') ? slug : `repo-${slug}`;
+  if (!/^[a-z][a-z0-9-]{2,119}$/.test(name)) return null;
+  return name;
+}
+
+/** Sibling package.json map. Hangars stay hangars — we remember them, we do not suit them. */
+export function discoverSiblingRepos(cwd = process.cwd()): SiblingRepo[] {
+  const parent = resolve(cwd, '..');
+  const found: SiblingRepo[] = [];
+  if (!existsSync(parent) || !shouldWalkSiblingRepos(parent)) return found;
+  let names: string[] = [];
+  try {
+    names = readdirSync(parent);
+  } catch {
+    return found;
+  }
+  for (const name of names) {
+    if (name.startsWith('.') || name === 'node_modules') continue;
+    const root = join(parent, name);
+    const pkgPath = join(root, 'package.json');
+    if (!existsSync(pkgPath)) continue;
+    try {
+      const pkg = JSON.parse(readFileSync(pkgPath, 'utf8')) as {
+        name?: string;
+        description?: string;
+      };
+      const primitive = siblingRepoPrimitiveName(pkg.name || name, name);
+      if (!primitive) continue;
+      found.push({
+        root,
+        name: pkg.name || name,
+        description: typeof pkg.description === 'string' ? pkg.description : name,
+        primitive,
+      });
+    } catch {
+      continue;
+    }
+  }
+  return found;
+}
+
+export interface OpProcReload {
+  dest: string;
+  names: string[];
+  count: number;
+}
+
+function signalNamesFrom(filePath: string): string[] {
+  if (!existsSync(filePath)) return [];
+  try {
+    const raw = JSON.parse(readFileSync(filePath, 'utf8')) as { signals?: Array<{ name?: string }> };
+    if (!Array.isArray(raw.signals)) return [];
+    return raw.signals
+      .map((signal) => (typeof signal.name === 'string' ? signal.name : ''))
+      .filter((name) => name.length > 0);
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Overlay + factory names on the project dest. This is OP-PROC.
+ * Not Station. After compact the suit reloads these from dest.
+ */
+export function reloadOpProc(cwd = process.cwd()): OpProcReload {
+  const dest = hydrateWritableSignals(DEFAULT_SIGNALS_PATH, cwd);
+  const factory = new Set(signalNamesFrom(DEFAULT_SIGNALS_PATH));
+  const overlay = new Set(signalNamesFrom(DEFAULT_STACK_OVERLAY_PATH));
+  const names = signalNamesFrom(dest).filter((name) => factory.has(name) || overlay.has(name));
+  return { dest, names, count: names.length };
+}
+
 export function hydrateWritableSignals(seedPath: string, cwd = process.cwd()): string {
   if (!isImmutablePackagePath(seedPath)) {
     if (isProjectSignalsDest(seedPath, cwd)) {

@@ -42,6 +42,26 @@ export function isFieldPrimitiveName(name: string): boolean {
   return true;
 }
 
+/** Slug a session/pattern/package label into a dest name, or null. */
+export function slugFieldPrimitiveName(raw: string): string | null {
+  const trimmed = raw.trim();
+  if (!trimmed) return null;
+  const bare = trimmed.replace(/^@[^/]+\//, '');
+  const slug = bare
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+  return isFieldPrimitiveName(slug) ? slug : null;
+}
+
+/** Workspace map name — `repo-xray`, not a June heading. */
+export function repoPrimitiveName(pkgName: string, dirName?: string): string | null {
+  const slug = slugFieldPrimitiveName(pkgName) ?? (dirName ? slugFieldPrimitiveName(dirName) : null);
+  if (!slug) return null;
+  const name = slug.startsWith('repo-') ? slug : `repo-${slug}`;
+  return isFieldPrimitiveName(name) ? name : null;
+}
+
 export function proposeFieldObservedSignal(name: string, now: string): CuratedSignal {
   const spoken = name.replace(/[_-]+/g, ' ').trim();
   return {

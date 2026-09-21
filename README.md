@@ -113,7 +113,19 @@ REPERTOIRE_FIELD_LOGS=/path/to/this-project/enriched npm run ingest
 npm run health:repertoire
 ```
 
-`ingest` without `--path` reads `REPERTOIRE_FIELD_LOGS` only. It does **not** walk `../groover/`. Health reads `.xray/state/repertoire/`, not the package tarball.
+`ingest` without `--path` and `--source groover` reads `REPERTOIRE_FIELD_LOGS` only. It does **not** walk `../groover/`. Health reads `.xray/state/repertoire/`, not the package tarball.
+
+## Compact reload (the 37 overlay names are OP-PROC)
+
+Station is the ticket. The overlay names (`station-survives-the-cut`, `repertoire-is-long-running-kb`, `compact-rekey-from-disk`, …) are the operating procedure.
+
+After compact the suit reloads OP-PROC by hydrating `.xray/state/repertoire/curated_signals.json` and reading that dest — not by restating commands and not by dumping names onto `STATION.md`. `reloadOpProc()` is that snapshot. 0xRay heat writes the same names onto `.xray/state/repertoire-working.json`.
+
+```bash
+npm run ingest -- --source xray
+```
+
+Walks `docs/inference` / `.xray/inference` `session-*.json` on this project and suited siblings. Grows dest from session-capture. Heats overlay names that already live on dest. `REPERTOIRE_XRAY_LOGS` is an explicit extra colon list.
 
 Each project activates its own public field surface if it wants one:
 
