@@ -3,17 +3,27 @@
   "hooks": {
     "preToolUse": [
       {
-        "command": "XRAY_AI_PATH=\"${XRAY_AI_PATH:-../xray}\" node \"${XRAY_AI_PATH:-../xray}/src/integrations/cursor/hooks/pre-tool-use.js\""
+        "command": ".cursor/hooks/pre-tool-use.sh"
       }
     ],
     "preCompact": [
       {
-        "command": "XRAY_AI_PATH=\"${XRAY_AI_PATH:-../xray}\" node \"${XRAY_AI_PATH:-../xray}/src/integrations/cursor/hooks/pre-compact.js\""
+        "command": ".cursor/hooks/pre-compact.sh"
       }
     ],
     "afterFileEdit": [
       {
-        "command": "XRAY_AI_PATH=\"${XRAY_AI_PATH:-../xray}\" node \"${XRAY_AI_PATH:-../xray}/src/integrations/cursor/hooks/after-file-edit.js\""
+        "command": ".cursor/hooks/after-file-edit.sh"
+      }
+    ],
+    "beforeShellExecution": [
+      {
+        "command": ".cursor/hooks/before-shell-execution.sh"
+      }
+    ],
+    "beforeReadFile": [
+      {
+        "command": ".cursor/hooks/before-read-file.sh"
       }
     ]
   }
