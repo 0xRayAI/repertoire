@@ -26,6 +26,8 @@ fi
 if [ -z "$MILL" ]; then
   pick_mill "$(pwd)" "src/integrations/cursor/hooks/${JS}" || \
     pick_mill "$(pwd)/../xray" "src/integrations/cursor/hooks/${JS}" || \
+    pick_mill "$(pwd)/repos/xray" "src/integrations/cursor/hooks/${JS}" || \
+    pick_mill "${CURSOR_PROJECT_DIR:-}/repos/xray" "src/integrations/cursor/hooks/${JS}" || \
     pick_mill "$(pwd)/node_modules/0xray" "dist/integrations/cursor/hooks/${JS}" || \
     pick_mill "$(pwd)/node_modules/0xray" "src/integrations/cursor/hooks/${JS}" || true
 fi
