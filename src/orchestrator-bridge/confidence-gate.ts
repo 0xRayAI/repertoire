@@ -2,7 +2,7 @@ import {
   CuratedSignalsManager,
   DEFAULT_PROMOTION_MIN_CONFIDENCE,
 } from '../registry/CuratedSignalsManager.js';
-import { effectiveSignalConfidence } from '../registry/confidence-decay.js';
+import { effectiveSignalConfidence, meetsConfidenceGate } from '../registry/confidence-decay.js';
 import type { OrchestrationTask, TaskConfidenceContext } from '../types.js';
 
 export const DEFAULT_MIN_CONFIDENCE_GATE = DEFAULT_PROMOTION_MIN_CONFIDENCE;
@@ -67,7 +67,7 @@ export function getConfidenceForTask(
       };
     })
     .filter((entry): entry is NonNullable<typeof entry> => entry !== null)
-    .filter((entry) => entry.confidence >= DEFAULT_MIN_CONFIDENCE_GATE);
+    .filter((entry) => meetsConfidenceGate(entry.confidence, DEFAULT_MIN_CONFIDENCE_GATE));
 
   const trapSignals = signals.filter((entry) =>
     signalsManager.getByName(entry.name)?.tags.includes('ontological-trap'),
@@ -75,7 +75,9 @@ export function getConfidenceForTask(
 
   const highConfidenceTrapPresent =
     trapDetected &&
-    trapSignals.some((entry) => entry.confidence >= DEFAULT_MIN_CONFIDENCE_GATE);
+    trapSignals.some((entry) =>
+      meetsConfidenceGate(entry.confidence, DEFAULT_MIN_CONFIDENCE_GATE),
+    );
 
   const avgConfidence =
     signals.length > 0

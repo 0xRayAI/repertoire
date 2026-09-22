@@ -151,6 +151,30 @@ describe('kernel memory + OP-PROC reload', () => {
     expect(snap.names).not.toContain('repo-clearing');
   });
 
+  it('routes x402 on a dest sitting on the float 0.55 floor', () => {
+    tmp = mkdtempSync(join(tmpdir(), 'repertoire-float-gate-'));
+    writeFileSync(join(tmp, 'package.json'), JSON.stringify({ name: 'consumer-app' }));
+    const service = new RepertoireService({
+      projectRoot: tmp,
+      syncField: false,
+      syncXray: false,
+    });
+    const destPath = service.signalsManager.filePath;
+    const dest = JSON.parse(readFileSync(destPath, 'utf8')) as {
+      signals: Array<{ name: string; observation_stats?: { avg_confidence: number } }>;
+    };
+    for (const signal of dest.signals) {
+      if (signal.observation_stats) {
+        signal.observation_stats.avg_confidence = 0.5499999999999999;
+      }
+    }
+    writeFileSync(destPath, `${JSON.stringify(dest, null, 2)}\n`);
+    const conf = service.getTaskConfidence({
+      description: 'Pay only live x402 services. Never double-pay. Receipted URL extract catalog.',
+    });
+    expect(conf.matchedSignals).toEqual(expect.arrayContaining(['repo-clearing']));
+  });
+
   it('matches subject flesh after hydrate and does not treat it as OP-PROC', () => {
     tmp = mkdtempSync(join(tmpdir(), 'repertoire-subject-route-'));
     writeFileSync(join(tmp, 'package.json'), JSON.stringify({ name: 'consumer-app' }));

@@ -7,6 +7,7 @@ import type {
   SynthesisCollocatedContext,
 } from '../types.js';
 import { CuratedSignalsManager } from '../registry/CuratedSignalsManager.js';
+import { meetsConfidenceGate } from '../registry/confidence-decay.js';
 import {
   applyConfidenceComplexityBoost,
   confidenceWeightedAgentBoost,
@@ -50,7 +51,11 @@ export class SignalInjector {
     const highConfidenceTrapPresent =
       ontologicalTrapDetected &&
       trapSignals.some(
-        (match) => (signalConfidences[match.signal.name] ?? 0) >= DEFAULT_MIN_CONFIDENCE_GATE,
+        (match) =>
+          meetsConfidenceGate(
+            signalConfidences[match.signal.name] ?? 0,
+            DEFAULT_MIN_CONFIDENCE_GATE,
+          ),
       );
 
     return {

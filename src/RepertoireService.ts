@@ -14,7 +14,7 @@ import {
   type GovernWithSolarFn,
 } from './governance/ontological-trap-enforcer.js';
 import { DEFAULT_MIN_CONFIDENCE_GATE } from './orchestrator-bridge/confidence-gate.js';
-import { effectiveSignalConfidence } from './registry/confidence-decay.js';
+import { effectiveSignalConfidence, meetsConfidenceGate } from './registry/confidence-decay.js';
 import {
   DEFAULT_SIGNALS_PATH,
   collectKernelDiaryText,
@@ -369,7 +369,7 @@ export class RepertoireService {
         };
       })
       .filter((entry): entry is NonNullable<typeof entry> => entry !== null)
-      .filter((entry) => entry.confidence >= minConfidence)
+      .filter((entry) => meetsConfidenceGate(entry.confidence, minConfidence))
       .sort((a, b) => b.confidence - a.confidence)
       .slice(0, limit);
   }

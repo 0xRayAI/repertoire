@@ -10,6 +10,7 @@ export { pruneSignals, shouldPruneSignal } from './registry/signal-prune.js';
 export {
   decayFactorForAge,
   effectiveObservationConfidence,
+  meetsConfidenceGate,
   effectiveSignalConfidence,
   rawDecayedConfidence,
   shouldDemoteValidatedSignal,

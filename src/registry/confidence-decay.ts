@@ -53,6 +53,14 @@ export function decayFactorForAge(
   return 2 ** (-aged / halfLife);
 }
 
+/** Float-safe gate. Averaging 0.55 can store 0.5499999999999999. */
+export function meetsConfidenceGate(
+  confidence: number,
+  gate = DEFAULT_PROMOTION_MIN_CONFIDENCE,
+): boolean {
+  return confidence + 1e-9 >= gate;
+}
+
 export function effectiveObservationConfidence(
   storedConfidence: number,
   lastSeen: string | undefined,
@@ -66,7 +74,9 @@ export function effectiveObservationConfidence(
   if (storedConfidence <= minGate) {
     return {
       storedConfidence,
-      effectiveConfidence: storedConfidence,
+      effectiveConfidence: meetsConfidenceGate(storedConfidence, minGate)
+        ? minGate
+        : storedConfidence,
       decayFactor: factor,
       staleDays,
     };

@@ -5,7 +5,7 @@
  */
 
 import { execFileSync } from 'node:child_process';
-import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -78,7 +78,9 @@ const { createMemoryRoutingProvider } = await import(
   pathToFileURL(join(repoRoot, 'dist/provider/memory-routing-provider.js')).href
 );
 
-const provider = createMemoryRoutingProvider();
+const consumerRoot = mkdtempSync(join(tmpdir(), 'repertoire-smoke-consumer-'));
+writeFileSync(join(consumerRoot, 'package.json'), JSON.stringify({ name: 'smoke-consumer' }));
+const provider = createMemoryRoutingProvider({ projectRoot: consumerRoot });
 assert('provider id', provider.id === 'repertoire');
 assert('provider available', provider.isAvailable());
 
@@ -159,6 +161,8 @@ assert(
     subjectConfidence.matchedSignals.includes('repo-clearing'),
   `got ${JSON.stringify(subjectConfidence?.matchedSignals ?? [])}`,
 );
+
+rmSync(consumerRoot, { recursive: true, force: true });
 
 const failed = checks.filter((c) => !c.ok);
 if (failed.length > 0) {

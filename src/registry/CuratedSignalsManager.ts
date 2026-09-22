@@ -169,6 +169,12 @@ export class CuratedSignalsManager {
       if (normalized.includes(signal.name.replace(/-/g, ' ')) || normalized.includes(signal.name)) {
         score += 5;
         matchedOn.push('name');
+      } else if (signal.name.startsWith('repo-')) {
+        const tail = signal.name.slice(5);
+        if (tail.length >= 3 && new RegExp(`\\b${tail}\\b`, 'i').test(normalized)) {
+          score += 5;
+          matchedOn.push('name');
+        }
       }
 
       for (const tag of signal.tags) {
@@ -179,7 +185,10 @@ export class CuratedSignalsManager {
         }
       }
 
-      const definitionWords = signal.definition.toLowerCase().split(/\W+/).filter((w) => w.length > 5);
+      const definitionWords = signal.definition
+        .toLowerCase()
+        .split(/[^\w.]+/)
+        .filter((w) => w.length > 5 || (/\d/.test(w) && w.length >= 3));
       const definitionHits = definitionWords.filter((w) => normalized.includes(w)).length;
       if (definitionHits >= 2) {
         score += Math.min(definitionHits, 4);
