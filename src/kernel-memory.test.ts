@@ -27,6 +27,10 @@ describe('kernel memory + OP-PROC reload', () => {
     expect(slugFieldPrimitiveName('Extract Method')).toBe('extract-method');
     expect(repoPrimitiveName('@0xray/repertoire')).toBe('repo-repertoire');
     expect(repoPrimitiveName('0xray', 'xray')).toBe('repo-xray');
+    expect(repoPrimitiveName('vite_react_shadcn_ts', 'chrono-warp-drive')).toBe(
+      'repo-chrono-warp-drive',
+    );
+    expect(isFieldPrimitiveName('criteria_selection_gap')).toBe(false);
     expect(isFieldPrimitiveName('repo-xray')).toBe(true);
     expect(slugFieldPrimitiveName('7-final-statement')).toBe(null);
     expect(slugFieldPrimitiveName('phase-3-exhaustive-code-digestion')).toBe(null);
@@ -273,12 +277,23 @@ describe('kernel memory + OP-PROC reload', () => {
       join(tmp, 'clearing', 'package.json'),
       JSON.stringify({ name: 'clearing', description: 'x402 hangar' }),
     );
+    mkdirSync(join(tmp, 'chrono-warp-drive'));
+    writeFileSync(
+      join(tmp, 'chrono-warp-drive', 'package.json'),
+      JSON.stringify({ name: 'vite_react_shadcn_ts', description: 'temporal seat' }),
+    );
     const seat = join(tmp, 'repertoire');
     mkdirSync(seat);
     writeFileSync(join(seat, 'package.json'), JSON.stringify({ name: '@0xray/repertoire' }));
     const siblings = discoverSiblingRepos(seat);
     expect(siblings.map((s) => s.primitive)).toEqual(
-      expect.arrayContaining(['repo-xray', 'repo-clearing', 'repo-repertoire']),
+      expect.arrayContaining([
+        'repo-xray',
+        'repo-clearing',
+        'repo-repertoire',
+        'repo-chrono-warp-drive',
+      ]),
     );
+    expect(siblings.map((s) => s.primitive)).not.toContain('repo-vite-react-shadcn-ts');
   });
 });

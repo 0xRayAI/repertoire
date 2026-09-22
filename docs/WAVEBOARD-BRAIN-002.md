@@ -27,4 +27,4 @@ Kernel diary (`logs/framework/*`, `.xray/inference/latest-workflow.json`, `workf
 3. Read `.xray/state/NOTES.md` if present.
 4. Wear dest. Subject names are the product map.
 
-npm stay `0xray@4.0.17` + `@0xray/repertoire@0.2.4` until a new D.
+Stamping `@0xray/repertoire@0.2.5`. Do not republish 0.2.4. 0xray stays 4.0.17.

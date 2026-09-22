@@ -19,8 +19,10 @@ describe('field memory (domain dest, not 0.1.8 dump)', () => {
   });
 
   it('rejects heading-dump names and accepts field slugs', () => {
-    expect(isFieldPrimitiveName('model-latent-geometry-as-true-invariant')).toBe(true);
-    expect(isFieldPrimitiveName('criteria_selection_gap')).toBe(true);
+    expect(isFieldPrimitiveName('workspace-subject-map')).toBe(true);
+    expect(isFieldPrimitiveName('consumption-fit-gap')).toBe(true);
+    expect(isFieldPrimitiveName('model-latent-geometry-as-true-invariant')).toBe(false);
+    expect(isFieldPrimitiveName('criteria_selection_gap')).toBe(false);
     expect(isFieldPrimitiveName('phase-3-exhaustive-code-digestion-dynamo-chrono-warp-drive')).toBe(
       false,
     );
@@ -35,12 +37,13 @@ describe('field memory (domain dest, not 0.1.8 dump)', () => {
     const manager = new CuratedSignalsManager(signalsPath);
 
     const grown = manager.recordPrimitiveObservations([
+      { name: 'workspace-subject-map', confidence: 0.9 },
       { name: 'model-latent-geometry-as-true-invariant', confidence: 0.9 },
       { name: 'phase-3-exhaustive-code-digestion-dynamo-chrono-warp-drive', confidence: 0.9 },
     ]);
 
-    expect(grown).toEqual(['model-latent-geometry-as-true-invariant']);
-    const signal = manager.getByName('model-latent-geometry-as-true-invariant');
+    expect(grown).toEqual(['workspace-subject-map']);
+    const signal = manager.getByName('workspace-subject-map');
     expect(signal?.status).toBe('proposed');
     expect(signal?.tags).toContain('field-observed');
     expect(signal?.observation_stats?.observation_count).toBe(1);
@@ -57,21 +60,21 @@ describe('field memory (domain dest, not 0.1.8 dump)', () => {
         timestamp: '2026-09-21T00:00:00.000Z',
         source: 'groover',
         post_id: 'post-field-1',
-        inference: 'TYPE: ontological-trap\nmodel latent geometry as true invariant',
-        matched_primitives: ['model-latent-geometry-as-true-invariant', 'criteria_selection_gap'],
+        inference: 'TYPE: ontological-trap\nworkspace subject map as dest memory',
+        matched_primitives: ['workspace-subject-map', 'consumption-fit-gap'],
         match_confidence: {
-          'model-latent-geometry-as-true-invariant': 0.91,
-          criteria_selection_gap: 0.88,
+          'workspace-subject-map': 0.91,
+          'consumption-fit-gap': 0.88,
         },
       })}\n${JSON.stringify({
         timestamp: '2026-09-21T00:01:00.000Z',
         source: 'groover',
         post_id: 'post-field-2',
-        inference: 'criteria selection gap and external norm smuggling',
-        matched_primitives: ['criteria_selection_gap', 'external_norm_smuggling_risk'],
+        inference: 'consumption fit gap and workspace subject map',
+        matched_primitives: ['consumption-fit-gap', 'workspace-subject-map'],
         match_confidence: {
-          criteria_selection_gap: 0.86,
-          external_norm_smuggling_risk: 0.84,
+          'consumption-fit-gap': 0.86,
+          'workspace-subject-map': 0.84,
         },
       })}\n`,
     );
@@ -88,22 +91,20 @@ describe('field memory (domain dest, not 0.1.8 dump)', () => {
     const result = service.syncFieldMemory([sourceDir]);
     expect(result.imported).toBe(2);
     expect(result.promoted).toEqual(
-      expect.arrayContaining(['criteria_selection_gap']),
+      expect.arrayContaining(['consumption-fit-gap']),
     );
 
-    expect(service.signalsManager.getByName('model-latent-geometry-as-true-invariant')?.observation_stats?.observation_count).toBe(1);
-    expect(service.signalsManager.getByName('criteria_selection_gap')?.status).toBe('validated');
+    expect(service.signalsManager.getByName('workspace-subject-map')?.observation_stats?.observation_count).toBe(2);
+    expect(service.signalsManager.getByName('consumption-fit-gap')?.status).toBe('validated');
+    expect(service.signalsManager.getByName('criteria_selection_gap')).toBeUndefined();
     expect(service.stateManager.countProcessed()).toBeGreaterThan(0);
     expect(service.stateManager.isProcessed('post-field-1')).toBe(true);
 
     const conf = service.getTaskConfidence({
-      description: 'The model latent geometry as true invariant and the criteria selection gap.',
+      description: 'The workspace subject map as dest memory and the consumption fit gap.',
     });
     expect(conf.matchedSignals).toEqual(
-      expect.arrayContaining([
-        'model-latent-geometry-as-true-invariant',
-        'criteria_selection_gap',
-      ]),
+      expect.arrayContaining(['workspace-subject-map', 'consumption-fit-gap']),
     );
   });
 

@@ -35,11 +35,18 @@ export const FEEDBACK_MIN_CONFIDENCE = DEFAULT_PROMOTION_MIN_CONFIDENCE;
 
 const FIELD_PRIMITIVE_NAME = /^[A-Za-z][A-Za-z0-9_-]{2,119}$/;
 
+const GROOVER_EXPERIMENT_NAMES = new Set([
+  'criteria_selection_gap',
+  'external_norm_smuggling_risk',
+  'model-latent-geometry-as-true-invariant',
+]);
+
 /** Enriched JSONL names only — not June heading dumps (`phase-3-…`, `7-final-statement`). */
 export function isFieldPrimitiveName(name: string): boolean {
   if (!FIELD_PRIMITIVE_NAME.test(name)) return false;
   if (/^phase-\d/i.test(name)) return false;
   if (/^\d/.test(name)) return false;
+  if (GROOVER_EXPERIMENT_NAMES.has(name)) return false;
   return true;
 }
 
@@ -57,7 +64,10 @@ export function slugFieldPrimitiveName(raw: string): string | null {
 
 /** Workspace map name — `repo-xray`, not a June heading. */
 export function repoPrimitiveName(pkgName: string, dirName?: string): string | null {
-  const slug = slugFieldPrimitiveName(pkgName) ?? (dirName ? slugFieldPrimitiveName(dirName) : null);
+  const pkgSlug = slugFieldPrimitiveName(pkgName);
+  const dirSlug = dirName ? slugFieldPrimitiveName(dirName) : null;
+  const scaffold = pkgSlug != null && (/vite-react/.test(pkgSlug) || /shadcn/.test(pkgSlug));
+  const slug = pkgSlug && !scaffold ? pkgSlug : (dirSlug ?? pkgSlug);
   if (!slug) return null;
   const name = slug.startsWith('repo-') ? slug : `repo-${slug}`;
   return isFieldPrimitiveName(name) ? name : null;

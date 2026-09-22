@@ -323,8 +323,15 @@ function siblingRepoSlug(raw: string): string | null {
   return slug;
 }
 
+function isScaffoldPackageSlug(slug: string): boolean {
+  return /vite-react/.test(slug) || /shadcn/.test(slug);
+}
+
 function siblingRepoPrimitiveName(pkgName: string, dirName?: string): string | null {
-  const slug = siblingRepoSlug(pkgName) ?? (dirName ? siblingRepoSlug(dirName) : null);
+  const pkgSlug = siblingRepoSlug(pkgName);
+  const dirSlug = dirName ? siblingRepoSlug(dirName) : null;
+  const slug =
+    pkgSlug && !isScaffoldPackageSlug(pkgSlug) ? pkgSlug : (dirSlug ?? pkgSlug);
   if (!slug) return null;
   const name = slug.startsWith('repo-') ? slug : `repo-${slug}`;
   if (!/^[a-z][a-z0-9-]{2,119}$/.test(name)) return null;
