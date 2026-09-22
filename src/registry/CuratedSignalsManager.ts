@@ -3,6 +3,7 @@ import {
   DEFAULT_SIGNALS_PATH,
   hydrateWritableSignals,
   isFactorySeedFile,
+  isGenericFieldObservedDefinition,
 } from '../paths.js';
 import type {
   CuratedSignal,
@@ -108,6 +109,22 @@ export class CuratedSignalsManager {
     }
     data.last_updated = new Date().toISOString();
     writeFileSync(this.filePath, JSON.stringify(data, null, 2));
+  }
+
+  /**
+   * Replace a generic field-observed stub with live sibling flesh.
+   * Keeps observation stats. Refuses overlay/subject definitions already written.
+   */
+  fleshGenericRepoSignal(name: string, definition: string, snippet?: string): boolean {
+    const data = this.load();
+    const signal = data.signals.find((entry) => entry.name === name);
+    if (!signal || !isGenericFieldObservedDefinition(signal.definition)) {
+      return false;
+    }
+    signal.definition = definition;
+    if (snippet) signal.example_inference_snippet = snippet;
+    this.save(data);
+    return true;
   }
 
   addSignal(signal: CuratedSignal): void {

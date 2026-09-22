@@ -33,9 +33,10 @@ if (source === 'groover') {
   }
   const result = service.syncXrayMemory(dirs);
   const repos = service.syncWorkspaceRepos();
+  const diary = service.heatKernelDiary();
   const opProc = service.reloadOpProc();
   process.stdout.write(
-    `0xRay ingest: imported=${result.imported} skipped=${result.skipped} promoted=${result.promoted.join(',') || 'none'} sources=${result.sources.length} repos=${repos.observed.length} opProc=${opProc.count}\n`,
+    `0xRay ingest: imported=${result.imported} skipped=${result.skipped} promoted=${result.promoted.join(',') || 'none'} sources=${result.sources.length} repos=${repos.observed.length} fleshed=${repos.fleshed.length} diary=${diary.heated.length} opProc=${opProc.count}\n`,
   );
 } else {
   process.stderr.write(`Unknown source: ${source}\n`);

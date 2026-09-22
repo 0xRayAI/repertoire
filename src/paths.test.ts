@@ -8,11 +8,13 @@ import {
   DEFAULT_STACK_OVERLAY_PATH,
   defaultProjectStateDir,
   defaultWritablePaths,
+  DEFAULT_SUBJECT_OVERLAY_PATH,
   hydrateWritableSignals,
   isFactorySeedFile,
   isImmutablePackagePath,
   isRepertoirePackageCwd,
   mergeStackOverlay,
+  mergeSubjectOverlay,
   resolveWritableConfigPath,
 } from './paths.js';
 import { CuratedSignalsManager } from './registry/CuratedSignalsManager.js';
@@ -59,6 +61,9 @@ describe('factory path helpers', () => {
     const overlayFile = JSON.parse(readFileSync(DEFAULT_STACK_OVERLAY_PATH, 'utf8')) as {
       signals: Array<{ name: string }>;
     };
+    const subjectFile = JSON.parse(readFileSync(DEFAULT_SUBJECT_OVERLAY_PATH, 'utf8')) as {
+      signals: Array<{ name: string }>;
+    };
     const destNames = destFile.signals.map((signal) => signal.name);
     expect(destNames).toEqual(
       expect.arrayContaining(seedFile.signals.map((signal) => signal.name)),
@@ -66,7 +71,12 @@ describe('factory path helpers', () => {
     expect(destNames).toEqual(
       expect.arrayContaining(overlayFile.signals.map((signal) => signal.name)),
     );
-    expect(destNames.length).toBe(seedFile.signals.length + overlayFile.signals.length);
+    expect(destNames).toEqual(
+      expect.arrayContaining(subjectFile.signals.map((signal) => signal.name)),
+    );
+    expect(destNames.length).toBe(
+      seedFile.signals.length + overlayFile.signals.length + subjectFile.signals.length,
+    );
     expect(readFileSync(dest, 'utf8')).not.toBe(seedBefore);
   });
 
@@ -107,7 +117,32 @@ describe('factory path helpers', () => {
     expect(names).toContain('attestation-as-map');
     expect(names).toContain('repertoire-is-long-running-kb');
     expect(names).toContain('clean-ticks-every-cycle');
+    expect(names).toContain('repo-clearing');
     expect(readFileSync(DEFAULT_SIGNALS_PATH, 'utf8')).toBe(seedBefore);
+  });
+
+  it('fleshes a generic field-observed stub from subject overlay', () => {
+    tmp = mkdtempSync(join(tmpdir(), 'repertoire-subject-flesh-'));
+    writeFileSync(join(tmp, 'package.json'), JSON.stringify({ name: 'consumer-app' }));
+    const dest = join(defaultProjectStateDir(tmp), 'curated_signals.json');
+    mkdirSync(join(tmp, '.xray', 'state', 'repertoire'), { recursive: true });
+    writeFileSync(
+      dest,
+      JSON.stringify({
+        signals: [
+          {
+            name: 'repo-clearing',
+            definition: 'repo clearing. Field-observed domain primitive grown from enriched JSONL. Not the factory seed.',
+          },
+        ],
+      }),
+    );
+    expect(mergeSubjectOverlay(dest)).toBeGreaterThan(0);
+    const clearing = (
+      JSON.parse(readFileSync(dest, 'utf8')) as { signals: Array<{ name: string; definition: string }> }
+    ).signals.find((signal) => signal.name === 'repo-clearing');
+    expect(clearing?.definition).toMatch(/x402/);
+    expect(clearing?.definition).not.toMatch(/Field-observed domain primitive/);
   });
 
   it('refuses to merge overlay onto the factory seed file', () => {

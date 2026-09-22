@@ -59,6 +59,7 @@
     "scripts/verify-openclaw-suit.mjs",
     "data/curated_signals.json",
     "data/stack-overlay.json",
+    "data/subject-overlay.json",
     "schemas/",
     "skills/repertoire-trap-handling/",
     "docs/MEMORY-ROUTING-PROVIDER.md",

@@ -96,7 +96,7 @@ Without Repertoire: `{ "enabled": false, "provider": "null" }`.
 
 Tools: `repertoire__get_task_confidence`, `repertoire__get_high_confidence_signals`, `repertoire__search_primitives`, `repertoire__ingest_feedback`.
 
-Factory seed (`data/curated_signals.json`) is read-only (8 names). `data/stack-overlay.json` merges into the project copy on hydrate so stack language survives a new clone. Live writes hydrate `.xray/state/repertoire/` even when cwd is this organ repo. Do not pin 0.1.8. Station is the survive-the-cut card — not this organ.
+Factory seed (`data/curated_signals.json`) is read-only (8 names). `data/stack-overlay.json` merges into the project copy on hydrate so stack language survives a new clone. `data/subject-overlay.json` merges after that so dest knows what each organ/hangar is. `reloadOpProc` is factory + stack only. Live writes hydrate `.xray/state/repertoire/` even when cwd is this organ repo. Do not pin 0.1.8. Station is the survive-the-cut card — not this organ.
 
 Lead cadence lives in worn 0xRay (`grok-bot/ops/LEAD-CADENCE.md` + `orchestrator` skill). Project-local names `lead-cadence-syncopation`, `live-loop-not-pacer`, `peer-wears-without-commands` must route on this copy. A peer continues from Station + these names — no command stream.
 

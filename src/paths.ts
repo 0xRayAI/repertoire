@@ -8,6 +8,7 @@ export const PACKAGE_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 export const DEFAULT_DATA_DIR = join(PACKAGE_ROOT, 'data');
 export const DEFAULT_SIGNALS_PATH = join(PACKAGE_ROOT, 'data', 'curated_signals.json');
 export const DEFAULT_STACK_OVERLAY_PATH = join(PACKAGE_ROOT, 'data', 'stack-overlay.json');
+export const DEFAULT_SUBJECT_OVERLAY_PATH = join(PACKAGE_ROOT, 'data', 'subject-overlay.json');
 export const DEFAULT_STATE_PATH = join(PACKAGE_ROOT, 'data', 'inference-state.json');
 export const DEFAULT_LOG_DIR = join(PACKAGE_ROOT, 'logs', 'groover-inference');
 export const DEFAULT_FEEDBACK_DIR = join(PACKAGE_ROOT, 'logs', 'orchestrator-feedback');
@@ -94,6 +95,15 @@ export function resolveWritableConfigPath(
 interface OverlaySignalRecord {
   name: string;
   definition: string;
+  tags?: string[];
+  priority?: string;
+  evaluation_criteria?: string;
+  example_inference_snippet?: string;
+  implementation_notes?: string;
+}
+
+export function isGenericFieldObservedDefinition(definition: string): boolean {
+  return definition.includes('Field-observed domain primitive');
 }
 
 function isOverlaySignalRecord(value: unknown): value is OverlaySignalRecord {
@@ -102,14 +112,10 @@ function isOverlaySignalRecord(value: unknown): value is OverlaySignalRecord {
   return typeof rec.name === 'string' && rec.name.length > 0 && typeof rec.definition === 'string';
 }
 
-/**
- * Additive merge of `data/stack-overlay.json` into a project copy.
- * Existing names keep their stats. Missing overlay names are appended.
- * Refuses the factory tarball path.
- */
-export function mergeStackOverlay(
+function mergeOverlaySignals(
   destPath: string,
-  overlayPath = DEFAULT_STACK_OVERLAY_PATH,
+  overlayPath: string,
+  options: { fleshGeneric?: boolean } = {},
 ): number {
   if (isFactorySeedFile(destPath)) {
     return 0;
@@ -125,31 +131,68 @@ export function mergeStackOverlay(
   if (!Array.isArray(destRaw.signals) || !Array.isArray(overlayRaw.signals)) {
     return 0;
   }
-  const have = new Set(
-    destRaw.signals
-      .filter(isOverlaySignalRecord)
-      .map((signal) => signal.name),
-  );
+  const destSignals = destRaw.signals.filter(isOverlaySignalRecord);
+  destRaw.signals = destSignals;
+  const byName = new Map(destSignals.map((signal) => [signal.name, signal]));
   const incoming = overlayRaw.signals.filter(isOverlaySignalRecord);
-  let added = 0;
+  let changed = 0;
   for (const signal of incoming) {
-    if (have.has(signal.name)) continue;
-    destRaw.signals.push(signal);
-    have.add(signal.name);
-    added += 1;
+    const existing = byName.get(signal.name);
+    if (!existing) {
+      destSignals.push(signal);
+      byName.set(signal.name, signal);
+      changed += 1;
+      continue;
+    }
+    if (options.fleshGeneric && isGenericFieldObservedDefinition(existing.definition)) {
+      existing.definition = signal.definition;
+      if (signal.tags) existing.tags = signal.tags;
+      if (signal.priority) existing.priority = signal.priority;
+      if (signal.evaluation_criteria) existing.evaluation_criteria = signal.evaluation_criteria;
+      if (signal.example_inference_snippet) {
+        existing.example_inference_snippet = signal.example_inference_snippet;
+      }
+      if (signal.implementation_notes) existing.implementation_notes = signal.implementation_notes;
+      changed += 1;
+    }
   }
-  if (added > 0) {
+  if (changed > 0) {
     destRaw.last_updated = new Date().toISOString();
     writeFileSync(destPath, `${JSON.stringify(destRaw, null, 2)}\n`);
   }
-  return added;
+  return changed;
+}
+
+/**
+ * Additive merge of `data/stack-overlay.json` into a project copy.
+ * Existing names keep their stats. Missing overlay names are appended.
+ * Refuses the factory tarball path.
+ */
+export function mergeStackOverlay(
+  destPath: string,
+  overlayPath = DEFAULT_STACK_OVERLAY_PATH,
+): number {
+  return mergeOverlaySignals(destPath, overlayPath);
+}
+
+/**
+ * Additive merge of `data/subject-overlay.json` — product/repo flesh.
+ * Missing names are appended. Generic field-observed stubs get overlay flesh.
+ * Existing subject definitions and observation stats stay. Not OP-PROC.
+ */
+export function mergeSubjectOverlay(
+  destPath: string,
+  overlayPath = DEFAULT_SUBJECT_OVERLAY_PATH,
+): number {
+  return mergeOverlaySignals(destPath, overlayPath, { fleshGeneric: true });
 }
 
 /**
  * Package seed stays read-only. Any cwd — consumer or this organ repo — hydrates
  * `.xray/state/repertoire/curated_signals.json`. Dogfooding the package must not
  * mutate `data/curated_signals.json` (the tarball). After copy, merge
- * `data/stack-overlay.json` additively so stack language survives a new clone.
+ * `data/stack-overlay.json` then `data/subject-overlay.json` so stack language
+ * and repo subject flesh survive a new clone. reloadOpProc stays factory+stack.
  */
 function isProjectSignalsDest(filePath: string, cwd: string): boolean {
   return resolve(filePath) === resolve(join(defaultProjectStateDir(cwd), 'curated_signals.json'));
@@ -344,8 +387,8 @@ function signalNamesFrom(filePath: string): string[] {
 }
 
 /**
- * Overlay + factory names on the project dest. This is OP-PROC.
- * Not Station. After compact the suit reloads these from dest.
+ * Factory + stack overlay names on the project dest. This is OP-PROC.
+ * Subject repo names are dest memory, not OP-PROC. Not Station.
  */
 export function reloadOpProc(cwd = process.cwd()): OpProcReload {
   const dest = hydrateWritableSignals(DEFAULT_SIGNALS_PATH, cwd);
@@ -355,10 +398,15 @@ export function reloadOpProc(cwd = process.cwd()): OpProcReload {
   return { dest, names, count: names.length };
 }
 
+function mergeProjectOverlays(destPath: string): void {
+  mergeStackOverlay(destPath);
+  mergeSubjectOverlay(destPath);
+}
+
 export function hydrateWritableSignals(seedPath: string, cwd = process.cwd()): string {
   if (!isImmutablePackagePath(seedPath)) {
     if (isProjectSignalsDest(seedPath, cwd)) {
-      mergeStackOverlay(seedPath);
+      mergeProjectOverlays(seedPath);
     }
     return seedPath;
   }
@@ -369,9 +417,70 @@ export function hydrateWritableSignals(seedPath: string, cwd = process.cwd()): s
     copyFileSync(seed, dest);
   }
   if (existsSync(dest)) {
-    mergeStackOverlay(dest);
+    mergeProjectOverlays(dest);
   }
   return dest;
+}
+
+const KERNEL_DIARY_CAP = 80_000;
+
+function kernelDiaryCandidates(root: string): string[] {
+  return [
+    join(root, 'logs', 'framework', 'activity.log'),
+    join(root, 'logs', 'framework', 'routing-outcomes.json'),
+    join(root, 'logs', 'framework', 'pattern-metrics.json'),
+    join(root, '.xray', 'inference', 'latest-workflow.json'),
+    join(root, '.xray', 'inference', 'workflow-status.json'),
+  ];
+}
+
+export interface KernelDiaryCollect {
+  text: string;
+  sources: string[];
+}
+
+/**
+ * Kernel processing diary text. Heat existing dest names only.
+ * Does not walk Groover experiment dirs. Does not propose colon pattern ids.
+ */
+export function collectKernelDiaryText(cwd = process.cwd()): KernelDiaryCollect {
+  const roots = [cwd];
+  const parent = resolve(cwd, '..');
+  if (existsSync(parent) && shouldWalkSiblingRepos(parent)) {
+    try {
+      for (const name of readdirSync(parent)) {
+        if (name.startsWith('.') || name === 'node_modules') continue;
+        roots.push(join(parent, name));
+      }
+    } catch {
+      /* parent not listable */
+    }
+  }
+  const sources: string[] = [];
+  const chunks: string[] = [];
+  let used = 0;
+  for (const root of roots) {
+    if (isGrooverExperimentDir(root)) continue;
+    for (const file of kernelDiaryCandidates(root)) {
+      const resolved = resolve(file);
+      if (!existsSync(resolved) || sources.includes(resolved)) continue;
+      let raw = '';
+      try {
+        raw = readFileSync(resolved, 'utf8');
+      } catch {
+        continue;
+      }
+      if (!raw.trim()) continue;
+      const remain = KERNEL_DIARY_CAP - used;
+      if (remain <= 0) break;
+      const slice = raw.length > remain ? raw.slice(-remain) : raw;
+      chunks.push(slice);
+      sources.push(resolved);
+      used += slice.length;
+    }
+    if (used >= KERNEL_DIARY_CAP) break;
+  }
+  return { text: chunks.join('\n'), sources };
 }
 
 /** @deprecated use resolveReadableConfigPath */

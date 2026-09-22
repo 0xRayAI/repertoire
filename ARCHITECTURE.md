@@ -58,8 +58,9 @@ flowchart TB
 | Artifact | Location | Role |
 |----------|----------|------|
 | Primitive registry (tarball) | `data/curated_signals.json` | Read-only factory seed (8 trap names). `save()` refuses this path. |
-| Stack overlay (tarball) | `data/stack-overlay.json` | Committed stack language. `hydrateWritableSignals` merges additively. Never written. |
-| Primitive registry (live) | `.xray/state/repertoire/curated_signals.json` | Hydrated copy (seed + overlay + field-observed names) — including when cwd is this organ repo |
+| Stack overlay (tarball) | `data/stack-overlay.json` | Committed stack language (OP-PROC). `hydrateWritableSignals` merges additively. Never written. |
+| Subject overlay (tarball) | `data/subject-overlay.json` | What each organ/hangar is. Merged after stack. Not OP-PROC. Never written. |
+| Primitive registry (live) | `.xray/state/repertoire/curated_signals.json` | Hydrated copy (seed + stack + subject + field-observed names) — including when cwd is this organ repo |
 | Inference state | `.xray/state/repertoire/inference-state.json` | Processed comment / post / session IDs for idempotent ingest |
 | Groover logs (canonical) | `.xray/state/repertoire/logs/*.jsonl` | Normalized enriched entries after ingest |
 | Meta-inference | `logs/meta-inference/synthesis.md` | Optional synthesis excerpt injected into task metadata |

@@ -21,9 +21,12 @@ export { InferenceStateManager } from './registry/InferenceStateManager.js';
 export { MetaInferenceEngine } from './synthesis/meta-inference-engine.js';
 export { GrooverLogIngester } from './ingestion/groover-log-ingester.js';
 export {
+  collectKernelDiaryText,
   discoverFieldLogDirs,
   discoverSiblingRepos,
   discoverXrayKernelDirs,
+  isGenericFieldObservedDefinition,
+  mergeSubjectOverlay,
   reloadOpProc,
   shouldAutoSyncField,
   shouldAutoSyncXray,

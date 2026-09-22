@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+### Added
+
+- **Subject overlay:** `data/subject-overlay.json` (14 workspace organ/hangar names). `hydrateWritableSignals` merges it after the stack overlay. `reloadOpProc` stays factory + stack only — subject names are dest memory, not OP-PROC.
+- **Flesh generic `repo-*` stubs:** `mergeSubjectOverlay` and `syncWorkspaceRepos` replace field-observed slug definitions with overlay / sibling `package.json` description. Existing subject flesh is not overwritten.
+- **Kernel diary heat:** `collectKernelDiaryText` + `heatKernelDiary` warm existing dest names from `logs/framework/{activity.log,routing-outcomes.json,pattern-metrics.json}` and `.xray/inference/{latest-workflow,workflow-status}.json`. No new colon pattern ids.
+
+### Not this
+
+- Do not publish until mill-gate D. Do not pin 0.1.8. Do not dump 145. Groover is not the producer.
+
 ## [0.2.4] - 2026-09-22
 
 ### Added

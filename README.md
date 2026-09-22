@@ -43,7 +43,7 @@ Default operating model: **`autonomy-command`** — lead dev, phased todos, suba
 }
 ```
 
-Bundled `data/curated_signals.json` is **read-only** (8 factory trap names). `data/stack-overlay.json` is the committed stack-language overlay. The provider hydrates a project copy under `.xray/state/repertoire/curated_signals.json` (seed + overlay) — including when cwd is this organ repo. Feedback never writes the tarball seed. Do not pin 0.1.8.
+Bundled `data/curated_signals.json` is **read-only** (8 factory trap names). `data/stack-overlay.json` is the committed stack-language overlay (OP-PROC). `data/subject-overlay.json` is what each workspace organ/hangar *is*. The provider hydrates a project copy under `.xray/state/repertoire/curated_signals.json` (seed + stack + subject) — including when cwd is this organ repo. Feedback never writes the tarball seed. Do not pin 0.1.8.
 
 Override with env:
 

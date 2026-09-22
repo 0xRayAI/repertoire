@@ -65,6 +65,7 @@ const requiredPaths = [
   'scripts/suit-bridge-shared.mjs',
   'data/curated_signals.json',
   'data/stack-overlay.json',
+  'data/subject-overlay.json',
   'LICENSE',
   'README.md',
 ];
@@ -136,6 +137,27 @@ assert(
   'stack language matches after hydrate',
   Array.isArray(stackConfidence?.matchedSignals) && stackConfidence.matchedSignals.length > 0,
   `got ${JSON.stringify(stackConfidence?.matchedSignals ?? [])}`,
+);
+
+const subject = JSON.parse(readFileSync(join(repoRoot, 'data/subject-overlay.json'), 'utf8'));
+const subjectNames = (subject.signals || []).map((s) => s.name);
+assert('subject overlay size', subjectNames.length >= 10, `got ${subjectNames.length}`);
+assert('subject includes repo-clearing', subjectNames.includes('repo-clearing'));
+assert(
+  'subject does not duplicate factory or stack names',
+  !subjectNames.some((n) => names.includes(n) || overlayNames.includes(n)),
+);
+const subjectTask = {
+  id: 'consumer-smoke-subject',
+  description: 'Pay only live x402 services. Never double-pay. Receipted URL extract catalog.',
+  type: 'general',
+};
+const subjectConfidence = provider.getTaskConfidence?.(subjectTask);
+assert(
+  'subject language matches after hydrate',
+  Array.isArray(subjectConfidence?.matchedSignals) &&
+    subjectConfidence.matchedSignals.includes('repo-clearing'),
+  `got ${JSON.stringify(subjectConfidence?.matchedSignals ?? [])}`,
 );
 
 const failed = checks.filter((c) => !c.ok);

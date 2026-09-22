@@ -1,0 +1,297 @@
+{
+  "description": "Subject-domain overlay: what each workspace organ/hangar is. Additive after factory seed + stack OP-PROC. Not the 0.1.8 dump. Groover is not Repertoire.",
+  "last_updated": "2026-09-22T00:00:00.000Z",
+  "source": "subject-overlay-4.0",
+  "schema_version": "1.0",
+  "implementation_guidance": {
+    "how_to_use": "hydrateWritableSignals merges these names into the project dest after stack-overlay. Existing names keep stats. Flesh repo-* from live package.json when the dest definition is still the generic field-observed stub.",
+    "integration_points": [
+      "hydrateWritableSignals",
+      "syncWorkspaceRepos",
+      "XraySessionIngester kernel diary"
+    ],
+    "priority_order": "factory traps, then OP-PROC stack, then subject repos. Never write the factory tarball."
+  },
+  "signals": [
+    {
+      "name": "repo-xray",
+      "definition": "0xRay suit exo. Three-subsystem OS (Inference, External Governance, Autonomous Engine). Cursor is fifth wear. Not a hangar.",
+      "tags": ["subject", "suit", "repo"],
+      "priority": "high",
+      "status": "proposed",
+      "first_seen": "2026-09-22",
+      "evaluation_criteria": "Task language about mill, Codex, Station heat, or consumer MCP routes to this name.",
+      "validation_experiment": "Ask getTaskConfidence about surviving the context window / Cursor hooks.",
+      "master_index_integration": "Project dest only. Factory tarball stays 8 names.",
+      "implementation_notes": "Hangar is not suit. Do not deploy this tarball onto website/blips/clearing.",
+      "example_inference_snippet": "0xRay suit that survives the context window. Cursor fifth wear. Mill plus inspect.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-22T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "repo-repertoire",
+      "definition": "Judgment organ. Project dest is the living KB. Factory seed is 8 traps. Overlay OP-PROC is how we work. Subject names are what the stack is.",
+      "tags": ["subject", "organ", "repo"],
+      "priority": "high",
+      "status": "proposed",
+      "first_seen": "2026-09-22",
+      "evaluation_criteria": "Task language about dest, hydrate, kernel ingest, or long-running KB matches this name.",
+      "validation_experiment": "Ask getTaskConfidence about growing dest from 0xRay session files.",
+      "master_index_integration": "Project dest only.",
+      "implementation_notes": "Do not pin 0.1.8. Groover is not this organ.",
+      "example_inference_snippet": "Repertoire project dest is the long-running knowledge base. Factory seed is not the brain.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-22T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "repo-clearing",
+      "definition": "Clearing hangar. x402 pay rail: spend USDC only on live endpoints, never twice. Sells receipted URL extracts. Not a suit.",
+      "tags": ["subject", "hangar", "repo"],
+      "priority": "high",
+      "status": "proposed",
+      "first_seen": "2026-09-22",
+      "evaluation_criteria": "Task language about x402, catalog, or receipted extract matches this name.",
+      "validation_experiment": "Ask getTaskConfidence about paying only live x402 services.",
+      "master_index_integration": "Project dest only. Hangar stays unsuitied unless an AI sits down.",
+      "implementation_notes": "Hangar is not suit. Do not invent Station as the hangar identity.",
+      "example_inference_snippet": "Pay only live x402 services. Never double-pay. Clearing catalog hangar.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-22T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "repo-groover",
+      "definition": "Groover identity plus factory website hangar. MCP-native agent registry. Broken experiment of how Repertoire ingest was supposed to work. Not the organ.",
+      "tags": ["subject", "hangar", "repo"],
+      "priority": "high",
+      "status": "proposed",
+      "first_seen": "2026-09-22",
+      "evaluation_criteria": "Task language about the registry website or Groover field dump matches this name, not repertoire-is-long-running-kb.",
+      "validation_experiment": "Ask getTaskConfidence about Groover website hangar vs dest growth.",
+      "master_index_integration": "Remembered, not suited. Do not grow dest from Groover JSONL by default.",
+      "implementation_notes": "Groover is not Repertoire.",
+      "example_inference_snippet": "Groover factory website hangar. Not Repertoire. Do not grow dest from Groover field.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-22T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "repo-blips",
+      "definition": "Blips hangar. 4.44s shorties that blip. Pay rail is Clearing x402. Product mill, not a suit.",
+      "tags": ["subject", "hangar", "repo"],
+      "priority": "medium",
+      "status": "proposed",
+      "first_seen": "2026-09-22",
+      "evaluation_criteria": "Task language about 4.44s mint or blips.rippel.ai matches this name.",
+      "validation_experiment": "Ask getTaskConfidence about minting a 4.44s blip.",
+      "master_index_integration": "Hangar. Do not deploy 0xray tarball here.",
+      "implementation_notes": "Hangar is not suit.",
+      "example_inference_snippet": "Blips 4.44s mint hangar. Clearing x402 pay rail.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-22T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "repo-jelly",
+      "definition": "Jelly is dormant. Old multi-tenant sandbox / no-code 0xRay container vision. Not the current hangar story.",
+      "tags": ["subject", "dormant", "repo"],
+      "priority": "medium",
+      "status": "proposed",
+      "first_seen": "2026-09-22",
+      "evaluation_criteria": "Task language about Blaxel sandboxes or no-code containers matches this name.",
+      "validation_experiment": "Ask getTaskConfidence about Jelly being dormant.",
+      "master_index_integration": "Remembered as dormant. Do not treat as the live hangar.",
+      "implementation_notes": "jelly-is-dormant is OP-PROC. This name is the product subject.",
+      "example_inference_snippet": "Jelly multi-tenant sandbox is dormant. Not the current hangar.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-22T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "repo-jelly-engine",
+      "definition": "Jelly autonomous engine. Standalone orchestration leftover of the dormant Jelly product. Not 0xRay mill.",
+      "tags": ["subject", "dormant", "repo"],
+      "priority": "low",
+      "status": "proposed",
+      "first_seen": "2026-09-22",
+      "evaluation_criteria": "Task language about the standalone Jelly engine matches this name.",
+      "validation_experiment": "Ask getTaskConfidence about jelly-engine vs 0xRay.",
+      "master_index_integration": "Dormant sibling. Hangar-adjacent, not a suit.",
+      "implementation_notes": "Do not confuse with 0xRay kernel.",
+      "example_inference_snippet": "Jelly engine standalone autonomous leftover. Dormant with Jelly.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-22T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "repo-zigzag",
+      "definition": "ZigZag hangar. Hybrid non-custodial agent wallet and x402 payments. Money rail, not a suit.",
+      "tags": ["subject", "hangar", "repo"],
+      "priority": "medium",
+      "status": "proposed",
+      "first_seen": "2026-09-22",
+      "evaluation_criteria": "Task language about agent wallets or EIP-3009 matches this name.",
+      "validation_experiment": "Ask getTaskConfidence about non-custodial x402 wallet.",
+      "master_index_integration": "Hangar. Do not fasten mill as identity.",
+      "implementation_notes": "Hangar is not suit.",
+      "example_inference_snippet": "ZigZag non-custodial agent wallet and x402 payments hangar.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-22T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "repo-review-suit",
+      "definition": "Review-suit hire overlay. Mill plus inspect uniform with a review job. A job posting, not mill plant and not a hangar.",
+      "tags": ["subject", "suit", "repo"],
+      "priority": "medium",
+      "status": "proposed",
+      "first_seen": "2026-09-22",
+      "evaluation_criteria": "Task language about review-suit hire matches this name.",
+      "validation_experiment": "Ask getTaskConfidence about the review job overlay.",
+      "master_index_integration": "Wear overlay. Not hangar commerce.",
+      "implementation_notes": "Example hire from the 0xRay org.",
+      "example_inference_snippet": "Review-suit mill plus inspect hire overlay. Job posting, not hangar.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-22T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "repo-scout",
+      "definition": "Scout periphery repo. Adjacent tooling. Not Station and not the organ.",
+      "tags": ["subject", "periphery", "repo"],
+      "priority": "low",
+      "status": "proposed",
+      "first_seen": "2026-09-22",
+      "evaluation_criteria": "Task language naming Scout as a sibling matches this name.",
+      "validation_experiment": "Ask getTaskConfidence about scout sibling.",
+      "master_index_integration": "Remembered map entry.",
+      "implementation_notes": "Do not confuse with Station.",
+      "example_inference_snippet": "Scout periphery sibling. Not Station.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-22T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "repo-ziggy",
+      "definition": "Ziggy tweet-generator MCP. Periphery tool. Not 0xRay mill and not Repertoire.",
+      "tags": ["subject", "periphery", "repo"],
+      "priority": "low",
+      "status": "proposed",
+      "first_seen": "2026-09-22",
+      "evaluation_criteria": "Task language about quippy tweets or ziggy-mcp matches this name.",
+      "validation_experiment": "Ask getTaskConfidence about the tweet MCP.",
+      "master_index_integration": "Remembered map entry.",
+      "implementation_notes": "Periphery. Hangar-adjacent tool.",
+      "example_inference_snippet": "Ziggy quippy tweet generator MCP.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-22T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "repo-meaningful-compression",
+      "definition": "Meaningful Compression. Hyperbolic markup and synaptical composability experiment. Periphery, not the organ.",
+      "tags": ["subject", "periphery", "repo"],
+      "priority": "low",
+      "status": "proposed",
+      "first_seen": "2026-09-22",
+      "evaluation_criteria": "Task language about meaningful compression matches this name.",
+      "validation_experiment": "Ask getTaskConfidence about hyperbolic markup compression.",
+      "master_index_integration": "Remembered map entry.",
+      "implementation_notes": "Not Repertoire dest.",
+      "example_inference_snippet": "Meaningful compression hyperbolic markup experiment.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-22T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "repo-chrono-warp-drive",
+      "definition": "Chrono / Dynamo temporal resonance seat. Live solar physics documents. Adjacent to the suit, not the organ.",
+      "tags": ["subject", "periphery", "repo"],
+      "priority": "low",
+      "status": "proposed",
+      "first_seen": "2026-09-22",
+      "evaluation_criteria": "Task language about Dynamo temporal documents matches this name.",
+      "validation_experiment": "Ask getTaskConfidence about temporal resonance engine.",
+      "master_index_integration": "Remembered. Directory may slug as repo-vite-react-shadcn-ts; flesh from live package.json.",
+      "implementation_notes": "Sibling walk uses package name. Dir fallback chrono-warp-drive.",
+      "example_inference_snippet": "Dynamo temporal resonance engine. Chrono warp drive.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-22T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    },
+    {
+      "name": "repo-piddy-sequencer",
+      "definition": "Piddy sequencer periphery. Adjacent app seat. Not mill and not Repertoire.",
+      "tags": ["subject", "periphery", "repo"],
+      "priority": "low",
+      "status": "proposed",
+      "first_seen": "2026-09-22",
+      "evaluation_criteria": "Task language naming piddy matches this name.",
+      "validation_experiment": "Ask getTaskConfidence about piddy sequencer.",
+      "master_index_integration": "Remembered map entry.",
+      "implementation_notes": "piddy and piddy2 share this package name.",
+      "example_inference_snippet": "Piddy sequencer periphery app.",
+      "observation_stats": {
+        "observation_count": 1,
+        "avg_confidence": 0.55,
+        "max_confidence": 0.55,
+        "last_seen": "2026-09-22T00:00:00.000Z",
+        "governance_forced_count": 0
+      }
+    }
+  ]
+}

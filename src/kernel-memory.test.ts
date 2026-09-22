@@ -3,6 +3,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import {
+  collectKernelDiaryText,
   discoverSiblingRepos,
   discoverXrayKernelDirs,
   reloadOpProc,
@@ -144,7 +145,93 @@ describe('kernel memory + OP-PROC reload', () => {
     );
     expect(snap.dest).toContain('.xray/state/repertoire/curated_signals.json');
     const dest = JSON.parse(readFileSync(snap.dest, 'utf8')) as { signals: Array<{ name: string }> };
-    expect(dest.signals.map((signal) => signal.name)).toEqual(expect.arrayContaining(snap.names));
+    const destNames = dest.signals.map((signal) => signal.name);
+    expect(destNames).toEqual(expect.arrayContaining(snap.names));
+    expect(destNames).toContain('repo-clearing');
+    expect(snap.names).not.toContain('repo-clearing');
+  });
+
+  it('matches subject flesh after hydrate and does not treat it as OP-PROC', () => {
+    tmp = mkdtempSync(join(tmpdir(), 'repertoire-subject-route-'));
+    writeFileSync(join(tmp, 'package.json'), JSON.stringify({ name: 'consumer-app' }));
+    const service = new RepertoireService({
+      projectRoot: tmp,
+      syncField: false,
+      syncXray: false,
+    });
+    expect(service.signalsManager.getByName('repo-clearing')?.definition).toMatch(/x402/);
+    const conf = service.getTaskConfidence({
+      description: 'Pay only live x402 services. Never double-pay. Receipted URL extract catalog.',
+    });
+    expect(conf.matchedSignals).toEqual(expect.arrayContaining(['repo-clearing']));
+    expect(service.reloadOpProc().names).not.toContain('repo-clearing');
+  });
+
+  it('heats existing dest names from kernel diary and does not propose colon ids', () => {
+    tmp = mkdtempSync(join(tmpdir(), 'repertoire-kernel-diary-'));
+    writeFileSync(join(tmp, 'package.json'), JSON.stringify({ name: 'consumer-app' }));
+    mkdirSync(join(tmp, 'logs', 'framework'), { recursive: true });
+    writeFileSync(
+      join(tmp, 'logs', 'framework', 'activity.log'),
+      [
+        'Continue this card. Compaction and host change are the same cut.',
+        'Pay only live x402 services. Clearing catalog hangar.',
+        'architect:architect_skill should stay out of dest.',
+      ].join('\n'),
+    );
+    const diary = collectKernelDiaryText(tmp);
+    expect(diary.sources.some((source) => source.endsWith('activity.log'))).toBe(true);
+    const service = new RepertoireService({
+      projectRoot: tmp,
+      syncField: false,
+      syncXray: false,
+    });
+    const before = service.signalsManager.getByName('station-survives-the-cut')?.observation_stats
+      ?.observation_count;
+    const heated = service.heatKernelDiary(diary);
+    expect(heated.heated).toEqual(
+      expect.arrayContaining(['station-survives-the-cut', 'repo-clearing']),
+    );
+    expect(service.signalsManager.getByName('architect-architect-skill')).toBeUndefined();
+    expect(
+      service.signalsManager.getByName('station-survives-the-cut')?.observation_stats
+        ?.observation_count,
+    ).toBeGreaterThan(before ?? 0);
+  });
+
+  it('fleshes generic sibling stubs from package.json without overwriting subject overlay', () => {
+    tmp = mkdtempSync(join(tmpdir(), 'repertoire-flesh-sibling-'));
+    mkdirSync(join(tmp, 'xray'));
+    mkdirSync(join(tmp, 'clearing'));
+    writeFileSync(
+      join(tmp, 'xray', 'package.json'),
+      JSON.stringify({ name: '0xray', description: 'live suit exo description from package.json' }),
+    );
+    writeFileSync(
+      join(tmp, 'clearing', 'package.json'),
+      JSON.stringify({ name: 'clearing', description: 'should not overwrite overlay x402 flesh' }),
+    );
+    const seat = join(tmp, 'repertoire');
+    mkdirSync(seat);
+    writeFileSync(join(seat, 'package.json'), JSON.stringify({ name: '@0xray/repertoire' }));
+    const service = new RepertoireService({
+      projectRoot: seat,
+      syncField: false,
+      syncXray: false,
+    });
+    const extra = join(tmp, 'scout');
+    mkdirSync(extra);
+    writeFileSync(
+      join(extra, 'package.json'),
+      JSON.stringify({ name: 'brand-new-hangar-xyz', description: 'brand new hangar from package.json' }),
+    );
+    const result = service.syncWorkspaceRepos();
+    expect(service.signalsManager.getByName('repo-clearing')?.definition).toMatch(/x402/);
+    expect(service.signalsManager.getByName('repo-xray')?.definition).toMatch(/Three-subsystem OS/);
+    expect(result.observed).toEqual(expect.arrayContaining(['repo-brand-new-hangar-xyz']));
+    expect(service.signalsManager.getByName('repo-brand-new-hangar-xyz')?.definition).toBe(
+      'brand new hangar from package.json',
+    );
   });
 
   it('shouldAutoSyncXray stays off under Vitest unless forced', () => {

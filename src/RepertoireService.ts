@@ -17,14 +17,17 @@ import { DEFAULT_MIN_CONFIDENCE_GATE } from './orchestrator-bridge/confidence-ga
 import { effectiveSignalConfidence } from './registry/confidence-decay.js';
 import {
   DEFAULT_SIGNALS_PATH,
+  collectKernelDiaryText,
   defaultWritablePaths,
   discoverFieldLogDirs,
   discoverSiblingRepos,
   discoverXrayKernelDirs,
   hydrateWritableSignals,
+  isGenericFieldObservedDefinition,
   reloadOpProc,
   shouldAutoSyncField,
   shouldAutoSyncXray,
+  type KernelDiaryCollect,
   type OpProcReload,
 } from './paths.js';
 import type {
@@ -89,6 +92,7 @@ export class RepertoireService {
     if (shouldAutoSyncXray(options.syncXray)) {
       this.syncXrayMemory();
       this.syncWorkspaceRepos();
+      this.heatKernelDiary();
     }
   }
 
@@ -156,9 +160,10 @@ export class RepertoireService {
     return { imported, skipped, promoted, sources };
   }
 
-  syncWorkspaceRepos(): { observed: string[]; sources: string[] } {
+  syncWorkspaceRepos(): { observed: string[]; fleshed: string[]; sources: string[] } {
     const siblings = discoverSiblingRepos(this.projectRoot);
     const observed: string[] = [];
+    const fleshed: string[] = [];
     const sources: string[] = [];
     const matches = siblings.map((sibling) => {
       sources.push(sibling.root);
@@ -170,7 +175,44 @@ export class RepertoireService {
         if (!observed.includes(name)) observed.push(name);
       }
     }
-    return { observed, sources };
+    for (const sibling of siblings) {
+      const existing = this.signalsManager.getByName(sibling.primitive);
+      if (
+        !existing ||
+        !isGenericFieldObservedDefinition(existing.definition) ||
+        !sibling.description.trim()
+      ) {
+        continue;
+      }
+      if (
+        this.signalsManager.fleshGenericRepoSignal(
+          sibling.primitive,
+          sibling.description,
+          sibling.description,
+        )
+      ) {
+        fleshed.push(sibling.primitive);
+      }
+    }
+    return { observed, fleshed, sources };
+  }
+
+  /**
+   * Heat existing dest names from kernel diary text. No new names.
+   * Colon pattern ids like `architect:architect_skill` never become dest keys.
+   */
+  heatKernelDiary(collected?: KernelDiaryCollect): { heated: string[]; sources: string[] } {
+    const diary = collected ?? collectKernelDiaryText(this.projectRoot);
+    if (!diary.text.trim()) {
+      return { heated: [], sources: diary.sources };
+    }
+    const hits = this.signalsManager.matchByText(diary.text, 2);
+    const matches = hits.map((hit) => ({
+      name: hit.signal.name,
+      confidence: 0.55,
+    }));
+    const heated = matches.length > 0 ? this.signalsManager.recordPrimitiveObservations(matches) : [];
+    return { heated, sources: diary.sources };
   }
 
   reloadOpProc(): OpProcReload {

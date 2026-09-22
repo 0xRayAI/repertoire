@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { DEFAULT_STACK_OVERLAY_PATH, PACKAGE_ROOT } from './paths.js';
+import { DEFAULT_STACK_OVERLAY_PATH, DEFAULT_SUBJECT_OVERLAY_PATH, PACKAGE_ROOT } from './paths.js';
 import { CuratedSignalsManager } from './registry/CuratedSignalsManager.js';
 import { createMemoryRoutingProvider } from './provider/memory-routing-provider.js';
 
@@ -40,6 +40,30 @@ describe('factory seed registry', () => {
     expect(overlay.signals.every((signal) => signal.observation_stats?.avg_confidence === 0.55)).toBe(
       true,
     );
+  });
+
+  it('keeps subject flesh in the subject overlay, not the factory seed', () => {
+    const subject = JSON.parse(readFileSync(DEFAULT_SUBJECT_OVERLAY_PATH, 'utf8')) as {
+      source: string;
+      signals: Array<{ name: string; definition: string }>;
+    };
+    expect(subject.source).toBe('subject-overlay-4.0');
+    const factoryNames = new Set(file.signals.map((signal) => signal.name));
+    const overlayNames = new Set(
+      (
+        JSON.parse(readFileSync(DEFAULT_STACK_OVERLAY_PATH, 'utf8')) as {
+          signals: Array<{ name: string }>;
+        }
+      ).signals.map((signal) => signal.name),
+    );
+    const names = subject.signals.map((signal) => signal.name);
+    expect(names).toContain('repo-xray');
+    expect(names).toContain('repo-clearing');
+    expect(names).toContain('repo-groover');
+    expect(subject.signals.find((signal) => signal.name === 'repo-groover')?.definition).toMatch(
+      /Not the organ/,
+    );
+    expect(names.some((name) => factoryNames.has(name) || overlayNames.has(name))).toBe(false);
   });
 
   it('contains routing primitives and no bedrock names', () => {
