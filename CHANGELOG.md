@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+## [0.2.6] - 2026-09-23
+
+### Fixed
+
+- Heat touches `last_seen` and does not append a confidence sample.
+- A diary hit is the signal id, or that id with hyphens read as spaces.
+- A session score below `0.55` is dropped. Constructing the organ does not append workspace samples.
+- Stack overlay refresh keeps observation stats.
+
 ## [0.2.5] - 2026-09-22
 
 ### Added
