@@ -10,6 +10,7 @@
 - A diary hit is the signal id, or that id with hyphens read as spaces.
 - A session score below `0.55` is dropped. Constructing the organ does not append workspace samples.
 - Stack overlay refresh keeps observation stats.
+- Consumer smoke proves a subject hit is the name `repo-clearing`. x402 prose alone is not a hit.
 
 ## [0.2.5] - 2026-09-22
 
