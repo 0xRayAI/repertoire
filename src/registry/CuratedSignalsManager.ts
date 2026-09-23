@@ -11,6 +11,7 @@ import type {
   CuratedSignalsFile,
   OrchestratorFeedbackEntry,
   PrimitiveMatch,
+  SignalLesson,
   SignalMatch,
   SignalPriority,
   SignalStatus,
@@ -95,9 +96,17 @@ export function lawClauseInText(
   return false;
 }
 
+interface LearnedConvictionRow {
+  avg_confidence: number;
+  evidence_count?: number;
+  updated_at: string;
+  lessons?: SignalLesson[];
+  retained_lesson_ids?: string[];
+}
+
 interface LearnedConvictionFile {
   schema_version: '1';
-  signals: Record<string, { avg_confidence: number; evidence_count?: number; updated_at: string }>;
+  signals: Record<string, LearnedConvictionRow>;
 }
 
 function evidenceWeight(
@@ -115,12 +124,52 @@ function seededEvidenceCount(evidence: number | undefined): number {
   return typeof evidence === 'number' && evidence > 0 ? evidence : 1;
 }
 
-function isAboveConfidenceFloor(
+function validLessons(value: unknown): SignalLesson[] {
+  if (!Array.isArray(value)) return [];
+  const lessons: SignalLesson[] = [];
+  for (const item of value) {
+    if (!item || typeof item !== 'object') continue;
+    const row = item as Record<string, unknown>;
+    if (typeof row.taskId !== 'string' || row.taskId.length === 0) continue;
+    if (row.decision !== 'success' && row.decision !== 'failure') continue;
+    if (typeof row.text !== 'string' || typeof row.at !== 'string') continue;
+    lessons.push({ taskId: row.taskId, decision: row.decision, text: row.text, at: row.at });
+  }
+  return lessons;
+}
+
+function validLessonIds(value: unknown): string[] {
+  if (!Array.isArray(value)) return [];
+  return value.filter((item): item is string => typeof item === 'string' && item.length > 0);
+}
+
+function convictionRecord(
+  stats: { avg_confidence: number; evidence_count?: number; last_seen: string },
+  signal: { lessons?: SignalLesson[]; retained_lesson_ids?: string[] },
+  prior?: LearnedConvictionRow,
+): LearnedConvictionRow {
+  const lessons = signal.lessons?.length ? signal.lessons : prior?.lessons;
+  const retained = signal.retained_lesson_ids?.length ? signal.retained_lesson_ids : prior?.retained_lesson_ids;
+  const row: LearnedConvictionRow = {
+    avg_confidence: stats.avg_confidence,
+    evidence_count: seededEvidenceCount(stats.evidence_count),
+    updated_at: stats.last_seen,
+  };
+  if (lessons?.length) row.lessons = lessons;
+  if (retained?.length) row.retained_lesson_ids = retained;
+  return row;
+}
+
+export function isAboveConfidenceFloor(
   value: number,
   gate = DEFAULT_PROMOTION_MIN_CONFIDENCE,
 ): boolean {
   return value > gate && !isConfidenceFloor(value, gate);
 }
+
+/** Hot lines kept on a law. Older lines leave only after their task id is in the ledger. */
+export const LESSON_LINE_CAP = 20;
+export const LESSON_TEXT_CAP = 400;
 
 const FIELD_PRIMITIVE_NAME = /^[A-Za-z][A-Za-z0-9_-]{2,119}$/;
 
@@ -540,6 +589,16 @@ export class CuratedSignalsManager {
       const signal = data.signals.find((candidate) => candidate.name === signalName);
       if (!signal) continue;
 
+      const lessonText = typeof entry.lesson === 'string' ? entry.lesson.trim().slice(0, LESSON_TEXT_CAP) : '';
+      if (this.rememberLesson(signal, {
+        taskId: entry.taskId,
+        decision: entry.success ? 'success' : 'failure',
+        text: lessonText,
+        at: now,
+      }) === 'already') {
+        continue;
+      }
+
       const previousAvg = signal.observation_stats?.avg_confidence ?? null;
       const previousFeedback = signal.feedback_stats;
       const outcomeCount = (previousFeedback?.outcome_count ?? 0) + 1;
@@ -570,7 +629,7 @@ export class CuratedSignalsManager {
           evidence_count: weight > 0 ? weight : 1,
           last_seen: now,
         };
-        this.writeLearnedConviction(signal.name, signal.observation_stats);
+        this.writeLearnedConviction(signal.name, signal.observation_stats, signal);
       }
 
       results.push({
@@ -589,20 +648,40 @@ export class CuratedSignalsManager {
   }
 
   /**
+   * Append one graded line. A task id already on the law, or already aged into
+   * the ledger, does not move the average and does not append again.
+   * Past the cap, the oldest line leaves only after its id is in the ledger.
+   */
+  private rememberLesson(signal: CuratedSignal, line: SignalLesson): 'stored' | 'already' {
+    if (!line.taskId) return 'already';
+    const lessons = [...(signal.lessons ?? [])];
+    const retained = new Set(signal.retained_lesson_ids ?? []);
+    if (lessons.some((stored) => stored.taskId === line.taskId) || retained.has(line.taskId)) {
+      return 'already';
+    }
+    lessons.push(line);
+    const overflow = lessons.length - LESSON_LINE_CAP;
+    if (overflow > 0) {
+      for (const aged of lessons.splice(0, overflow)) retained.add(aged.taskId);
+    }
+    signal.lessons = lessons;
+    if (retained.size > 0) signal.retained_lesson_ids = [...retained].sort();
+    return 'stored';
+  }
+
+  /**
    * Conviction that left the 0.55 floor. Not the observation counter.
-   * A wake that copies the overlay floor back onto dest restores this file.
+   * Graded lines sit beside the average. A wake that copies the overlay floor
+   * back onto dest restores both.
    */
   private writeLearnedConviction(
     name: string,
     stats: NonNullable<CuratedSignal['observation_stats']>,
+    signal: CuratedSignal,
   ): void {
     if (isFactorySeedFile(this.filePath)) return;
     const file = this.readLearnedConvictionFile();
-    file.signals[name] = {
-      avg_confidence: stats.avg_confidence,
-      evidence_count: seededEvidenceCount(stats.evidence_count),
-      updated_at: stats.last_seen,
-    };
+    file.signals[name] = convictionRecord(stats, signal, file.signals[name]);
     this.writeLearnedConvictionFile(file);
   }
 
@@ -635,14 +714,19 @@ export class CuratedSignalsManager {
         row && typeof row.evidence_count === 'number' && row.evidence_count > 0
           ? row.evidence_count
           : undefined;
-      if (!missing && !higher && rowEvidence !== undefined) continue;
+      const nextLessons = signal.lessons?.length ? signal.lessons : validLessons(row?.lessons);
+      const nextRetained = signal.retained_lesson_ids?.length
+        ? signal.retained_lesson_ids
+        : validLessonIds(row?.retained_lesson_ids);
+      const sameLessons = JSON.stringify(nextLessons) === JSON.stringify(validLessons(row?.lessons));
+      const sameRetained = JSON.stringify(nextRetained) === JSON.stringify(validLessonIds(row?.retained_lesson_ids));
+      if (!missing && !higher && rowEvidence !== undefined && sameLessons && sameRetained) continue;
       const keptAvg =
         !missing && !higher && rowAvg !== undefined ? rowAvg : current.avg_confidence;
-      learned.signals[signal.name] = {
-        avg_confidence: keptAvg,
-        evidence_count: evidence,
-        updated_at: current.last_seen,
-      };
+      learned.signals[signal.name] = convictionRecord(
+        { ...current, avg_confidence: keptAvg },
+        { lessons: nextLessons, retained_lesson_ids: nextRetained },
+      );
       seeded.push(signal.name);
     }
 
@@ -697,13 +781,24 @@ export class CuratedSignalsManager {
       const signal = data.signals.find((entry) => entry.name === name);
       const stats = signal?.observation_stats;
       if (!signal || !stats) continue;
-      if (!isConfidenceFloor(stats.avg_confidence)) continue;
-      signal.observation_stats = {
-        ...stats,
-        avg_confidence: row.avg_confidence,
-        evidence_count:
-          typeof row.evidence_count === 'number' ? row.evidence_count : stats.evidence_count,
-      };
+      const learnedLessons = validLessons(row.lessons);
+      const learnedIds = validLessonIds(row.retained_lesson_ids);
+      const avgOnFloor = isConfidenceFloor(stats.avg_confidence);
+      const destHasLessons = (signal.lessons?.length ?? 0) > 0;
+      if (!avgOnFloor && destHasLessons) continue;
+      if (!avgOnFloor && learnedLessons.length === 0 && learnedIds.length === 0) continue;
+      if (avgOnFloor) {
+        signal.observation_stats = {
+          ...stats,
+          avg_confidence: row.avg_confidence,
+          evidence_count:
+            typeof row.evidence_count === 'number' ? row.evidence_count : stats.evidence_count,
+        };
+      }
+      if (!destHasLessons && learnedLessons.length > 0) signal.lessons = learnedLessons;
+      if ((signal.retained_lesson_ids?.length ?? 0) === 0 && learnedIds.length > 0) {
+        signal.retained_lesson_ids = learnedIds;
+      }
       restored.push(name);
     }
     if (restored.length > 0) this.save(data);

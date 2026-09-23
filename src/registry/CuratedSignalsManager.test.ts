@@ -4,9 +4,11 @@ import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import {
   CuratedSignalsManager,
+  LESSON_LINE_CAP,
   lawClauseInText,
 } from './CuratedSignalsManager.js';
 import { getConfidenceForTask } from '../orchestrator-bridge/confidence-gate.js';
+import { SignalInjector } from '../orchestrator-bridge/signal-injector.js';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 
 describe('CuratedSignalsManager confidence tracking', () => {
@@ -530,5 +532,132 @@ describe('CuratedSignalsManager confidence tracking', () => {
     expect(learned.signals['parse-mutation-detector']?.evidence_count).toBe(4);
     expect(learned.signals['trust-transfer-boundary']?.avg_confidence).toBeCloseTo(0.9, 5);
     expect(learned.signals['trust-transfer-boundary']?.evidence_count).toBe(3);
+  });
+
+  it('keeps a graded line beside the average and does not step the same task twice', () => {
+    tempDir = mkdtempSync(join(tmpdir(), 'repertoire-signals-'));
+    const filePath = join(tempDir, 'curated_signals.json');
+    const manager = new CuratedSignalsManager(filePath);
+    manager.addSignal({
+      name: 'wake-cascade',
+      definition: 'Chat is not the brain. The cascade is the repertoire name wake-cascade.',
+      tags: ['cascade'],
+      priority: 'high',
+      status: 'validated',
+      evaluation_criteria: 'named law',
+      validation_experiment: 'grade',
+      master_index_integration: 'dest',
+      implementation_notes: 'notes',
+    });
+    manager.recordPrimitiveObservations([
+      { name: 'wake-cascade', confidence: 0.55 },
+      { name: 'wake-cascade', confidence: 0.55 },
+    ]);
+    manager.recordFeedbackOutcome({
+      timestamp: '2026-09-23T20:00:00.000Z',
+      sessionId: 'sess-1',
+      taskId: 'named:wake-cascade:sess-1',
+      assignedAgent: 'inference-cycle',
+      repertoireSignals: ['wake-cascade'],
+      complexity: 0,
+      success: true,
+      durationMs: 0,
+      lesson: 'fix: observe the law',
+    });
+    const taught = manager.getByName('wake-cascade');
+    expect(taught?.lessons).toEqual([{
+      taskId: 'named:wake-cascade:sess-1',
+      decision: 'success',
+      text: 'fix: observe the law',
+      at: '2026-09-23T20:00:00.000Z',
+    }]);
+    const avg = taught?.observation_stats?.avg_confidence ?? 0;
+    expect(avg).toBeCloseTo(0.65, 5);
+    const learned = JSON.parse(readFileSync(join(tempDir, 'learned-conviction.json'), 'utf8')) as {
+      signals: Record<string, { lessons?: Array<{ text: string }> }>;
+    };
+    expect(learned.signals['wake-cascade']?.lessons?.[0]?.text).toBe('fix: observe the law');
+
+    manager.recordFeedbackOutcome({
+      timestamp: '2026-09-23T20:05:00.000Z',
+      sessionId: 'sess-1',
+      taskId: 'named:wake-cascade:sess-1',
+      assignedAgent: 'inference-cycle',
+      repertoireSignals: ['wake-cascade'],
+      complexity: 0,
+      success: true,
+      durationMs: 0,
+      lesson: 'fix: observe the law',
+    });
+    expect(manager.getByName('wake-cascade')?.observation_stats?.avg_confidence).toBeCloseTo(avg, 5);
+    expect(manager.getByName('wake-cascade')?.lessons).toHaveLength(1);
+
+    const route = new SignalInjector(manager, tempDir).buildRoutingContext('wake-cascade');
+    expect(route.lessons?.[0]?.name).toBe('wake-cascade');
+    expect(route.lessons?.[0]?.lines[0]?.text).toBe('fix: observe the law');
+    expect(route.lessons?.[0]?.definition).toContain('Chat is not the brain');
+
+    const data = JSON.parse(readFileSync(filePath, 'utf8')) as {
+      signals: Array<{ lessons?: unknown; observation_stats?: { avg_confidence: number } }>;
+    };
+    const row = data.signals[0];
+    if (row?.observation_stats) row.observation_stats.avg_confidence = 0.55;
+    if (row) row.lessons = [];
+    writeFileSync(filePath, JSON.stringify(data));
+    const woken = new CuratedSignalsManager(filePath);
+    expect(woken.getByName('wake-cascade')?.observation_stats?.avg_confidence).toBeCloseTo(0.65, 5);
+    expect(woken.getByName('wake-cascade')?.lessons?.[0]?.text).toBe('fix: observe the law');
+  });
+
+  it('ages a graded line only after its task id is in the ledger', () => {
+    tempDir = mkdtempSync(join(tmpdir(), 'repertoire-signals-'));
+    const filePath = join(tempDir, 'curated_signals.json');
+    const manager = new CuratedSignalsManager(filePath);
+    manager.addSignal({
+      name: 'wake-cascade',
+      definition: 'Chat is not the brain.',
+      tags: ['cascade'],
+      priority: 'high',
+      status: 'validated',
+      evaluation_criteria: 'named law',
+      validation_experiment: 'grade',
+      master_index_integration: 'dest',
+      implementation_notes: 'notes',
+    });
+    manager.recordPrimitiveObservations([
+      { name: 'wake-cascade', confidence: 0.55 },
+      { name: 'wake-cascade', confidence: 0.55 },
+    ]);
+    for (let index = 0; index < LESSON_LINE_CAP + 1; index += 1) {
+      manager.recordFeedbackOutcome({
+        timestamp: '2026-09-23T21:00:00.000Z',
+        sessionId: `sess-${index}`,
+        taskId: `named:wake-cascade:sess-${index}`,
+        assignedAgent: 'inference-cycle',
+        repertoireSignals: ['wake-cascade'],
+        complexity: 0,
+        success: true,
+        durationMs: 0,
+        lesson: `line ${index}`,
+      });
+    }
+    const signal = manager.getByName('wake-cascade');
+    expect(signal?.lessons).toHaveLength(LESSON_LINE_CAP);
+    expect(signal?.lessons?.some((line) => line.taskId === 'named:wake-cascade:sess-0')).toBe(false);
+    expect(signal?.retained_lesson_ids).toContain('named:wake-cascade:sess-0');
+    const held = signal?.observation_stats?.avg_confidence ?? 0;
+    manager.recordFeedbackOutcome({
+      timestamp: '2026-09-23T22:00:00.000Z',
+      sessionId: 'sess-0',
+      taskId: 'named:wake-cascade:sess-0',
+      assignedAgent: 'inference-cycle',
+      repertoireSignals: ['wake-cascade'],
+      complexity: 0,
+      success: true,
+      durationMs: 0,
+      lesson: 'line 0',
+    });
+    expect(manager.getByName('wake-cascade')?.observation_stats?.avg_confidence).toBeCloseTo(held, 5);
+    expect(manager.getByName('wake-cascade')?.lessons).toHaveLength(LESSON_LINE_CAP);
   });
 });

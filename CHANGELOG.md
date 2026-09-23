@@ -9,6 +9,7 @@
 - Retrieval hits a consecutive definition clause inside a short window. Two definition words are not a hit. The same words scattered through a long diary are not a hit. x402 prose alone is not a hit.
 - `learned-conviction.json` beside dest restores conviction when a wake flattens `avg_confidence` back to `0.55`.
 - Load writes that file for dest averages already above `0.55`, including historical averages with no `evidence_count`. Evidence is the existing positive count, otherwise 1. Floor averages, including float dust at `0.55`, stay out of the file.
+- A graded outcome appends one line on the named law and stores that line beside the average. The same task id does not step the average again. Past 20 lines, the oldest text leaves only after its task id is in the ledger. A route for a law above `0.55` includes the law text and those lines.
 
 ## [0.2.6] - 2026-09-23
 
