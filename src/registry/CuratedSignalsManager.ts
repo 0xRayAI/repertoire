@@ -35,6 +35,20 @@ export const FEEDBACK_MIN_CONFIDENCE = DEFAULT_PROMOTION_MIN_CONFIDENCE;
 
 const FIELD_PRIMITIVE_NAME = /^[A-Za-z][A-Za-z0-9_-]{2,119}$/;
 
+/**
+ * The diary names a law only when it contains the signal id, or the id with
+ * hyphens read as spaces. A repo tail, leftover tokens, and two definition
+ * words are not the name.
+ */
+export function signalNameInText(text: string, name: string): boolean {
+  const normalized = text.toLowerCase();
+  const id = name.toLowerCase();
+  if (!id) return false;
+  if (normalized.includes(id)) return true;
+  const spaced = id.replace(/-/g, ' ');
+  return spaced !== id && normalized.includes(spaced);
+}
+
 const GROOVER_EXPERIMENT_NAMES = new Set([
   'criteria_selection_gap',
   'external_norm_smuggling_risk',
@@ -166,26 +180,18 @@ export class CuratedSignalsManager {
   }
 
   /**
-   * Score text against all signals using name, tags, definition, criteria, and snippet.
+   * Score text against signals. A hit requires the signal id, or the id with
+   * hyphens read as spaces. Two definition words are not a match.
    */
   matchByText(text: string, minScore = 2): SignalMatch[] {
     const normalized = text.toLowerCase();
     const matches: SignalMatch[] = [];
 
     for (const signal of this.load().signals) {
-      const matchedOn: SignalMatch['matchedOn'] = [];
-      let score = 0;
+      if (!signalNameInText(text, signal.name)) continue;
 
-      if (normalized.includes(signal.name.replace(/-/g, ' ')) || normalized.includes(signal.name)) {
-        score += 5;
-        matchedOn.push('name');
-      } else if (signal.name.startsWith('repo-')) {
-        const tail = signal.name.slice(5);
-        if (tail.length >= 3 && new RegExp(`\\b${tail}\\b`, 'i').test(normalized)) {
-          score += 5;
-          matchedOn.push('name');
-        }
-      }
+      const matchedOn: SignalMatch['matchedOn'] = ['name'];
+      let score = 5;
 
       for (const tag of signal.tags) {
         if (normalized.includes(tag.toLowerCase())) {
@@ -248,6 +254,41 @@ export class CuratedSignalsManager {
     }
 
     return matches.sort((a, b) => b.score - a.score);
+  }
+
+  /**
+   * Mark names the diary already matched. Does not append a confidence sample.
+   * Missing names are left absent. Heat must not mint a law.
+   */
+  touchLastSeen(names: string[]): string[] {
+    const data = this.load();
+    const now = new Date().toISOString();
+    const updated: string[] = [];
+    const seen = new Set<string>();
+
+    for (const name of names) {
+      if (!name || seen.has(name)) continue;
+      seen.add(name);
+      const signal = data.signals.find((entry) => entry.name === name);
+      if (!signal) continue;
+      const previous = signal.observation_stats;
+      signal.observation_stats = previous
+        ? { ...previous, last_seen: now }
+        : {
+            observation_count: 0,
+            avg_confidence: 0,
+            max_confidence: 0,
+            last_seen: now,
+            governance_forced_count: 0,
+          };
+      updated.push(signal.name);
+    }
+
+    if (updated.length > 0) {
+      this.save(data);
+    }
+
+    return updated;
   }
 
   recordPrimitiveObservations(

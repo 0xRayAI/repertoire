@@ -103,6 +103,49 @@ describe('factory path helpers', () => {
     expect(names.filter((name) => name === 'station-survives-the-cut')).toHaveLength(1);
   });
 
+  it('refreshes a changed stack definition and keeps observation stats', () => {
+    tmp = mkdtempSync(join(tmpdir(), 'repertoire-stack-refresh-'));
+    writeFileSync(join(tmp, 'package.json'), JSON.stringify({ name: 'consumer-app' }));
+    const dest = hydrateWritableSignals(DEFAULT_SIGNALS_PATH, tmp);
+    const overlay = JSON.parse(readFileSync(DEFAULT_STACK_OVERLAY_PATH, 'utf8')) as {
+      signals: Array<{ name: string; definition: string }>;
+    };
+    const overlayLaw = overlay.signals.find((signal) => signal.name === 'station-survives-the-cut');
+    const raw = JSON.parse(readFileSync(dest, 'utf8')) as {
+      signals: Array<{
+        name: string;
+        definition: string;
+        observation_stats?: { observation_count: number; avg_confidence: number; last_seen: string };
+      }>;
+    };
+    const target = raw.signals.find((signal) => signal.name === 'station-survives-the-cut');
+    if (!target || !overlayLaw) {
+      throw new Error('station-survives-the-cut missing from dest or overlay');
+    }
+    target.definition = 'stale definition that the overlay must replace';
+    target.observation_stats = {
+      observation_count: 9,
+      avg_confidence: 0.57,
+      last_seen: '2026-01-01T00:00:00.000Z',
+    };
+    writeFileSync(dest, `${JSON.stringify(raw, null, 2)}\n`);
+    expect(mergeStackOverlay(dest)).toBeGreaterThan(0);
+    const refreshed = (
+      JSON.parse(readFileSync(dest, 'utf8')) as {
+        signals: Array<{
+          name: string;
+          definition: string;
+          observation_stats?: { observation_count: number; avg_confidence: number; last_seen: string };
+        }>;
+      }
+    ).signals.find((signal) => signal.name === 'station-survives-the-cut');
+    expect(refreshed?.definition).toBe(overlayLaw.definition);
+    expect(refreshed?.observation_stats?.observation_count).toBe(9);
+    expect(refreshed?.observation_stats?.avg_confidence).toBe(0.57);
+    expect(refreshed?.observation_stats?.last_seen).toBe('2026-01-01T00:00:00.000Z');
+    expect(mergeStackOverlay(dest)).toBe(0);
+  });
+
   it('merges overlay when signalsPath is already the project dest', () => {
     tmp = mkdtempSync(join(tmpdir(), 'repertoire-existing-dest-'));
     writeFileSync(join(tmp, 'package.json'), JSON.stringify({ name: 'consumer-app' }));

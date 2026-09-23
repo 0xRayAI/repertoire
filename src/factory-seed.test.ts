@@ -99,7 +99,7 @@ describe('factory seed registry', () => {
     const conf = provider.getTaskConfidence?.({
       id: 'stack-kb',
       description:
-        'Factory seed is not the brain. Wear the project copy. Repertoire is the long-running KB. Clean ticks every cycle. Unsubscribe then resubscribe.',
+        'Factory seed is not the brain. Wear the project copy. repertoire is long running kb. Clean ticks every cycle. Unsubscribe then resubscribe.',
       type: 'general',
     });
     expect(conf?.matchedSignals?.length ?? 0).toBeGreaterThan(0);

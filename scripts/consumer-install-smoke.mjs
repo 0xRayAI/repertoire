@@ -149,14 +149,26 @@ assert(
   'subject does not duplicate factory or stack names',
   !subjectNames.some((n) => names.includes(n) || overlayNames.includes(n)),
 );
+const subjectMiss = {
+  id: 'consumer-smoke-subject-miss',
+  description: 'Pay only live x402 services. Never double-pay. Receipted URL extract catalog.',
+  type: 'general',
+};
+const subjectMissConfidence = provider.getTaskConfidence?.(subjectMiss);
+assert(
+  'subject prose without the name does not match',
+  Array.isArray(subjectMissConfidence?.matchedSignals) &&
+    !subjectMissConfidence.matchedSignals.includes('repo-clearing'),
+  `got ${JSON.stringify(subjectMissConfidence?.matchedSignals ?? [])}`,
+);
 const subjectTask = {
   id: 'consumer-smoke-subject',
-  description: 'Pay only live x402 services. Never double-pay. Receipted URL extract catalog.',
+  description: 'repo-clearing pays only live x402 services.',
   type: 'general',
 };
 const subjectConfidence = provider.getTaskConfidence?.(subjectTask);
 assert(
-  'subject language matches after hydrate',
+  'subject name matches after hydrate',
   Array.isArray(subjectConfidence?.matchedSignals) &&
     subjectConfidence.matchedSignals.includes('repo-clearing'),
   `got ${JSON.stringify(subjectConfidence?.matchedSignals ?? [])}`,
