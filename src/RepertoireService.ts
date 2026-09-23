@@ -199,7 +199,8 @@ export class RepertoireService {
 
   /**
    * Heat existing dest names from kernel diary text. No new names.
-   * Touches last_seen. Does not append a confidence sample.
+   * Touches last_seen only when the diary contains that signal's name
+   * (the signal id, or its distinctive name tokens). Does not append a confidence sample.
    * Colon pattern ids like `architect:architect_skill` never become dest keys.
    */
   heatKernelDiary(collected?: KernelDiaryCollect): { heated: string[]; sources: string[] } {
@@ -207,10 +208,8 @@ export class RepertoireService {
     if (!diary.text.trim()) {
       return { heated: [], sources: diary.sources };
     }
-    const hits = this.signalsManager.matchByText(diary.text, 2);
-    const heated = hits.length > 0
-      ? this.signalsManager.touchLastSeen(hits.map((hit) => hit.signal.name))
-      : [];
+    const named = this.signalsManager.namesContainedIn(diary.text);
+    const heated = named.length > 0 ? this.signalsManager.touchLastSeen(named) : [];
     return { heated, sources: diary.sources };
   }
 

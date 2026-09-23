@@ -35,6 +35,50 @@ export const FEEDBACK_MIN_CONFIDENCE = DEFAULT_PROMOTION_MIN_CONFIDENCE;
 
 const FIELD_PRIMITIVE_NAME = /^[A-Za-z][A-Za-z0-9_-]{2,119}$/;
 
+/** Name glue. Not distinctive enough to mean the diary named a law. */
+const NAME_TOKEN_STOPWORDS = new Set([
+  'a',
+  'an',
+  'the',
+  'is',
+  'not',
+  'of',
+  'and',
+  'or',
+  'to',
+  'for',
+  'on',
+  'in',
+  'by',
+  'as',
+  'at',
+  'from',
+]);
+
+function escapeNameToken(token: string): string {
+  return token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+/**
+ * The diary names a law when it contains the signal id, the id with hyphens
+ * read as spaces, or every distinctive token of that name. Two ordinary
+ * definition words are not the name.
+ */
+export function signalNameInText(text: string, name: string): boolean {
+  const normalized = text.toLowerCase();
+  const id = name.toLowerCase();
+  if (!id) return false;
+  if (normalized.includes(id)) return true;
+  const spaced = id.replace(/-/g, ' ');
+  if (spaced !== id && normalized.includes(spaced)) return true;
+  const body = id.startsWith('repo-') ? id.slice(5) : id;
+  const tokens = body
+    .split('-')
+    .filter((token) => token.length >= 3 && !NAME_TOKEN_STOPWORDS.has(token));
+  if (tokens.length === 0) return false;
+  return tokens.every((token) => new RegExp(`\\b${escapeNameToken(token)}\\b`, 'i').test(normalized));
+}
+
 const GROOVER_EXPERIMENT_NAMES = new Set([
   'criteria_selection_gap',
   'external_norm_smuggling_risk',
@@ -166,7 +210,18 @@ export class CuratedSignalsManager {
   }
 
   /**
+   * Existing names the text actually names. Heat uses this. Definition-word
+   * overlap is not a name.
+   */
+  namesContainedIn(text: string): string[] {
+    return this.load().signals
+      .map((signal) => signal.name)
+      .filter((name) => signalNameInText(text, name));
+  }
+
+  /**
    * Score text against all signals using name, tags, definition, criteria, and snippet.
+   * Routing may still score definition words. Heat must not: last_seen uses namesContainedIn.
    */
   matchByText(text: string, minScore = 2): SignalMatch[] {
     const normalized = text.toLowerCase();

@@ -97,11 +97,12 @@ describe('kernel memory + OP-PROC reload', () => {
       syncField: false,
       syncXray: false,
     });
+    const before = service.signalsManager.getByName('station-survives-the-cut')?.observation_stats;
     const result = service.ingestXraySessions(sourceDir);
     expect(result.imported).toBe(1);
-    expect(
-      service.signalsManager.getByName('station-survives-the-cut')?.observation_stats?.observation_count,
-    ).toBeGreaterThan(0);
+    const after = service.signalsManager.getByName('station-survives-the-cut')?.observation_stats;
+    expect(after?.observation_count).toBe(before?.observation_count);
+    expect(after?.avg_confidence).toBe(before?.avg_confidence);
     const conf = service.getTaskConfidence({
       description: 'Continue this card. Compaction and host change are the same cut.',
     });
@@ -195,6 +196,68 @@ describe('kernel memory + OP-PROC reload', () => {
     expect(service.reloadOpProc().names).not.toContain('repo-clearing');
   });
 
+  it('records a session sample at the source confidence and skips a weaker score', () => {
+    tmp = mkdtempSync(join(tmpdir(), 'repertoire-weak-score-'));
+    writeFileSync(join(tmp, 'package.json'), JSON.stringify({ name: 'consumer-app' }));
+    const sourceDir = join(tmp, 'docs', 'inference');
+    mkdirSync(sourceDir, { recursive: true });
+    const service = new RepertoireService({
+      projectRoot: tmp,
+      syncField: false,
+      syncXray: false,
+    });
+    const destPath = service.signalsManager.filePath;
+    const dest = JSON.parse(readFileSync(destPath, 'utf8')) as {
+      signals: Array<{
+        name: string;
+        observation_stats?: { observation_count: number; avg_confidence: number; last_seen: string };
+      }>;
+    };
+    const station = dest.signals.find((signal) => signal.name === 'station-survives-the-cut');
+    if (!station) throw new Error('station-survives-the-cut missing from dest');
+    station.observation_stats = {
+      observation_count: 4,
+      avg_confidence: 0.61,
+      last_seen: '2026-01-01T00:00:00.000Z',
+    };
+    writeFileSync(destPath, `${JSON.stringify(dest, null, 2)}\n`);
+
+    writeFileSync(
+      join(sourceDir, 'session-weak.json'),
+      JSON.stringify({
+        sessionId: 'session-weak-score',
+        timestamp: '2026-09-22T08:00:00.000Z',
+        patterns: [{ name: 'station-survives-the-cut', confidence: 0.2 }],
+      }),
+    );
+    service.ingestXraySessions(sourceDir);
+    const skipped = service.signalsManager.getByName('station-survives-the-cut')?.observation_stats;
+    expect(skipped?.observation_count).toBe(4);
+    expect(skipped?.avg_confidence).toBe(0.61);
+
+    writeFileSync(
+      join(sourceDir, 'session-real.json'),
+      JSON.stringify({
+        sessionId: 'session-real-score',
+        timestamp: '2026-09-22T09:00:00.000Z',
+        patterns: [
+          { name: 'station-survives-the-cut', confidence: 0.8 },
+          { name: 'fresh-field-primitive', confidence: 0.4 },
+          { name: 'kept-field-primitive', confidence: 0.8 },
+        ],
+      }),
+    );
+    service.ingestXraySessions(sourceDir);
+    const recorded = service.signalsManager.getByName('station-survives-the-cut')?.observation_stats;
+    expect(recorded?.observation_count).toBe(5);
+    expect(recorded?.avg_confidence).toBeCloseTo((0.61 * 4 + 0.8) / 5, 5);
+    expect(service.signalsManager.getByName('fresh-field-primitive')).toBeUndefined();
+    expect(service.signalsManager.getByName('kept-field-primitive')?.observation_stats?.observation_count).toBe(
+      1,
+    );
+    expect(service.signalsManager.getByName('kept-field-primitive')?.observation_stats?.avg_confidence).toBe(0.8);
+  });
+
   it('heats existing dest names from kernel diary and does not propose colon ids', () => {
     tmp = mkdtempSync(join(tmpdir(), 'repertoire-kernel-diary-'));
     writeFileSync(join(tmp, 'package.json'), JSON.stringify({ name: 'consumer-app' }));
@@ -203,7 +266,7 @@ describe('kernel memory + OP-PROC reload', () => {
       join(tmp, 'logs', 'framework', 'activity.log'),
       [
         'Continue this card. Compaction and host change are the same cut.',
-        'Pay only live x402 services. Clearing catalog hangar.',
+        'Pay only live x402 services. Catalog hangar.',
         'architect:architect_skill should stay out of dest.',
       ].join('\n'),
     );
@@ -222,29 +285,58 @@ describe('kernel memory + OP-PROC reload', () => {
       }>;
     };
     const station = dest.signals.find((signal) => signal.name === 'station-survives-the-cut');
-    if (!station) {
-      throw new Error('station-survives-the-cut missing from dest');
+    const unnamed = dest.signals.find((signal) => signal.name === 'jelly-is-dormant');
+    if (!station || !unnamed) {
+      throw new Error('expected dest names missing');
     }
     station.observation_stats = {
       observation_count: 4,
       avg_confidence: 0.61,
       last_seen: '2026-01-01T00:00:00.000Z',
     };
+    unnamed.observation_stats = {
+      observation_count: 3,
+      avg_confidence: 0.7,
+      last_seen: '2026-01-02T00:00:00.000Z',
+    };
     writeFileSync(destPath, `${JSON.stringify(dest, null, 2)}\n`);
-    const before = service.signalsManager.getByName('station-survives-the-cut')?.observation_stats;
-    const heated = service.heatKernelDiary(diary);
-    expect(heated.heated).toEqual(
-      expect.arrayContaining(['station-survives-the-cut', 'repo-clearing']),
-    );
+
+    const quiet = service.heatKernelDiary(diary);
+    expect(quiet.heated).not.toContain('station-survives-the-cut');
+    expect(quiet.heated).not.toContain('jelly-is-dormant');
+    const untouched = service.signalsManager.getByName('station-survives-the-cut')?.observation_stats;
+    expect(untouched?.observation_count).toBe(4);
+    expect(untouched?.avg_confidence).toBe(0.61);
+    expect(untouched?.last_seen).toBe('2026-01-01T00:00:00.000Z');
+    const unnamedQuiet = service.signalsManager.getByName('jelly-is-dormant')?.observation_stats;
+    expect(unnamedQuiet?.observation_count).toBe(3);
+    expect(unnamedQuiet?.avg_confidence).toBe(0.7);
+    expect(unnamedQuiet?.last_seen).toBe('2026-01-02T00:00:00.000Z');
+
+    const namedDiary = {
+      text: `${diary.text}\nstation-survives-the-cut`,
+      sources: diary.sources,
+    };
+    const heated = service.heatKernelDiary(namedDiary);
+    expect(heated.heated).toContain('station-survives-the-cut');
+    expect(heated.heated).not.toContain('jelly-is-dormant');
     expect(service.signalsManager.getByName('architect-architect-skill')).toBeUndefined();
     const once = service.signalsManager.getByName('station-survives-the-cut')?.observation_stats;
-    expect(once?.observation_count).toBe(before?.observation_count);
-    expect(once?.avg_confidence).toBe(before?.avg_confidence);
+    expect(once?.observation_count).toBe(4);
+    expect(once?.avg_confidence).toBe(0.61);
     expect(once?.last_seen).not.toBe('2026-01-01T00:00:00.000Z');
-    service.heatKernelDiary(diary);
+    const unnamedOnce = service.signalsManager.getByName('jelly-is-dormant')?.observation_stats;
+    expect(unnamedOnce?.last_seen).toBe('2026-01-02T00:00:00.000Z');
+    expect(unnamedOnce?.observation_count).toBe(3);
+    expect(unnamedOnce?.avg_confidence).toBe(0.7);
+    service.heatKernelDiary(namedDiary);
     const twice = service.signalsManager.getByName('station-survives-the-cut')?.observation_stats;
     expect(twice?.observation_count).toBe(4);
     expect(twice?.avg_confidence).toBe(0.61);
+    const unnamedTwice = service.signalsManager.getByName('jelly-is-dormant')?.observation_stats;
+    expect(unnamedTwice?.observation_count).toBe(3);
+    expect(unnamedTwice?.avg_confidence).toBe(0.7);
+    expect(unnamedTwice?.last_seen).toBe('2026-01-02T00:00:00.000Z');
   });
 
   it('fleshes generic sibling stubs from package.json without overwriting subject overlay', () => {
