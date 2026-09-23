@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+### Fixed
+
+- A floor observation count does not move `avg_confidence` and does not change a route.
+- Feedback moves conviction by a tenth. A failure can drop below `0.55` and leave the next decision.
+- Retrieval hits a consecutive definition clause inside a short window. Two definition words are not a hit. The same words scattered through a long diary are not a hit. x402 prose alone is not a hit.
+- `learned-conviction.json` beside dest restores conviction when a wake flattens `avg_confidence` back to `0.55`.
+
 ## [0.2.6] - 2026-09-23
 
 ### Fixed

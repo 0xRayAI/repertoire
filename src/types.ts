@@ -53,6 +53,8 @@ export interface SignalObservationStats {
   max_confidence: number;
   last_seen: string;
   governance_forced_count: number;
+  /** Samples strictly above the 0.55 gate. Floor sightings do not increment this. */
+  evidence_count?: number;
 }
 
 export interface SignalFeedbackStats {

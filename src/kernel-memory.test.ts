@@ -343,12 +343,13 @@ describe('kernel memory + OP-PROC reload', () => {
     writeFileSync(destPath, `${JSON.stringify(dest, null, 2)}\n`);
 
     const quiet = service.heatKernelDiary(diary);
-    expect(quiet.heated).not.toContain('station-survives-the-cut');
+    expect(quiet.heated).toContain('station-survives-the-cut');
     expect(quiet.heated).not.toContain('jelly-is-dormant');
-    const untouched = service.signalsManager.getByName('station-survives-the-cut')?.observation_stats;
-    expect(untouched?.observation_count).toBe(4);
-    expect(untouched?.avg_confidence).toBe(0.61);
-    expect(untouched?.last_seen).toBe('2026-01-01T00:00:00.000Z');
+    expect(quiet.heated).not.toContain('repo-clearing');
+    const clauseTouch = service.signalsManager.getByName('station-survives-the-cut')?.observation_stats;
+    expect(clauseTouch?.observation_count).toBe(4);
+    expect(clauseTouch?.avg_confidence).toBe(0.61);
+    expect(clauseTouch?.last_seen).not.toBe('2026-01-01T00:00:00.000Z');
     const unnamedQuiet = service.signalsManager.getByName('jelly-is-dormant')?.observation_stats;
     expect(unnamedQuiet?.observation_count).toBe(3);
     expect(unnamedQuiet?.avg_confidence).toBe(0.7);
