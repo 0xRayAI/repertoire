@@ -347,4 +347,188 @@ describe('CuratedSignalsManager confidence tracking', () => {
     expect(restored?.avg_confidence).toBeCloseTo(0.65, 5);
     expect(restored?.observation_count).toBe(1);
   });
+
+  it('seeds above-floor averages so a flatten restores them', () => {
+    tempDir = mkdtempSync(join(tmpdir(), 'repertoire-signals-'));
+    const filePath = join(tempDir, 'curated_signals.json');
+    const seen = '2026-09-23T12:00:00.000Z';
+    const signal = (
+      name: string,
+      avg: number,
+      evidence?: number,
+    ): {
+      name: string;
+      definition: string;
+      tags: string[];
+      priority: 'high';
+      status: 'validated';
+      evaluation_criteria: string;
+      validation_experiment: string;
+      master_index_integration: string;
+      implementation_notes: string;
+      observation_stats: {
+        observation_count: number;
+        avg_confidence: number;
+        max_confidence: number;
+        last_seen: string;
+        governance_forced_count: number;
+        evidence_count?: number;
+      };
+    } => ({
+      name,
+      definition: `${name} is a named law with a local clause.`,
+      tags: ['memory'],
+      priority: 'high',
+      status: 'validated',
+      evaluation_criteria: 'name',
+      validation_experiment: 'flatten',
+      master_index_integration: 'dest',
+      implementation_notes: 'notes',
+      observation_stats: {
+        observation_count: 9,
+        avg_confidence: avg,
+        max_confidence: avg,
+        last_seen: seen,
+        governance_forced_count: 0,
+        ...(evidence !== undefined ? { evidence_count: evidence } : {}),
+      },
+    });
+    writeFileSync(
+      filePath,
+      JSON.stringify({
+        description: 'temp dest',
+        schema_version: '1.1',
+        last_updated: seen,
+        signals: [
+          signal('attestation-as-map', 0.66),
+          signal('heat-is-not-conviction', 0.55),
+          signal('floor-dust', 0.55 + 5e-5),
+        ],
+      }),
+    );
+
+    const manager = new CuratedSignalsManager(filePath);
+    const learnedPath = join(tempDir, 'learned-conviction.json');
+    const learned = JSON.parse(readFileSync(learnedPath, 'utf8')) as {
+      signals: Record<string, { avg_confidence: number; evidence_count?: number }>;
+    };
+    expect(Object.keys(learned.signals)).toEqual(['attestation-as-map']);
+    expect(learned.signals['attestation-as-map']?.avg_confidence).toBeCloseTo(0.66, 5);
+    expect(learned.signals['attestation-as-map']?.evidence_count).toBeGreaterThanOrEqual(1);
+    expect(JSON.stringify(learned)).not.toContain('observation_count');
+    expect(manager.getByName('heat-is-not-conviction')?.observation_stats?.avg_confidence).toBeCloseTo(
+      0.55,
+      5,
+    );
+    expect(manager.getByName('floor-dust')?.observation_stats?.avg_confidence).toBeCloseTo(0.55 + 5e-5, 8);
+
+    const beforeFloor = manager.getByName('attestation-as-map')?.observation_stats;
+    manager.recordPrimitiveObservations([{ name: 'attestation-as-map', confidence: 0.55 }]);
+    const afterFloor = manager.getByName('attestation-as-map')?.observation_stats;
+    expect(afterFloor?.observation_count).toBe((beforeFloor?.observation_count ?? 0) + 1);
+    expect(afterFloor?.avg_confidence).toBeCloseTo(0.66, 5);
+    expect(afterFloor?.evidence_count).toBeGreaterThanOrEqual(1);
+    const route = getConfidenceForTask(
+      { id: 'seeded', description: 'attestation-as-map', type: 'general' },
+      manager,
+    );
+    expect(route.complexityBoost).toBe(2);
+    const floorRoute = getConfidenceForTask(
+      { id: 'floor', description: 'heat-is-not-conviction', type: 'general' },
+      manager,
+    );
+    expect(floorRoute.complexityBoost).toBe(0);
+    expect(floorRoute.matchedSignals).not.toContain('attestation-as-map');
+
+    const data = JSON.parse(readFileSync(filePath, 'utf8')) as {
+      signals: Array<{
+        name: string;
+        observation_stats?: { avg_confidence: number; observation_count: number };
+      }>;
+    };
+    const grown = data.signals.find((entry) => entry.name === 'attestation-as-map');
+    expect(grown?.observation_stats).toBeDefined();
+    if (grown?.observation_stats) {
+      grown.observation_stats.avg_confidence = 0.55;
+      grown.observation_stats.observation_count = 1;
+    }
+    writeFileSync(filePath, JSON.stringify(data));
+
+    const woken = new CuratedSignalsManager(filePath);
+    const restored = woken.getByName('attestation-as-map')?.observation_stats;
+    expect(restored?.avg_confidence).toBeCloseTo(0.66, 5);
+    expect(restored?.evidence_count).toBeGreaterThanOrEqual(1);
+    expect(restored?.observation_count).toBe(1);
+    expect(woken.getByName('heat-is-not-conviction')?.observation_stats?.avg_confidence).toBeCloseTo(
+      0.55,
+      5,
+    );
+    const survived = JSON.parse(readFileSync(learnedPath, 'utf8')) as {
+      signals: Record<string, { evidence_count?: number }>;
+    };
+    expect(survived.signals['heat-is-not-conviction']).toBeUndefined();
+    expect(survived.signals['floor-dust']).toBeUndefined();
+    expect(survived.signals['attestation-as-map']?.evidence_count).toBeGreaterThanOrEqual(1);
+  });
+
+  it('keeps a positive evidence count and does not lower a higher survival row', () => {
+    tempDir = mkdtempSync(join(tmpdir(), 'repertoire-signals-'));
+    const filePath = join(tempDir, 'curated_signals.json');
+    const seen = '2026-09-23T12:00:00.000Z';
+    const row = (name: string, avg: number, evidence: number) => ({
+      name,
+      definition: `${name} is a named law with a local clause.`,
+      tags: ['memory'],
+      priority: 'high' as const,
+      status: 'validated' as const,
+      evaluation_criteria: 'name',
+      validation_experiment: 'flatten',
+      master_index_integration: 'dest',
+      implementation_notes: 'notes',
+      observation_stats: {
+        observation_count: 3,
+        avg_confidence: avg,
+        max_confidence: avg,
+        last_seen: seen,
+        governance_forced_count: 0,
+        evidence_count: evidence,
+      },
+    });
+    writeFileSync(
+      filePath,
+      JSON.stringify({
+        description: 'temp dest',
+        schema_version: '1.1',
+        last_updated: seen,
+        signals: [row('parse-mutation-detector', 0.72, 4), row('trust-transfer-boundary', 0.7, 2)],
+      }),
+    );
+    writeFileSync(
+      join(tempDir, 'learned-conviction.json'),
+      `${JSON.stringify({
+        schema_version: '1',
+        signals: {
+          'parse-mutation-detector': {
+            avg_confidence: 0.6,
+            evidence_count: 1,
+            updated_at: seen,
+          },
+          'trust-transfer-boundary': {
+            avg_confidence: 0.9,
+            evidence_count: 3,
+            updated_at: seen,
+          },
+        },
+      })}\n`,
+    );
+
+    new CuratedSignalsManager(filePath);
+    const learned = JSON.parse(readFileSync(join(tempDir, 'learned-conviction.json'), 'utf8')) as {
+      signals: Record<string, { avg_confidence: number; evidence_count?: number }>;
+    };
+    expect(learned.signals['parse-mutation-detector']?.avg_confidence).toBeCloseTo(0.72, 5);
+    expect(learned.signals['parse-mutation-detector']?.evidence_count).toBe(4);
+    expect(learned.signals['trust-transfer-boundary']?.avg_confidence).toBeCloseTo(0.9, 5);
+    expect(learned.signals['trust-transfer-boundary']?.evidence_count).toBe(3);
+  });
 });

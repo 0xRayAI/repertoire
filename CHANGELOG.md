@@ -8,6 +8,7 @@
 - Feedback moves conviction by a tenth. A failure can drop below `0.55` and leave the next decision.
 - Retrieval hits a consecutive definition clause inside a short window. Two definition words are not a hit. The same words scattered through a long diary are not a hit. x402 prose alone is not a hit.
 - `learned-conviction.json` beside dest restores conviction when a wake flattens `avg_confidence` back to `0.55`.
+- Load writes that file for dest averages already above `0.55`, including historical averages with no `evidence_count`. Evidence is the existing positive count, otherwise 1. Floor averages, including float dust at `0.55`, stay out of the file.
 
 ## [0.2.6] - 2026-09-23
 
