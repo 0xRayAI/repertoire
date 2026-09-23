@@ -12,6 +12,7 @@ import {
 import {
   isFieldPrimitiveName,
   repoPrimitiveName,
+  signalNameInText,
   slugFieldPrimitiveName,
 } from './registry/CuratedSignalsManager.js';
 import { RepertoireService } from './RepertoireService.js';
@@ -68,11 +69,16 @@ describe('kernel memory + OP-PROC reload', () => {
 
     const conf = service.getTaskConfidence({
       description:
-        'Continue this card. Compaction and host change are the same cut. Station survives. Repertoire is the long-running KB.',
+        'Continue this card. station-survives-the-cut. repertoire-is-long-running-kb.',
     });
     expect(conf.matchedSignals).toEqual(
       expect.arrayContaining(['station-survives-the-cut', 'repertoire-is-long-running-kb']),
     );
+    const unnamed = service.getTaskConfidence({
+      description: 'Station survives. Repertoire is the long-running KB.',
+    });
+    expect(unnamed.matchedSignals).not.toContain('station-survives-the-cut');
+    expect(unnamed.matchedSignals).not.toContain('repertoire-is-long-running-kb');
   });
 
   it('heats overlay names from Cursor heat approaches', () => {
@@ -104,7 +110,7 @@ describe('kernel memory + OP-PROC reload', () => {
     expect(after?.observation_count).toBe(before?.observation_count);
     expect(after?.avg_confidence).toBe(before?.avg_confidence);
     const conf = service.getTaskConfidence({
-      description: 'Continue this card. Compaction and host change are the same cut.',
+      description: 'Continue this card. station-survives-the-cut. Compaction and host change are the same cut.',
     });
     expect(conf.matchedSignals).toEqual(expect.arrayContaining(['station-survives-the-cut']));
   });
@@ -175,7 +181,7 @@ describe('kernel memory + OP-PROC reload', () => {
     }
     writeFileSync(destPath, `${JSON.stringify(dest, null, 2)}\n`);
     const conf = service.getTaskConfidence({
-      description: 'Pay only live x402 services. Never double-pay. Receipted URL extract catalog.',
+      description: 'Pay only live x402 services. repo-clearing. Never double-pay. Receipted URL extract catalog.',
     });
     expect(conf.matchedSignals).toEqual(expect.arrayContaining(['repo-clearing']));
   });
@@ -190,7 +196,7 @@ describe('kernel memory + OP-PROC reload', () => {
     });
     expect(service.signalsManager.getByName('repo-clearing')?.definition).toMatch(/x402/);
     const conf = service.getTaskConfidence({
-      description: 'Pay only live x402 services. Never double-pay. Receipted URL extract catalog.',
+      description: 'Pay only live x402 services. repo-clearing. Never double-pay. Receipted URL extract catalog.',
     });
     expect(conf.matchedSignals).toEqual(expect.arrayContaining(['repo-clearing']));
     expect(service.reloadOpProc().names).not.toContain('repo-clearing');
@@ -256,6 +262,41 @@ describe('kernel memory + OP-PROC reload', () => {
       1,
     );
     expect(service.signalsManager.getByName('kept-field-primitive')?.observation_stats?.avg_confidence).toBe(0.8);
+
+    writeFileSync(
+      join(sourceDir, 'session-below-gate.json'),
+      JSON.stringify({
+        sessionId: 'session-below-gate',
+        timestamp: '2026-09-22T10:00:00.000Z',
+        patterns: [
+          { name: 'station-survives-the-cut', confidence: 0.4 },
+          { name: 'kept-field-primitive', confidence: 0.4 },
+        ],
+      }),
+    );
+    service.ingestXraySessions(sourceDir);
+    const below = service.signalsManager.getByName('station-survives-the-cut')?.observation_stats;
+    expect(below?.observation_count).toBe(5);
+    expect(below?.avg_confidence).toBeCloseTo((0.61 * 4 + 0.8) / 5, 5);
+    expect(service.signalsManager.getByName('kept-field-primitive')?.observation_stats?.observation_count).toBe(
+      1,
+    );
+
+    writeFileSync(
+      join(sourceDir, 'session-at-gate.json'),
+      JSON.stringify({
+        sessionId: 'session-at-gate',
+        timestamp: '2026-09-22T11:00:00.000Z',
+        patterns: [{ name: 'gate-field-primitive', confidence: 0.55 }],
+      }),
+    );
+    service.ingestXraySessions(sourceDir);
+    const gated = service.signalsManager.getByName('gate-field-primitive')?.observation_stats;
+    expect(gated?.observation_count).toBe(1);
+    expect(gated?.avg_confidence).toBe(0.55);
+    expect(service.signalsManager.getByName('station-survives-the-cut')?.observation_stats?.observation_count).toBe(
+      5,
+    );
   });
 
   it('heats existing dest names from kernel diary and does not propose colon ids', () => {
@@ -337,6 +378,28 @@ describe('kernel memory + OP-PROC reload', () => {
     expect(unnamedTwice?.observation_count).toBe(3);
     expect(unnamedTwice?.avg_confidence).toBe(0.7);
     expect(unnamedTwice?.last_seen).toBe('2026-01-02T00:00:00.000Z');
+
+    const definition = service.signalsManager.getByName('station-survives-the-cut')?.definition ?? '';
+    const longWords = definition
+      .toLowerCase()
+      .split(/[^\w.]+/)
+      .filter((word) => word.length > 5 && !word.includes('station'));
+    expect(longWords.length).toBeGreaterThanOrEqual(2);
+    const twoWords = longWords.slice(0, 2).join(' ');
+    expect(signalNameInText(twoWords, 'station-survives-the-cut')).toBe(false);
+    expect(signalNameInText('clearing', 'repo-clearing')).toBe(false);
+    expect(signalNameInText('heat conviction', 'heat-is-not-conviction')).toBe(false);
+    expect(signalNameInText('heat is not conviction', 'heat-is-not-conviction')).toBe(true);
+    const beforeWords = service.signalsManager.getByName('station-survives-the-cut')?.observation_stats;
+    const missed = service.heatKernelDiary({ text: twoWords, sources: ['definition-words'] });
+    expect(missed.heated).not.toContain('station-survives-the-cut');
+    const afterWords = service.signalsManager.getByName('station-survives-the-cut')?.observation_stats;
+    expect(afterWords?.observation_count).toBe(beforeWords?.observation_count);
+    expect(afterWords?.avg_confidence).toBe(beforeWords?.avg_confidence);
+    expect(afterWords?.last_seen).toBe(beforeWords?.last_seen);
+    const dormantAfterWords = service.signalsManager.getByName('jelly-is-dormant')?.observation_stats;
+    expect(dormantAfterWords?.last_seen).toBe('2026-01-02T00:00:00.000Z');
+    expect(dormantAfterWords?.observation_count).toBe(3);
   });
 
   it('fleshes generic sibling stubs from package.json without overwriting subject overlay', () => {
@@ -372,6 +435,29 @@ describe('kernel memory + OP-PROC reload', () => {
     expect(service.signalsManager.getByName('repo-brand-new-hangar-xyz')?.definition).toBe(
       'brand new hangar from package.json',
     );
+  });
+
+  it('constructing the organ does not append workspace samples', () => {
+    tmp = mkdtempSync(join(tmpdir(), 'repertoire-construct-workspace-'));
+    mkdirSync(join(tmp, 'scout'));
+    writeFileSync(
+      join(tmp, 'scout', 'package.json'),
+      JSON.stringify({ name: 'brand-new-hangar-xyz', description: 'brand new hangar from package.json' }),
+    );
+    const seat = join(tmp, 'repertoire');
+    mkdirSync(seat);
+    writeFileSync(join(seat, 'package.json'), JSON.stringify({ name: '@0xray/repertoire' }));
+    const service = new RepertoireService({
+      projectRoot: seat,
+      syncField: false,
+      syncXray: true,
+    });
+    expect(service.signalsManager.getByName('repo-brand-new-hangar-xyz')).toBeUndefined();
+    const explicit = service.syncWorkspaceRepos();
+    expect(explicit.observed).toEqual(expect.arrayContaining(['repo-brand-new-hangar-xyz']));
+    expect(
+      service.signalsManager.getByName('repo-brand-new-hangar-xyz')?.observation_stats?.avg_confidence,
+    ).toBe(0.55);
   });
 
   it('shouldAutoSyncXray stays off under Vitest unless forced', () => {

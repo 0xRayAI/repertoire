@@ -91,7 +91,6 @@ export class RepertoireService {
     }
     if (shouldAutoSyncXray(options.syncXray)) {
       this.syncXrayMemory();
-      this.syncWorkspaceRepos();
       this.heatKernelDiary();
     }
   }
@@ -199,8 +198,10 @@ export class RepertoireService {
 
   /**
    * Heat existing dest names from kernel diary text. No new names.
-   * Touches last_seen only when the diary contains that signal's name
-   * (the signal id, or its distinctive name tokens). Does not append a confidence sample.
+   * Touches last_seen only when the diary contains that signal's id,
+   * or the id with hyphens read as spaces. Does not append a confidence sample.
+   * Two definition words are not a hit. Heat must not mint and must not
+   * change observation_count or avg_confidence.
    * Colon pattern ids like `architect:architect_skill` never become dest keys.
    */
   heatKernelDiary(collected?: KernelDiaryCollect): { heated: string[]; sources: string[] } {
@@ -208,8 +209,10 @@ export class RepertoireService {
     if (!diary.text.trim()) {
       return { heated: [], sources: diary.sources };
     }
-    const named = this.signalsManager.namesContainedIn(diary.text);
-    const heated = named.length > 0 ? this.signalsManager.touchLastSeen(named) : [];
+    const hits = this.signalsManager.matchByText(diary.text, 2);
+    const heated = hits.length > 0
+      ? this.signalsManager.touchLastSeen(hits.map((hit) => hit.signal.name))
+      : [];
     return { heated, sources: diary.sources };
   }
 
