@@ -59,6 +59,11 @@ export interface MemoryRoutingContext {
   synthesisAvailable: boolean;
   signalConfidences?: Record<string, number>;
   avgMatchConfidence?: number;
+  lessons?: Array<{
+    name: string;
+    definition: string;
+    lines: Array<{ taskId: string; decision: 'success' | 'failure'; text: string; at: string }>;
+  }>;
 }
 
 export interface MemoryInheritedContext {
@@ -84,6 +89,7 @@ export interface OrchestratorFeedbackEntry {
   success: boolean;
   durationMs: number;
   dynamoResult?: Record<string, unknown>;
+  lesson?: string;
 }
 
 export interface MemoryRoutingProviderConfig {
@@ -157,6 +163,7 @@ function toRoutingContext(ctx: RepertoireRoutingContext): MemoryRoutingContext {
     synthesisAvailable: ctx.synthesisAvailable,
     signalConfidences: ctx.signalConfidences,
     avgMatchConfidence: ctx.avgMatchConfidence,
+    ...(ctx.lessons ? { lessons: ctx.lessons } : {}),
   };
 }
 
@@ -363,6 +370,7 @@ export class RepertoireMemoryRoutingProvider implements MemoryRoutingProvider {
       success: entry.success,
       durationMs: entry.durationMs,
       dynamoResult: entry.dynamoResult,
+      ...(typeof entry.lesson === 'string' ? { lesson: entry.lesson } : {}),
     });
   }
 

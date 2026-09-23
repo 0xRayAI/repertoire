@@ -4,9 +4,11 @@ import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import {
   CuratedSignalsManager,
+  LESSON_LINE_CAP,
   lawClauseInText,
 } from './CuratedSignalsManager.js';
 import { getConfidenceForTask } from '../orchestrator-bridge/confidence-gate.js';
+import { SignalInjector } from '../orchestrator-bridge/signal-injector.js';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 
 describe('CuratedSignalsManager confidence tracking', () => {
@@ -346,5 +348,316 @@ describe('CuratedSignalsManager confidence tracking', () => {
     const restored = woken.getByName('heat-is-not-conviction')?.observation_stats;
     expect(restored?.avg_confidence).toBeCloseTo(0.65, 5);
     expect(restored?.observation_count).toBe(1);
+  });
+
+  it('seeds above-floor averages so a flatten restores them', () => {
+    tempDir = mkdtempSync(join(tmpdir(), 'repertoire-signals-'));
+    const filePath = join(tempDir, 'curated_signals.json');
+    const seen = '2026-09-23T12:00:00.000Z';
+    const signal = (
+      name: string,
+      avg: number,
+      evidence?: number,
+    ): {
+      name: string;
+      definition: string;
+      tags: string[];
+      priority: 'high';
+      status: 'validated';
+      evaluation_criteria: string;
+      validation_experiment: string;
+      master_index_integration: string;
+      implementation_notes: string;
+      observation_stats: {
+        observation_count: number;
+        avg_confidence: number;
+        max_confidence: number;
+        last_seen: string;
+        governance_forced_count: number;
+        evidence_count?: number;
+      };
+    } => ({
+      name,
+      definition: `${name} is a named law with a local clause.`,
+      tags: ['memory'],
+      priority: 'high',
+      status: 'validated',
+      evaluation_criteria: 'name',
+      validation_experiment: 'flatten',
+      master_index_integration: 'dest',
+      implementation_notes: 'notes',
+      observation_stats: {
+        observation_count: 9,
+        avg_confidence: avg,
+        max_confidence: avg,
+        last_seen: seen,
+        governance_forced_count: 0,
+        ...(evidence !== undefined ? { evidence_count: evidence } : {}),
+      },
+    });
+    writeFileSync(
+      filePath,
+      JSON.stringify({
+        description: 'temp dest',
+        schema_version: '1.1',
+        last_updated: seen,
+        signals: [
+          signal('attestation-as-map', 0.66),
+          signal('heat-is-not-conviction', 0.55),
+          signal('floor-dust', 0.55 + 5e-5),
+        ],
+      }),
+    );
+
+    const manager = new CuratedSignalsManager(filePath);
+    const learnedPath = join(tempDir, 'learned-conviction.json');
+    const learned = JSON.parse(readFileSync(learnedPath, 'utf8')) as {
+      signals: Record<string, { avg_confidence: number; evidence_count?: number }>;
+    };
+    expect(Object.keys(learned.signals)).toEqual(['attestation-as-map']);
+    expect(learned.signals['attestation-as-map']?.avg_confidence).toBeCloseTo(0.66, 5);
+    expect(learned.signals['attestation-as-map']?.evidence_count).toBeGreaterThanOrEqual(1);
+    expect(JSON.stringify(learned)).not.toContain('observation_count');
+    expect(manager.getByName('heat-is-not-conviction')?.observation_stats?.avg_confidence).toBeCloseTo(
+      0.55,
+      5,
+    );
+    expect(manager.getByName('floor-dust')?.observation_stats?.avg_confidence).toBeCloseTo(0.55 + 5e-5, 8);
+
+    const beforeFloor = manager.getByName('attestation-as-map')?.observation_stats;
+    manager.recordPrimitiveObservations([{ name: 'attestation-as-map', confidence: 0.55 }]);
+    const afterFloor = manager.getByName('attestation-as-map')?.observation_stats;
+    expect(afterFloor?.observation_count).toBe((beforeFloor?.observation_count ?? 0) + 1);
+    expect(afterFloor?.avg_confidence).toBeCloseTo(0.66, 5);
+    expect(afterFloor?.evidence_count).toBeGreaterThanOrEqual(1);
+    const route = getConfidenceForTask(
+      { id: 'seeded', description: 'attestation-as-map', type: 'general' },
+      manager,
+    );
+    expect(route.complexityBoost).toBe(2);
+    const floorRoute = getConfidenceForTask(
+      { id: 'floor', description: 'heat-is-not-conviction', type: 'general' },
+      manager,
+    );
+    expect(floorRoute.complexityBoost).toBe(0);
+    expect(floorRoute.matchedSignals).not.toContain('attestation-as-map');
+
+    const data = JSON.parse(readFileSync(filePath, 'utf8')) as {
+      signals: Array<{
+        name: string;
+        observation_stats?: { avg_confidence: number; observation_count: number };
+      }>;
+    };
+    const grown = data.signals.find((entry) => entry.name === 'attestation-as-map');
+    expect(grown?.observation_stats).toBeDefined();
+    if (grown?.observation_stats) {
+      grown.observation_stats.avg_confidence = 0.55;
+      grown.observation_stats.observation_count = 1;
+    }
+    writeFileSync(filePath, JSON.stringify(data));
+
+    const woken = new CuratedSignalsManager(filePath);
+    const restored = woken.getByName('attestation-as-map')?.observation_stats;
+    expect(restored?.avg_confidence).toBeCloseTo(0.66, 5);
+    expect(restored?.evidence_count).toBeGreaterThanOrEqual(1);
+    expect(restored?.observation_count).toBe(1);
+    expect(woken.getByName('heat-is-not-conviction')?.observation_stats?.avg_confidence).toBeCloseTo(
+      0.55,
+      5,
+    );
+    const survived = JSON.parse(readFileSync(learnedPath, 'utf8')) as {
+      signals: Record<string, { evidence_count?: number }>;
+    };
+    expect(survived.signals['heat-is-not-conviction']).toBeUndefined();
+    expect(survived.signals['floor-dust']).toBeUndefined();
+    expect(survived.signals['attestation-as-map']?.evidence_count).toBeGreaterThanOrEqual(1);
+  });
+
+  it('keeps a positive evidence count and does not lower a higher survival row', () => {
+    tempDir = mkdtempSync(join(tmpdir(), 'repertoire-signals-'));
+    const filePath = join(tempDir, 'curated_signals.json');
+    const seen = '2026-09-23T12:00:00.000Z';
+    const row = (name: string, avg: number, evidence: number) => ({
+      name,
+      definition: `${name} is a named law with a local clause.`,
+      tags: ['memory'],
+      priority: 'high' as const,
+      status: 'validated' as const,
+      evaluation_criteria: 'name',
+      validation_experiment: 'flatten',
+      master_index_integration: 'dest',
+      implementation_notes: 'notes',
+      observation_stats: {
+        observation_count: 3,
+        avg_confidence: avg,
+        max_confidence: avg,
+        last_seen: seen,
+        governance_forced_count: 0,
+        evidence_count: evidence,
+      },
+    });
+    writeFileSync(
+      filePath,
+      JSON.stringify({
+        description: 'temp dest',
+        schema_version: '1.1',
+        last_updated: seen,
+        signals: [row('parse-mutation-detector', 0.72, 4), row('trust-transfer-boundary', 0.7, 2)],
+      }),
+    );
+    writeFileSync(
+      join(tempDir, 'learned-conviction.json'),
+      `${JSON.stringify({
+        schema_version: '1',
+        signals: {
+          'parse-mutation-detector': {
+            avg_confidence: 0.6,
+            evidence_count: 1,
+            updated_at: seen,
+          },
+          'trust-transfer-boundary': {
+            avg_confidence: 0.9,
+            evidence_count: 3,
+            updated_at: seen,
+          },
+        },
+      })}\n`,
+    );
+
+    new CuratedSignalsManager(filePath);
+    const learned = JSON.parse(readFileSync(join(tempDir, 'learned-conviction.json'), 'utf8')) as {
+      signals: Record<string, { avg_confidence: number; evidence_count?: number }>;
+    };
+    expect(learned.signals['parse-mutation-detector']?.avg_confidence).toBeCloseTo(0.72, 5);
+    expect(learned.signals['parse-mutation-detector']?.evidence_count).toBe(4);
+    expect(learned.signals['trust-transfer-boundary']?.avg_confidence).toBeCloseTo(0.9, 5);
+    expect(learned.signals['trust-transfer-boundary']?.evidence_count).toBe(3);
+  });
+
+  it('keeps a graded line beside the average and does not step the same task twice', () => {
+    tempDir = mkdtempSync(join(tmpdir(), 'repertoire-signals-'));
+    const filePath = join(tempDir, 'curated_signals.json');
+    const manager = new CuratedSignalsManager(filePath);
+    manager.addSignal({
+      name: 'wake-cascade',
+      definition: 'Chat is not the brain. The cascade is the repertoire name wake-cascade.',
+      tags: ['cascade'],
+      priority: 'high',
+      status: 'validated',
+      evaluation_criteria: 'named law',
+      validation_experiment: 'grade',
+      master_index_integration: 'dest',
+      implementation_notes: 'notes',
+    });
+    manager.recordPrimitiveObservations([
+      { name: 'wake-cascade', confidence: 0.55 },
+      { name: 'wake-cascade', confidence: 0.55 },
+    ]);
+    manager.recordFeedbackOutcome({
+      timestamp: '2026-09-23T20:00:00.000Z',
+      sessionId: 'sess-1',
+      taskId: 'named:wake-cascade:sess-1',
+      assignedAgent: 'inference-cycle',
+      repertoireSignals: ['wake-cascade'],
+      complexity: 0,
+      success: true,
+      durationMs: 0,
+      lesson: 'fix: observe the law',
+    });
+    const taught = manager.getByName('wake-cascade');
+    expect(taught?.lessons).toEqual([{
+      taskId: 'named:wake-cascade:sess-1',
+      decision: 'success',
+      text: 'fix: observe the law',
+      at: '2026-09-23T20:00:00.000Z',
+    }]);
+    const avg = taught?.observation_stats?.avg_confidence ?? 0;
+    expect(avg).toBeCloseTo(0.65, 5);
+    const learned = JSON.parse(readFileSync(join(tempDir, 'learned-conviction.json'), 'utf8')) as {
+      signals: Record<string, { lessons?: Array<{ text: string }> }>;
+    };
+    expect(learned.signals['wake-cascade']?.lessons?.[0]?.text).toBe('fix: observe the law');
+
+    manager.recordFeedbackOutcome({
+      timestamp: '2026-09-23T20:05:00.000Z',
+      sessionId: 'sess-1',
+      taskId: 'named:wake-cascade:sess-1',
+      assignedAgent: 'inference-cycle',
+      repertoireSignals: ['wake-cascade'],
+      complexity: 0,
+      success: true,
+      durationMs: 0,
+      lesson: 'fix: observe the law',
+    });
+    expect(manager.getByName('wake-cascade')?.observation_stats?.avg_confidence).toBeCloseTo(avg, 5);
+    expect(manager.getByName('wake-cascade')?.lessons).toHaveLength(1);
+
+    const route = new SignalInjector(manager, tempDir).buildRoutingContext('wake-cascade');
+    expect(route.lessons?.[0]?.name).toBe('wake-cascade');
+    expect(route.lessons?.[0]?.lines[0]?.text).toBe('fix: observe the law');
+    expect(route.lessons?.[0]?.definition).toContain('Chat is not the brain');
+
+    const data = JSON.parse(readFileSync(filePath, 'utf8')) as {
+      signals: Array<{ lessons?: unknown; observation_stats?: { avg_confidence: number } }>;
+    };
+    const row = data.signals[0];
+    if (row?.observation_stats) row.observation_stats.avg_confidence = 0.55;
+    if (row) row.lessons = [];
+    writeFileSync(filePath, JSON.stringify(data));
+    const woken = new CuratedSignalsManager(filePath);
+    expect(woken.getByName('wake-cascade')?.observation_stats?.avg_confidence).toBeCloseTo(0.65, 5);
+    expect(woken.getByName('wake-cascade')?.lessons?.[0]?.text).toBe('fix: observe the law');
+  });
+
+  it('ages a graded line only after its task id is in the ledger', () => {
+    tempDir = mkdtempSync(join(tmpdir(), 'repertoire-signals-'));
+    const filePath = join(tempDir, 'curated_signals.json');
+    const manager = new CuratedSignalsManager(filePath);
+    manager.addSignal({
+      name: 'wake-cascade',
+      definition: 'Chat is not the brain.',
+      tags: ['cascade'],
+      priority: 'high',
+      status: 'validated',
+      evaluation_criteria: 'named law',
+      validation_experiment: 'grade',
+      master_index_integration: 'dest',
+      implementation_notes: 'notes',
+    });
+    manager.recordPrimitiveObservations([
+      { name: 'wake-cascade', confidence: 0.55 },
+      { name: 'wake-cascade', confidence: 0.55 },
+    ]);
+    for (let index = 0; index < LESSON_LINE_CAP + 1; index += 1) {
+      manager.recordFeedbackOutcome({
+        timestamp: '2026-09-23T21:00:00.000Z',
+        sessionId: `sess-${index}`,
+        taskId: `named:wake-cascade:sess-${index}`,
+        assignedAgent: 'inference-cycle',
+        repertoireSignals: ['wake-cascade'],
+        complexity: 0,
+        success: true,
+        durationMs: 0,
+        lesson: `line ${index}`,
+      });
+    }
+    const signal = manager.getByName('wake-cascade');
+    expect(signal?.lessons).toHaveLength(LESSON_LINE_CAP);
+    expect(signal?.lessons?.some((line) => line.taskId === 'named:wake-cascade:sess-0')).toBe(false);
+    expect(signal?.retained_lesson_ids).toContain('named:wake-cascade:sess-0');
+    const held = signal?.observation_stats?.avg_confidence ?? 0;
+    manager.recordFeedbackOutcome({
+      timestamp: '2026-09-23T22:00:00.000Z',
+      sessionId: 'sess-0',
+      taskId: 'named:wake-cascade:sess-0',
+      assignedAgent: 'inference-cycle',
+      repertoireSignals: ['wake-cascade'],
+      complexity: 0,
+      success: true,
+      durationMs: 0,
+      lesson: 'line 0',
+    });
+    expect(manager.getByName('wake-cascade')?.observation_stats?.avg_confidence).toBeCloseTo(held, 5);
+    expect(manager.getByName('wake-cascade')?.lessons).toHaveLength(LESSON_LINE_CAP);
   });
 });

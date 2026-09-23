@@ -68,6 +68,14 @@ export interface SignalFeedbackStats {
   last_seen: string;
 }
 
+/** One graded turn under a named law. The text is the memory. The average stays the conviction. */
+export interface SignalLesson {
+  taskId: string;
+  decision: 'success' | 'failure';
+  text: string;
+  at: string;
+}
+
 export interface WeightedPrimitive {
   name: string;
   weightedScore: number;
@@ -91,6 +99,10 @@ export interface CuratedSignal {
   implementation_notes: string;
   observation_stats?: SignalObservationStats;
   feedback_stats?: SignalFeedbackStats;
+  /** Graded lines still inside the hot window. */
+  lessons?: SignalLesson[];
+  /** Task ids whose lines aged out of the hot window. A replay does not step the average. */
+  retained_lesson_ids?: string[];
 }
 
 export interface CuratedSignalsFile {
@@ -163,6 +175,8 @@ export interface RepertoireRoutingContext {
   signalConfidences: Record<string, number>;
   avgMatchConfidence: number;
   highConfidenceTrapPresent: boolean;
+  /** Laws above the floor, with the graded lines a wake reads. */
+  lessons?: Array<{ name: string; definition: string; lines: SignalLesson[] }>;
 }
 
 export interface RepertoireInheritedContext {
@@ -197,6 +211,8 @@ export interface OrchestratorFeedbackEntry {
   success: boolean;
   durationMs: number;
   dynamoResult?: DynamoResult;
+  /** Approaches, solutions, or the wrong turn from the sessions that named the law. */
+  lesson?: string;
 }
 
 /** Minimal types mirroring 0xRay orchestrator — kept local to avoid hard dependency */
