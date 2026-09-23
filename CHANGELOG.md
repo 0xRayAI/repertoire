@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## [0.2.7] - 2026-09-23
+
 ### Fixed
 
 - A floor observation count does not move `avg_confidence` and does not change a route.
