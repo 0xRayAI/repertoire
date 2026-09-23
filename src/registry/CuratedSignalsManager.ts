@@ -250,6 +250,41 @@ export class CuratedSignalsManager {
     return matches.sort((a, b) => b.score - a.score);
   }
 
+  /**
+   * Mark names the diary already matched. Does not append a confidence sample.
+   * Missing names are left absent. Heat must not mint a law.
+   */
+  touchLastSeen(names: string[]): string[] {
+    const data = this.load();
+    const now = new Date().toISOString();
+    const updated: string[] = [];
+    const seen = new Set<string>();
+
+    for (const name of names) {
+      if (!name || seen.has(name)) continue;
+      seen.add(name);
+      const signal = data.signals.find((entry) => entry.name === name);
+      if (!signal) continue;
+      const previous = signal.observation_stats;
+      signal.observation_stats = previous
+        ? { ...previous, last_seen: now }
+        : {
+            observation_count: 0,
+            avg_confidence: 0,
+            max_confidence: 0,
+            last_seen: now,
+            governance_forced_count: 0,
+          };
+      updated.push(signal.name);
+    }
+
+    if (updated.length > 0) {
+      this.save(data);
+    }
+
+    return updated;
+  }
+
   recordPrimitiveObservations(
     matches: PrimitiveMatch[],
     options: { governanceForced?: boolean; minConfidence?: number } = {},

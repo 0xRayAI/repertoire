@@ -214,17 +214,37 @@ describe('kernel memory + OP-PROC reload', () => {
       syncField: false,
       syncXray: false,
     });
-    const before = service.signalsManager.getByName('station-survives-the-cut')?.observation_stats
-      ?.observation_count;
+    const destPath = service.signalsManager.filePath;
+    const dest = JSON.parse(readFileSync(destPath, 'utf8')) as {
+      signals: Array<{
+        name: string;
+        observation_stats?: { observation_count: number; avg_confidence: number; last_seen: string };
+      }>;
+    };
+    const station = dest.signals.find((signal) => signal.name === 'station-survives-the-cut');
+    if (!station) {
+      throw new Error('station-survives-the-cut missing from dest');
+    }
+    station.observation_stats = {
+      observation_count: 4,
+      avg_confidence: 0.61,
+      last_seen: '2026-01-01T00:00:00.000Z',
+    };
+    writeFileSync(destPath, `${JSON.stringify(dest, null, 2)}\n`);
+    const before = service.signalsManager.getByName('station-survives-the-cut')?.observation_stats;
     const heated = service.heatKernelDiary(diary);
     expect(heated.heated).toEqual(
       expect.arrayContaining(['station-survives-the-cut', 'repo-clearing']),
     );
     expect(service.signalsManager.getByName('architect-architect-skill')).toBeUndefined();
-    expect(
-      service.signalsManager.getByName('station-survives-the-cut')?.observation_stats
-        ?.observation_count,
-    ).toBeGreaterThan(before ?? 0);
+    const once = service.signalsManager.getByName('station-survives-the-cut')?.observation_stats;
+    expect(once?.observation_count).toBe(before?.observation_count);
+    expect(once?.avg_confidence).toBe(before?.avg_confidence);
+    expect(once?.last_seen).not.toBe('2026-01-01T00:00:00.000Z');
+    service.heatKernelDiary(diary);
+    const twice = service.signalsManager.getByName('station-survives-the-cut')?.observation_stats;
+    expect(twice?.observation_count).toBe(4);
+    expect(twice?.avg_confidence).toBe(0.61);
   });
 
   it('fleshes generic sibling stubs from package.json without overwriting subject overlay', () => {
