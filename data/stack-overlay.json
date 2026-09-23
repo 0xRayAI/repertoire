@@ -483,7 +483,7 @@
     },
     {
       "name": "compact-rekey-from-disk",
-      "definition": "After compact, rekey from Station + COMPACT-SURVIVAL.md + project Repertoire names. Chat summary is not the mind. Probe stack language before acting.",
+      "definition": "After compact, rekey from Station, the overlay names, and learned conviction beside dest. Chat summary is not the mind. A floor observation count is not a decision. Feedback moves conviction by a tenth, and that value is restored when a wake flattens it back to 0.55. Probe stack language before acting.",
       "tags": [
         "compact",
         "rekey",
@@ -495,7 +495,7 @@
       "evaluation_criteria": "Reply treats the name as a stack invariant, not a factory trap.",
       "validation_experiment": "Probe getTaskConfidence with the example snippet and expect this name.",
       "master_index_integration": "Project-local curated_signals after hydrateWritableSignals merges data/stack-overlay.json. Never write the factory tarball.",
-      "implementation_notes": "Grow on the project copy. Never write the tarball.",
+      "implementation_notes": "learned-conviction.json sits next to the project curated_signals.json. It stores avg_confidence, not observation_count. Restore it when dest avg is on the 0.55 floor.",
       "example_inference_snippet": "Rekey from disk. Push knowledge into Repertoire before the next compact.",
       "observation_stats": {
         "observation_count": 1,

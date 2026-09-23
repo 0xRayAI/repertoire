@@ -198,10 +198,10 @@ export class RepertoireService {
 
   /**
    * Heat existing dest names from kernel diary text. No new names.
-   * Touches last_seen only when the diary contains that signal's id,
-   * or the id with hyphens read as spaces. Does not append a confidence sample.
-   * Two definition words are not a hit. Heat must not mint and must not
-   * change observation_count or avg_confidence.
+   * Touches last_seen when the diary contains that signal's id, the id with
+   * hyphens read as spaces, or a consecutive definition clause. Does not append
+   * a confidence sample. Two definition words are not a hit. Heat must not mint
+   * and must not change observation_count or avg_confidence.
    * Colon pattern ids like `architect:architect_skill` never become dest keys.
    */
   heatKernelDiary(collected?: KernelDiaryCollect): { heated: string[]; sources: string[] } {

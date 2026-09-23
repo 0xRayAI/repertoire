@@ -79,6 +79,8 @@ export function getConfidenceForTask(
       meetsConfidenceGate(entry.confidence, DEFAULT_MIN_CONFIDENCE_GATE),
     );
 
+  signals.sort((a, b) => b.confidence - a.confidence);
+
   const avgConfidence =
     signals.length > 0
       ? signals.reduce((sum, entry) => sum + entry.confidence, 0) / signals.length
@@ -88,6 +90,11 @@ export function getConfidenceForTask(
   let complexityBoost = 0;
   if (highConfidenceTrapPresent) {
     complexityBoost += Math.round(10 + maxConfidence * 10);
+  }
+
+  const excess = Math.max(0, maxConfidence - DEFAULT_MIN_CONFIDENCE_GATE);
+  if (excess > 0) {
+    complexityBoost += Math.round(excess * 20);
   }
 
   const highConfidenceCount = signals.length;
