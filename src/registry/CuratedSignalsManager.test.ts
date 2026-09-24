@@ -4,7 +4,9 @@ import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import {
   CuratedSignalsManager,
+  LEARNED_SIGNAL_CAP,
   LESSON_LINE_CAP,
+  RETAINED_LESSON_ID_CAP,
   lawClauseInText,
 } from './CuratedSignalsManager.js';
 import { getConfidenceForTask } from '../orchestrator-bridge/confidence-gate.js';
@@ -773,5 +775,147 @@ describe('CuratedSignalsManager confidence tracking', () => {
     });
     expect(second).toHaveLength(0);
     expect(manager.getByName('tried-the-route-table-and-the')?.observation_stats?.avg_confidence).toBeCloseTo(0.65, 5);
+  });
+
+  it('keeps retained ids in recency order and drops the oldest past the cap', () => {
+    tempDir = mkdtempSync(join(tmpdir(), 'repertoire-signals-'));
+    const filePath = join(tempDir, 'curated_signals.json');
+    const manager = new CuratedSignalsManager(filePath);
+    manager.addSignal({
+      name: 'wake-cascade',
+      definition: 'Chat is not the brain.',
+      tags: ['cascade'],
+      priority: 'high',
+      status: 'validated',
+      evaluation_criteria: 'named law',
+      validation_experiment: 'grade',
+      master_index_integration: 'dest',
+      implementation_notes: 'notes',
+    });
+    const total = LESSON_LINE_CAP + RETAINED_LESSON_ID_CAP + 3;
+    const ids: string[] = [];
+    for (let index = 0; index < total; index += 1) {
+      const taskId = index === 0
+        ? 'named:wake-cascade:zz-first'
+        : `named:wake-cascade:aa-${String(index).padStart(3, '0')}`;
+      ids.push(taskId);
+      manager.recordFeedbackOutcome({
+        timestamp: `2026-09-23T21:${String(index).padStart(2, '0')}:00.000Z`,
+        sessionId: `sess-${index}`,
+        taskId,
+        assignedAgent: 'inference-cycle',
+        repertoireSignals: ['wake-cascade'],
+        complexity: 0,
+        success: true,
+        durationMs: 0,
+        lesson: `line ${index}`,
+      });
+    }
+    const signal = manager.getByName('wake-cascade');
+    expect(signal?.lessons).toHaveLength(LESSON_LINE_CAP);
+    expect(signal?.retained_lesson_ids).toHaveLength(RETAINED_LESSON_ID_CAP);
+    expect(signal?.retained_lesson_ids?.[0]).toBe(ids[3]);
+    expect(signal?.retained_lesson_ids).not.toContain('named:wake-cascade:zz-first');
+    const heldCount = signal?.feedback_stats?.outcome_count;
+    const heldIds = [...(signal?.retained_lesson_ids ?? [])];
+    manager.recordFeedbackOutcome({
+      timestamp: '2026-09-23T22:00:00.000Z',
+      sessionId: 'still',
+      taskId: heldIds[0] ?? '',
+      assignedAgent: 'inference-cycle',
+      repertoireSignals: ['wake-cascade'],
+      complexity: 0,
+      success: true,
+      durationMs: 0,
+      lesson: 'replay',
+    });
+    expect(manager.getByName('wake-cascade')?.feedback_stats?.outcome_count).toBe(heldCount);
+    expect(manager.getByName('wake-cascade')?.retained_lesson_ids).toEqual(heldIds);
+    expect(manager.getByName('wake-cascade')?.lessons).toHaveLength(LESSON_LINE_CAP);
+    manager.recordFeedbackOutcome({
+      timestamp: '2026-09-23T22:01:00.000Z',
+      sessionId: 'dropped',
+      taskId: 'named:wake-cascade:zz-first',
+      assignedAgent: 'inference-cycle',
+      repertoireSignals: ['wake-cascade'],
+      complexity: 0,
+      success: false,
+      durationMs: 0,
+      lesson: 'again',
+    });
+    expect(manager.getByName('wake-cascade')?.feedback_stats?.outcome_count).toBe((heldCount ?? 0) + 1);
+    expect(manager.getByName('wake-cascade')?.retained_lesson_ids).toHaveLength(RETAINED_LESSON_ID_CAP);
+  });
+
+  it('evicts proposed learned mints past the cap and keeps factory signals', () => {
+    tempDir = mkdtempSync(join(tmpdir(), 'repertoire-signals-'));
+    const filePath = join(tempDir, 'curated_signals.json');
+    const manager = new CuratedSignalsManager(filePath);
+    manager.addSignal({
+      name: 'factory-law',
+      definition: 'Factory stays.',
+      tags: ['factory'],
+      priority: 'high',
+      status: 'validated',
+      evaluation_criteria: 'seed',
+      validation_experiment: 'grade',
+      master_index_integration: 'dest',
+      implementation_notes: 'notes',
+    });
+    manager.addSignal({
+      name: 'field-observed-law',
+      definition: 'Observed, not minted from speech.',
+      tags: ['field-observed'],
+      priority: 'medium',
+      status: 'proposed',
+      evaluation_criteria: 'field',
+      validation_experiment: 'grade',
+      master_index_integration: 'dest',
+      implementation_notes: 'notes',
+    });
+    const minted = LEARNED_SIGNAL_CAP + 8;
+    for (let index = 0; index < minted; index += 1) {
+      manager.recordFeedbackOutcome({
+        timestamp: `2026-09-24T12:${String(index).padStart(2, '0')}:00.000Z`,
+        sessionId: `sess-${index}`,
+        taskId: `mint:minted-law-${index}:sess-${index}`,
+        assignedAgent: 'inference-cycle',
+        repertoireSignals: [`minted-law-${index}`],
+        complexity: 0,
+        success: true,
+        durationMs: 0,
+        lesson: `I tried minted law ${index} and the check failed closed`,
+      });
+    }
+    const learned = manager.load().signals.filter(
+      (signal) => signal.status === 'proposed' && signal.tags.includes('learned'),
+    );
+    expect(learned).toHaveLength(LEARNED_SIGNAL_CAP);
+    expect(manager.getByName('minted-law-0')).toBeUndefined();
+    expect(manager.getByName(`minted-law-${minted - 1}`)?.status).toBe('proposed');
+    expect(manager.getByName('factory-law')?.status).toBe('validated');
+    expect(manager.getByName('field-observed-law')?.tags).toEqual(['field-observed']);
+    const conviction = JSON.parse(readFileSync(join(tempDir, 'learned-conviction.json'), 'utf8')) as {
+      signals: Record<string, { avg_confidence?: number }>;
+    };
+    expect(conviction.signals['minted-law-0']).toBeUndefined();
+    expect(conviction.signals[`minted-law-${minted - 1}`]).toBeDefined();
+    manager.recordFeedbackOutcome({
+      timestamp: '2026-09-24T13:00:00.000Z',
+      sessionId: 'fail',
+      taskId: 'mint:minted-law-fail:fail',
+      assignedAgent: 'inference-cycle',
+      repertoireSignals: ['minted-law-fail'],
+      complexity: 0,
+      success: false,
+      durationMs: 0,
+      lesson: 'I tried a failing mint and the check failed closed',
+    });
+    const afterFail = manager.load().signals.filter(
+      (signal) => signal.status === 'proposed' && signal.tags.includes('learned'),
+    );
+    expect(afterFail).toHaveLength(LEARNED_SIGNAL_CAP);
+    expect(manager.getByName('minted-law-fail')).toBeUndefined();
+    expect(manager.getByName(`minted-law-${minted - 1}`)).toBeDefined();
   });
 });
