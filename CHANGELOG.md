@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Fixed
+
+- A dest that still has its graded lines gets a missing lesson ledger back from `learned-conviction.json`. An aged task id does not step the average again.
+
 ## [0.2.7] - 2026-09-23
 
 ### Fixed

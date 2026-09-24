@@ -660,4 +660,82 @@ describe('CuratedSignalsManager confidence tracking', () => {
     expect(manager.getByName('wake-cascade')?.observation_stats?.avg_confidence).toBeCloseTo(held, 5);
     expect(manager.getByName('wake-cascade')?.lessons).toHaveLength(LESSON_LINE_CAP);
   });
+
+  it('puts an aged task id back when dest kept the lines and lost the ledger', () => {
+    tempDir = mkdtempSync(join(tmpdir(), 'repertoire-signals-'));
+    const filePath = join(tempDir, 'curated_signals.json');
+    const manager = new CuratedSignalsManager(filePath);
+    manager.addSignal({
+      name: 'wake-cascade',
+      definition: 'Chat is not the brain.',
+      tags: ['cascade'],
+      priority: 'high',
+      status: 'validated',
+      evaluation_criteria: 'named law',
+      validation_experiment: 'grade',
+      master_index_integration: 'dest',
+      implementation_notes: 'notes',
+    });
+    manager.recordPrimitiveObservations([
+      { name: 'wake-cascade', confidence: 0.55 },
+      { name: 'wake-cascade', confidence: 0.55 },
+    ]);
+    manager.recordFeedbackOutcome({
+      timestamp: '2026-09-23T21:00:00.000Z',
+      sessionId: 'sess-0',
+      taskId: 'named:wake-cascade:sess-0',
+      assignedAgent: 'inference-cycle',
+      repertoireSignals: ['wake-cascade'],
+      complexity: 0,
+      success: true,
+      durationMs: 0,
+      lesson: 'line 0',
+    });
+    manager.recordFeedbackOutcome({
+      timestamp: '2026-09-23T21:01:00.000Z',
+      sessionId: 'sess-1',
+      taskId: 'named:wake-cascade:sess-1',
+      assignedAgent: 'inference-cycle',
+      repertoireSignals: ['wake-cascade'],
+      complexity: 0,
+      success: true,
+      durationMs: 0,
+      lesson: 'line 1',
+    });
+    const held = manager.getByName('wake-cascade')?.observation_stats?.avg_confidence ?? 0;
+    const dest = JSON.parse(readFileSync(filePath, 'utf8')) as {
+      signals: Array<{ lessons?: Array<{ taskId: string }>; retained_lesson_ids?: string[] }>;
+    };
+    const row = dest.signals[0];
+    if (row) {
+      row.lessons = (row.lessons ?? []).filter((line) => line.taskId !== 'named:wake-cascade:sess-0');
+      delete row.retained_lesson_ids;
+    }
+    writeFileSync(filePath, JSON.stringify(dest));
+    const learnedPath = join(tempDir, 'learned-conviction.json');
+    const learned = JSON.parse(readFileSync(learnedPath, 'utf8')) as {
+      signals: Record<string, { retained_lesson_ids?: string[]; lessons?: Array<{ taskId: string }> }>;
+    };
+    const learnedRow = learned.signals['wake-cascade'];
+    if (learnedRow) {
+      learnedRow.lessons = (learnedRow.lessons ?? []).filter((line) => line.taskId !== 'named:wake-cascade:sess-0');
+      learnedRow.retained_lesson_ids = ['named:wake-cascade:sess-0'];
+    }
+    writeFileSync(learnedPath, JSON.stringify(learned));
+
+    const woken = new CuratedSignalsManager(filePath);
+    expect(woken.getByName('wake-cascade')?.retained_lesson_ids).toContain('named:wake-cascade:sess-0');
+    woken.recordFeedbackOutcome({
+      timestamp: '2026-09-23T22:00:00.000Z',
+      sessionId: 'sess-0',
+      taskId: 'named:wake-cascade:sess-0',
+      assignedAgent: 'inference-cycle',
+      repertoireSignals: ['wake-cascade'],
+      complexity: 0,
+      success: true,
+      durationMs: 0,
+      lesson: 'line 0',
+    });
+    expect(woken.getByName('wake-cascade')?.observation_stats?.avg_confidence).toBeCloseTo(held, 5);
+  });
 });

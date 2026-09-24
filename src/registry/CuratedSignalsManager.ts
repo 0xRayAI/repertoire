@@ -785,8 +785,10 @@ export class CuratedSignalsManager {
       const learnedIds = validLessonIds(row.retained_lesson_ids);
       const avgOnFloor = isConfidenceFloor(stats.avg_confidence);
       const destHasLessons = (signal.lessons?.length ?? 0) > 0;
-      if (!avgOnFloor && destHasLessons) continue;
-      if (!avgOnFloor && learnedLessons.length === 0 && learnedIds.length === 0) continue;
+      const destLedgerEmpty = (signal.retained_lesson_ids?.length ?? 0) === 0;
+      const ledgerMissing = destLedgerEmpty && learnedIds.length > 0;
+      if (!avgOnFloor && destHasLessons && !ledgerMissing) continue;
+      if (!avgOnFloor && !destHasLessons && learnedLessons.length === 0 && learnedIds.length === 0) continue;
       if (avgOnFloor) {
         signal.observation_stats = {
           ...stats,
