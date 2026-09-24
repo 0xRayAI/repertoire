@@ -2,7 +2,7 @@
 
 Factory memory organ for [0xRay](https://github.com/0xRayAI/xray): seed primitives, in-process memory routing, extra MCP (not an 8th `xray-*` server).
 
-**v0.2.5** · 0xRay **4.0** wear. Runtime does **not** depend on `0xray` (optional peer for suit-verify scripts).
+**v0.2.8** · 0xRay **4.0** wear. Runtime does **not** depend on `0xray` (optional peer for suit-verify scripts).
 
 ## Install
 
