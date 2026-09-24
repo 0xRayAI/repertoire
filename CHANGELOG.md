@@ -5,6 +5,10 @@
 ### Fixed
 
 - A dest that still has its graded lines gets a missing lesson ledger back from `learned-conviction.json`. An aged task id does not step the average again.
+- Lesson text stays at `LESSON_LINE_CAP` (20). Past that window the oldest line leaves only after its task id is in the ledger.
+- `RETAINED_LESSON_ID_CAP` is 20. The ledger keeps insertion order, oldest first. It is not sorted alphabetically. Past the cap the oldest id leaves, so a replay of that id does not step the average.
+- Speech that names no stored signal mints one proposed signal tagged `learned`. The same speech does not mint twice.
+- `LEARNED_SIGNAL_CAP` is 24. Eviction removes only signals that are both `proposed` and `learned` (lowest confidence, then oldest `last_seen`). Factory signals and every other status stay.
 
 ## [0.2.7] - 2026-09-23
 
