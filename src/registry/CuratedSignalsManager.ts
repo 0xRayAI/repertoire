@@ -586,10 +586,31 @@ export class CuratedSignalsManager {
     const results: FeedbackOutcomeResult[] = [];
 
     for (const signalName of signalNames) {
-      const signal = data.signals.find((candidate) => candidate.name === signalName);
-      if (!signal) continue;
-
+      let signal = data.signals.find((candidate) => candidate.name === signalName);
       const lessonText = typeof entry.lesson === 'string' ? entry.lesson.trim().slice(0, LESSON_TEXT_CAP) : '';
+      if (!signal) {
+        if (lessonText.length === 0) continue;
+        signal = {
+          name: signalName,
+          definition: lessonText,
+          tags: ['learned'],
+          priority: 'medium',
+          status: 'proposed',
+          evaluation_criteria: lessonText,
+          validation_experiment: 'A later task that resembles this situation retrieves the line.',
+          master_index_integration: 'Learned from speech that named no stored signal.',
+          implementation_notes: '',
+          observation_stats: {
+            observation_count: 1,
+            avg_confidence: DEFAULT_PROMOTION_MIN_CONFIDENCE,
+            max_confidence: DEFAULT_PROMOTION_MIN_CONFIDENCE,
+            last_seen: now,
+            governance_forced_count: 0,
+            evidence_count: 1,
+          },
+        };
+        data.signals.push(signal);
+      }
       if (this.rememberLesson(signal, {
         taskId: entry.taskId,
         decision: entry.success ? 'success' : 'failure',

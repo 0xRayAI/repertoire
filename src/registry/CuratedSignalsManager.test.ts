@@ -738,4 +738,40 @@ describe('CuratedSignalsManager confidence tracking', () => {
     });
     expect(woken.getByName('wake-cascade')?.observation_stats?.avg_confidence).toBeCloseTo(held, 5);
   });
+
+  it('mints a signal from speech that names none, and does not mint it twice', () => {
+    tempDir = mkdtempSync(join(tmpdir(), 'repertoire-signals-'));
+    const filePath = join(tempDir, 'curated_signals.json');
+    const manager = new CuratedSignalsManager(filePath);
+    const lesson = 'I tried the route table and the check failed closed';
+    const first = manager.recordFeedbackOutcome({
+      timestamp: '2026-09-24T12:00:00.000Z',
+      sessionId: 'sess-new',
+      taskId: 'mint:tried-the-route-table-and-the:sess-new',
+      assignedAgent: 'inference-cycle',
+      repertoireSignals: ['tried-the-route-table-and-the'],
+      complexity: 0,
+      success: true,
+      durationMs: 0,
+      lesson,
+    });
+    expect(first).toHaveLength(1);
+    const created = manager.getByName('tried-the-route-table-and-the');
+    expect(created?.definition).toBe(lesson);
+    expect(created?.lessons?.[0]?.text).toBe(lesson);
+    expect(created?.observation_stats?.avg_confidence).toBeCloseTo(0.65, 5);
+    const second = manager.recordFeedbackOutcome({
+      timestamp: '2026-09-24T12:01:00.000Z',
+      sessionId: 'sess-new',
+      taskId: 'mint:tried-the-route-table-and-the:sess-new',
+      assignedAgent: 'inference-cycle',
+      repertoireSignals: ['tried-the-route-table-and-the'],
+      complexity: 0,
+      success: true,
+      durationMs: 0,
+      lesson,
+    });
+    expect(second).toHaveLength(0);
+    expect(manager.getByName('tried-the-route-table-and-the')?.observation_stats?.avg_confidence).toBeCloseTo(0.65, 5);
+  });
 });
