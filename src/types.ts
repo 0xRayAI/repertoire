@@ -101,7 +101,7 @@ export interface CuratedSignal {
   feedback_stats?: SignalFeedbackStats;
   /** Graded lines still inside the hot window. */
   lessons?: SignalLesson[];
-  /** Task ids whose lines aged out of the hot window. A replay does not step the average. */
+  /** Task ids whose lines aged out, oldest first, capped. A replay does not step the average. */
   retained_lesson_ids?: string[];
 }
 

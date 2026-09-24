@@ -149,7 +149,10 @@ function convictionRecord(
   prior?: LearnedConvictionRow,
 ): LearnedConvictionRow {
   const lessons = signal.lessons?.length ? signal.lessons : prior?.lessons;
-  const retained = signal.retained_lesson_ids?.length ? signal.retained_lesson_ids : prior?.retained_lesson_ids;
+  const retainedSource = signal.retained_lesson_ids?.length
+    ? signal.retained_lesson_ids
+    : prior?.retained_lesson_ids;
+  const retained = retainedSource?.length ? capRetainedIds(retainedSource) : undefined;
   const row: LearnedConvictionRow = {
     avg_confidence: stats.avg_confidence,
     evidence_count: seededEvidenceCount(stats.evidence_count),
@@ -169,7 +172,37 @@ export function isAboveConfidenceFloor(
 
 /** Hot lines kept on a law. Older lines leave only after their task id is in the ledger. */
 export const LESSON_LINE_CAP = 20;
+/**
+ * Aged task ids kept so a replay does not step the average.
+ * Insertion order, oldest first. Same size as the hot window: past this cap the oldest id leaves.
+ * Alphabetical order is not age, so the ledger is not sorted.
+ */
+export const RETAINED_LESSON_ID_CAP = LESSON_LINE_CAP;
+/**
+ * Proposed signals minted from speech (`tags` includes `learned`).
+ * One lesson-window of room past the hot lines, so unnamed speech can land and then the
+ * lowest confidence leaves, then the oldest last_seen. Factory signals and anything not
+ * proposed-and-learned stay.
+ */
+export const LEARNED_SIGNAL_CAP = 24;
 export const LESSON_TEXT_CAP = 400;
+
+/** Keep insertion order. Drop the oldest ids once the ledger is past the cap. */
+function capRetainedIds(ids: readonly string[]): string[] {
+  const ordered: string[] = [];
+  const seen = new Set<string>();
+  for (const id of ids) {
+    if (seen.has(id)) continue;
+    seen.add(id);
+    ordered.push(id);
+  }
+  if (ordered.length <= RETAINED_LESSON_ID_CAP) return ordered;
+  return ordered.slice(ordered.length - RETAINED_LESSON_ID_CAP);
+}
+
+function isSpeechMint(signal: CuratedSignal): boolean {
+  return signal.status === 'proposed' && signal.tags.includes('learned');
+}
 
 const FIELD_PRIMITIVE_NAME = /^[A-Za-z][A-Za-z0-9_-]{2,119}$/;
 
@@ -586,10 +619,31 @@ export class CuratedSignalsManager {
     const results: FeedbackOutcomeResult[] = [];
 
     for (const signalName of signalNames) {
-      const signal = data.signals.find((candidate) => candidate.name === signalName);
-      if (!signal) continue;
-
+      let signal = data.signals.find((candidate) => candidate.name === signalName);
       const lessonText = typeof entry.lesson === 'string' ? entry.lesson.trim().slice(0, LESSON_TEXT_CAP) : '';
+      if (!signal) {
+        if (lessonText.length === 0) continue;
+        signal = {
+          name: signalName,
+          definition: lessonText,
+          tags: ['learned'],
+          priority: 'medium',
+          status: 'proposed',
+          evaluation_criteria: lessonText,
+          validation_experiment: 'A later task that resembles this situation retrieves the line.',
+          master_index_integration: 'Learned from speech that named no stored signal.',
+          implementation_notes: '',
+          observation_stats: {
+            observation_count: 1,
+            avg_confidence: DEFAULT_PROMOTION_MIN_CONFIDENCE,
+            max_confidence: DEFAULT_PROMOTION_MIN_CONFIDENCE,
+            last_seen: now,
+            governance_forced_count: 0,
+            evidence_count: 1,
+          },
+        };
+        data.signals.push(signal);
+      }
       if (this.rememberLesson(signal, {
         taskId: entry.taskId,
         decision: entry.success ? 'success' : 'failure',
@@ -641,31 +695,73 @@ export class CuratedSignalsManager {
     }
 
     if (results.length > 0) {
+      const evicted = this.evictSpeechMints(data);
       this.save(data);
+      this.dropLearnedConviction(evicted);
     }
 
     return results;
   }
 
   /**
-   * Append one graded line. A task id already on the law, or already aged into
-   * the ledger, does not move the average and does not append again.
-   * Past the cap, the oldest line leaves only after its id is in the ledger.
+   * Shed proposed speech mints past LEARNED_SIGNAL_CAP.
+   * Lowest confidence leaves first, then the oldest last_seen. Factory laws stay.
+   */
+  private evictSpeechMints(data: CuratedSignalsFile): string[] {
+    const minted = data.signals.filter(isSpeechMint);
+    if (minted.length <= LEARNED_SIGNAL_CAP) return [];
+    const ranked = [...minted].sort((left, right) => {
+      const leftConfidence = left.observation_stats?.avg_confidence ?? 0;
+      const rightConfidence = right.observation_stats?.avg_confidence ?? 0;
+      if (leftConfidence !== rightConfidence) return leftConfidence - rightConfidence;
+      const leftSeen = left.observation_stats?.last_seen ?? left.first_seen ?? '';
+      const rightSeen = right.observation_stats?.last_seen ?? right.first_seen ?? '';
+      if (leftSeen !== rightSeen) return leftSeen < rightSeen ? -1 : 1;
+      if (left.name === right.name) return 0;
+      return left.name < right.name ? -1 : 1;
+    });
+    const dropped = ranked.slice(0, minted.length - LEARNED_SIGNAL_CAP).map((signal) => signal.name);
+    const dropNames = new Set(dropped);
+    data.signals = data.signals.filter((signal) => !dropNames.has(signal.name));
+    return dropped;
+  }
+
+  private dropLearnedConviction(names: string[]): void {
+    if (names.length === 0 || isFactorySeedFile(this.filePath)) return;
+    const file = this.readLearnedConvictionFile();
+    let dirty = false;
+    for (const name of names) {
+      if (file.signals[name]) {
+        delete file.signals[name];
+        dirty = true;
+      }
+    }
+    if (dirty) this.writeLearnedConvictionFile(file);
+  }
+
+  /**
+   * Append one graded line. A task id already on the law, or still in the capped
+   * ledger, does not move the average and does not append again.
+   * Past the hot cap, the oldest line leaves only after its id is in the ledger.
+   * Past the ledger cap, the oldest id leaves. Order is recency, not alphabetical.
    */
   private rememberLesson(signal: CuratedSignal, line: SignalLesson): 'stored' | 'already' {
     if (!line.taskId) return 'already';
     const lessons = [...(signal.lessons ?? [])];
-    const retained = new Set(signal.retained_lesson_ids ?? []);
-    if (lessons.some((stored) => stored.taskId === line.taskId) || retained.has(line.taskId)) {
+    const retained = [...(signal.retained_lesson_ids ?? [])];
+    if (lessons.some((stored) => stored.taskId === line.taskId) || retained.includes(line.taskId)) {
       return 'already';
     }
     lessons.push(line);
     const overflow = lessons.length - LESSON_LINE_CAP;
     if (overflow > 0) {
-      for (const aged of lessons.splice(0, overflow)) retained.add(aged.taskId);
+      for (const aged of lessons.splice(0, overflow)) {
+        if (!retained.includes(aged.taskId)) retained.push(aged.taskId);
+      }
     }
+    const capped = capRetainedIds(retained);
     signal.lessons = lessons;
-    if (retained.size > 0) signal.retained_lesson_ids = [...retained].sort();
+    if (capped.length > 0) signal.retained_lesson_ids = capped;
     return 'stored';
   }
 
@@ -785,8 +881,10 @@ export class CuratedSignalsManager {
       const learnedIds = validLessonIds(row.retained_lesson_ids);
       const avgOnFloor = isConfidenceFloor(stats.avg_confidence);
       const destHasLessons = (signal.lessons?.length ?? 0) > 0;
-      if (!avgOnFloor && destHasLessons) continue;
-      if (!avgOnFloor && learnedLessons.length === 0 && learnedIds.length === 0) continue;
+      const destLedgerEmpty = (signal.retained_lesson_ids?.length ?? 0) === 0;
+      const ledgerMissing = destLedgerEmpty && learnedIds.length > 0;
+      if (!avgOnFloor && destHasLessons && !ledgerMissing) continue;
+      if (!avgOnFloor && !destHasLessons && learnedLessons.length === 0 && learnedIds.length === 0) continue;
       if (avgOnFloor) {
         signal.observation_stats = {
           ...stats,
@@ -797,7 +895,7 @@ export class CuratedSignalsManager {
       }
       if (!destHasLessons && learnedLessons.length > 0) signal.lessons = learnedLessons;
       if ((signal.retained_lesson_ids?.length ?? 0) === 0 && learnedIds.length > 0) {
-        signal.retained_lesson_ids = learnedIds;
+        signal.retained_lesson_ids = capRetainedIds(learnedIds);
       }
       restored.push(name);
     }
