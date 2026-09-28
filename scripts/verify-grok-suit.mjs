@@ -114,10 +114,13 @@ try {
   fail('.mcp.json', e.message);
 }
 
-// 5. Grok plugin + UserPromptSubmit boot hook
-const grokPlugin = join(homedir(), '.grok/plugins/0xray');
-const grokHooks = join(grokPlugin, 'hooks/hooks.json');
-existsSync(grokPlugin) ? pass('Grok plugin', grokPlugin) : fail('Grok plugin', 'run: npx 0xray grok install --force');
+// 5. Grok plugin + UserPromptSubmit boot hook.
+// 0xray 4.0.28 installs the plugin into the project, not ~/.grok.
+const grokPlugin = join(root, '.grok', 'plugins', '0xray');
+const grokHooks = join(grokPlugin, 'hooks', 'hooks.json');
+existsSync(grokPlugin)
+  ? pass('Grok plugin', grokPlugin)
+  : fail('Grok plugin', `missing ${grokPlugin} — run: npx 0xray grok install --force`);
 if (existsSync(grokHooks)) {
   const hooksRaw = readFileSync(grokHooks, 'utf8');
   hooksRaw.includes('session-start.js')
@@ -130,7 +133,7 @@ if (existsSync(grokHooks)) {
     ? pass('UserPromptSubmit boot hook')
     : fail('UserPromptSubmit boot hook', 'add session-start.js — npx 0xray grok install --force');
 } else {
-  fail('Grok hooks.json', 'missing');
+  fail('Grok hooks.json', `missing ${grokHooks}`);
 }
 
 try {
@@ -297,7 +300,7 @@ if (existsSync(installedGrokHooks)) {
     fail('Grok plugin PostToolUse hook', 'run: npx 0xray grok install --force');
   }
 } else {
-  fail('Grok plugin PostToolUse hook', 'hooks.json missing — npx 0xray grok install --force');
+  fail('Grok plugin PostToolUse hook', `missing ${installedGrokHooks} — run: npx 0xray grok install --force`);
 }
 
 console.log('\n' + (failed === 0 ? '🎉 Suit wearable — operate within 0xRay.' : `⚠️  ${failed} check(s) failed — fix before tuning.`));
