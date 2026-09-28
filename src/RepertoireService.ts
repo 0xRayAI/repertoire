@@ -81,6 +81,7 @@ export class RepertoireService {
     this.metaInference = new MetaInferenceEngine({
       logDir: this.logDir,
       statePath: options.statePath ?? writable.statePath,
+      reportPath: join(this.projectRoot, 'logs', 'meta-inference', 'synthesis.md'),
     });
     this.feedbackIngester = new OrchestratorFeedbackIngester(
       options.feedbackDir ?? writable.feedbackDir,

@@ -5,6 +5,7 @@
 import { existsSync, mkdirSync, writeFileSync, appendFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { RepertoireService } from '../src/RepertoireService.js';
+import { formatMetaInferenceFailure } from '../src/synthesis/meta-inference-engine.js';
 import { CuratedSignalsManager } from '../src/registry/CuratedSignalsManager.js';
 import { GrooverLogIngester } from '../src/ingestion/groover-log-ingester.js';
 import { pruneSignals } from '../src/registry/signal-prune.js';
@@ -59,13 +60,18 @@ let metaInference: {
 } | null = null;
 
 if (commit && !dryRun && !skipMeta) {
-  const report = await service.runMetaInference();
-  if (report) {
-    metaInference = {
-      entriesProcessed: report.entriesProcessed,
-      dynamoPass: report.dynamoStats.pass,
-      dynamoReject: report.dynamoStats.reject,
-    };
+  try {
+    const report = await service.runMetaInference();
+    if (report) {
+      metaInference = {
+        entriesProcessed: report.entriesProcessed,
+        dynamoPass: report.dynamoStats.pass,
+        dynamoReject: report.dynamoStats.reject,
+      };
+    }
+  } catch (error) {
+    process.stderr.write(`${formatMetaInferenceFailure(error)}\n`);
+    process.exit(1);
   }
 }
 

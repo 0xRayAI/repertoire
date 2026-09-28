@@ -258,13 +258,23 @@ export class SignalInjector {
       const custom = this.synthesisReportPath.startsWith('/')
         ? this.synthesisReportPath
         : join(this.projectRoot, this.synthesisReportPath);
-      return existsSync(custom) ? custom : null;
+      return this.consumableSynthesisPath(custom);
     }
-    const candidates = [
+    return this.consumableSynthesisPath(
       join(this.projectRoot, 'logs/meta-inference/synthesis.md'),
-      join(this.projectRoot, 'logs/meta-inference/dry-synthesis.md'),
-    ];
-    return candidates.find((candidate) => existsSync(candidate)) ?? null;
+    );
+  }
+
+  /**
+   * A dry or UNREVIEWED report is not inference. It must not become an excerpt
+   * or a routing flag.
+   */
+  private consumableSynthesisPath(candidate: string): string | null {
+    if (!existsSync(candidate)) return null;
+    const content = readFileSync(candidate, 'utf8');
+    if (content.trim().length === 0) return null;
+    if (/\bUNREVIEWED\b/.test(content)) return null;
+    return candidate;
   }
 
   private getSynthesisExcerpt(maxChars: number): string | undefined {

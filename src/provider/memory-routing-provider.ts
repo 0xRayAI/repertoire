@@ -418,13 +418,12 @@ export class RepertoireMemoryRoutingProvider implements MemoryRoutingProvider {
       }
       return { refreshed: true, reason: 'synthesized' };
     } catch (error) {
-      const reason =
-        error instanceof MetaInferenceModelError ? error.reason : 'model_call_failed';
-      const message = error instanceof Error ? error.message : String(error);
-      if (!(error instanceof MetaInferenceModelError)) {
-        process.stderr.write(`[meta-inference] ${reason}: ${message}\n`);
+      if (error instanceof MetaInferenceModelError) {
+        return { refreshed: false, reason: error.reason, error: error.message };
       }
-      return { refreshed: false, reason, error: message };
+      const message = error instanceof Error ? error.message : String(error);
+      process.stderr.write(`[meta-inference] state_error: ${message}\n`);
+      return { refreshed: false, reason: 'state_error', error: message };
     }
   }
 }
