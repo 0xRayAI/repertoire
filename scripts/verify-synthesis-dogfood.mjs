@@ -58,15 +58,60 @@ async function main() {
     else fail('provider.buildSynthesisContext', 'null');
   }
 
-  if (typeof provider.refreshMetaInference === 'function') {
-    try {
-      const { refreshed } = await provider.refreshMetaInference();
-      pass('provider.refreshMetaInference', String(refreshed));
-    } catch (e) {
-      fail('provider.refreshMetaInference', e.message);
+  // A refresh with no log directory used to return early and still count as a pass.
+  // This check reaches synthesis output with a stubbed model, or fails.
+  const synthTmp = mkdtempSync(join(tmpdir(), 'repertoire-synth-output-'));
+  try {
+    const logDir = join(synthTmp, 'logs');
+    mkdirSync(logDir, { recursive: true });
+    const synthSessionId = 'dogfood-synth-1';
+    writeFileSync(
+      join(logDir, 'entries.jsonl'),
+      `${JSON.stringify({
+        timestamp: new Date().toISOString(),
+        source: 'groover',
+        session_id: synthSessionId,
+        inference: 'stubbed synthesis must land in the report',
+        post_title: 'dogfood',
+      })}\n`,
+    );
+    const statePath = join(synthTmp, 'inference-state.json');
+    const reportPath = join(synthTmp, 'synthesis.md');
+    const { MetaInferenceEngine } = await import(
+      join(root, 'dist/synthesis/meta-inference-engine.js')
+    );
+    const engine = new MetaInferenceEngine({
+      logDir,
+      statePath,
+      reportPath,
+      hermesCommand: () => 'STUBBED SYNTHESIS OUTPUT',
+    });
+    const report = await engine.run();
+    const written = existsSync(reportPath) ? readFileSync(reportPath, 'utf8') : '';
+    const state = existsSync(statePath)
+      ? JSON.parse(readFileSync(statePath, 'utf8'))
+      : { processedSessionIds: [] };
+    const processed = Array.isArray(state.processedSessionIds) &&
+      state.processedSessionIds.includes(synthSessionId);
+    if (
+      report &&
+      typeof report.finalReport === 'string' &&
+      report.finalReport.includes('STUBBED SYNTHESIS OUTPUT') &&
+      written.includes('STUBBED SYNTHESIS OUTPUT') &&
+      !written.includes('UNREVIEWED') &&
+      processed
+    ) {
+      pass('synthesis output with stubbed model', 'report written and entry processed');
+    } else {
+      fail(
+        'synthesis output with stubbed model',
+        `report=${Boolean(report)} bytes=${written.length} processed=${JSON.stringify(state.processedSessionIds)}`,
+      );
     }
-  } else {
-    fail('provider.refreshMetaInference missing');
+  } catch (e) {
+    fail('synthesis output with stubbed model', e.message);
+  } finally {
+    rmSync(synthTmp, { recursive: true, force: true });
   }
 
   if (typeof provider.ingestFeedback === 'function') {

@@ -5,13 +5,36 @@ import { SynthesisPromptBuilder } from './synthesis-prompt-builder.js';
 import { InferenceStateManager } from '../registry/InferenceStateManager.js';
 import type { InferenceEntry, SynthesisReport } from '../types.js';
 
+export type MetaInferenceModel = (prompt: string) => string;
+
+export type MetaInferenceFailureReason = 'model_unavailable' | 'model_call_failed';
+
+/** Raised when synthesis cannot be produced by a model. Callers must not treat it as a report. */
+export class MetaInferenceModelError extends Error {
+  readonly reason: MetaInferenceFailureReason;
+
+  constructor(
+    reason: MetaInferenceFailureReason,
+    message: string,
+    options?: { cause?: unknown },
+  ) {
+    super(message, options);
+    this.name = 'MetaInferenceModelError';
+    this.reason = reason;
+  }
+}
+
 export interface MetaInferenceEngineOptions {
   logDir?: string;
   statePath?: string;
   reportPath?: string;
   batchSize?: number;
   maxEntries?: number;
-  hermesCommand?: (prompt: string) => string;
+  /**
+   * Model call. Omit to use the hermes CLI.
+   * `null` means no model is configured — the run fails closed and does not call out.
+   */
+  hermesCommand?: MetaInferenceModel | null;
 }
 
 const DEFAULT_BATCH_SIZE = 1;
@@ -24,7 +47,7 @@ export class MetaInferenceEngine {
   private readonly batchSize: number;
   private readonly maxEntries: number;
   private readonly promptBuilder = new SynthesisPromptBuilder();
-  private readonly runHermes: (prompt: string) => string;
+  private model: MetaInferenceModel | null;
 
   constructor(options: MetaInferenceEngineOptions = {}) {
     this.logDir = options.logDir ?? 'logs/groover-inference';
@@ -32,7 +55,15 @@ export class MetaInferenceEngine {
     this.reportPath = options.reportPath ?? 'logs/meta-inference/synthesis.md';
     this.batchSize = options.batchSize ?? DEFAULT_BATCH_SIZE;
     this.maxEntries = options.maxEntries ?? DEFAULT_MAX_ENTRIES;
-    this.runHermes = options.hermesCommand ?? this.defaultHermesCommand;
+    this.model =
+      options.hermesCommand === null
+        ? null
+        : (options.hermesCommand ?? ((prompt: string) => this.defaultHermesCommand(prompt)));
+  }
+
+  /** `null` configures no model. The next run fails closed instead of calling the hermes CLI. */
+  configureModel(command: MetaInferenceModel | null): void {
+    this.model = command;
   }
 
   async run(): Promise<SynthesisReport | null> {
@@ -90,11 +121,7 @@ export class MetaInferenceEngine {
         },
       });
 
-      try {
-        batchResults.push(this.runHermes(prompt));
-      } catch {
-        // Continue with remaining batches
-      }
+      batchResults.push(this.callModel(prompt));
     }
 
     const avgResonance =
@@ -107,13 +134,13 @@ export class MetaInferenceEngine {
       entries,
     );
 
-    let finalReport = '';
-    try {
-      finalReport = this.runHermes(finalPrompt);
-      this.appendReport(entries.length, totalPass, resonanceCount > 0 ? resonanceSum / resonanceCount : null, finalReport);
-    } catch {
-      finalReport = batchResults.join('\n\n---\n\n');
-    }
+    const finalReport = this.callModel(finalPrompt);
+    this.appendReport(
+      entries.length,
+      totalPass,
+      resonanceCount > 0 ? resonanceSum / resonanceCount : null,
+      finalReport,
+    );
 
     const ids = entries.map((e) => e.comment_id ?? e.post_id ?? e.session_id).filter(Boolean) as string[];
     const hasSession = entries.some((e) => e.session_id);
@@ -150,13 +177,50 @@ export class MetaInferenceEngine {
             entries.push(entry);
             processed.add(id);
           }
-        } catch {
-          // skip malformed
+        } catch (error) {
+          const message = error instanceof Error ? error.message : String(error);
+          this.logFailure('malformed_log_line', `skipped malformed log line in ${file}: ${message}`);
         }
       }
     }
 
     return entries;
+  }
+
+  /**
+   * A missing or failed model must not produce a synthesis report.
+   * Entries stay unprocessed so a later run can retry them.
+   */
+  private callModel(prompt: string): string {
+    if (this.model === null) {
+      const error = new MetaInferenceModelError(
+        'model_unavailable',
+        'meta-inference model is not configured',
+      );
+      this.logFailure(error.reason, error.message);
+      throw error;
+    }
+
+    try {
+      return this.model(prompt);
+    } catch (error) {
+      if (error instanceof MetaInferenceModelError) {
+        this.logFailure(error.reason, error.message);
+        throw error;
+      }
+      const message = error instanceof Error ? error.message : String(error);
+      const wrapped = new MetaInferenceModelError(
+        'model_call_failed',
+        `meta-inference model call failed: ${message}`,
+        { cause: error },
+      );
+      this.logFailure(wrapped.reason, wrapped.message);
+      throw wrapped;
+    }
+  }
+
+  private logFailure(reason: string, message: string): void {
+    process.stderr.write(`[meta-inference] ${reason}: ${message}\n`);
   }
 
   private appendReport(
