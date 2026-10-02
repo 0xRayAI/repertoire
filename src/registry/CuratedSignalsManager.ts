@@ -206,6 +206,14 @@ function isSpeechMint(signal: CuratedSignal): boolean {
 
 const FIELD_PRIMITIVE_NAME = /^[A-Za-z][A-Za-z0-9_-]{2,119}$/;
 
+/** A longer id does not count. Spaced prose may continue after a hyphenated id. */
+function boundedId(text: string, id: string, spaced: boolean): boolean {
+  if (!id) return false;
+  const escaped = id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const tail = spaced ? String.raw`(?!\s+[a-z0-9])` : String.raw`(?![a-z0-9-])`;
+  return new RegExp(`(?:^|[^a-z0-9-])${escaped}${tail}`).test(text);
+}
+
 /**
  * The diary names a law only when it contains the signal id, or the id with
  * hyphens read as spaces. A repo tail, leftover tokens, and two definition
@@ -215,9 +223,9 @@ export function signalNameInText(text: string, name: string): boolean {
   const normalized = text.toLowerCase();
   const id = name.toLowerCase();
   if (!id) return false;
-  if (normalized.includes(id)) return true;
+  if (boundedId(normalized, id, false)) return true;
   const spaced = id.replace(/-/g, ' ');
-  return spaced !== id && normalized.includes(spaced);
+  return spaced !== id && boundedId(normalized, spaced, true);
 }
 
 const GROOVER_EXPERIMENT_NAMES = new Set([
