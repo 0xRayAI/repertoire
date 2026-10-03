@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import { dirname } from 'node:path';
-import type { InferenceState } from '../types.js';
+import type { InferenceState, ModelBackoffState } from '../types.js';
 
 export class InferenceStateManager {
   constructor(private readonly filePath = 'data/inference-state.json') {}
@@ -10,12 +10,30 @@ export class InferenceStateManager {
       return this.createEmpty();
     }
     const raw = JSON.parse(readFileSync(this.filePath, 'utf8')) as Partial<InferenceState>;
-    return {
+    const state: InferenceState = {
       processedCommentIds: raw.processedCommentIds ?? [],
       processedSessionIds: raw.processedSessionIds ?? [],
       processedPostIds: raw.processedPostIds ?? [],
       lastRun: raw.lastRun ?? null,
     };
+    const backoff = readBackoff(raw.modelBackoff);
+    if (backoff) state.modelBackoff = backoff;
+    return state;
+  }
+
+  /** Remember a failed model attempt without marking entries processed or touching lastRun. */
+  recordModelFailure(failedAt: string): void {
+    const state = this.load();
+    const failures = (state.modelBackoff?.failures ?? 0) + 1;
+    state.modelBackoff = { failedAt, failures };
+    this.save(state);
+  }
+
+  clearModelBackoff(): void {
+    const state = this.load();
+    if (!state.modelBackoff) return;
+    delete state.modelBackoff;
+    this.save(state);
   }
 
   save(state: InferenceState): void {
@@ -65,4 +83,10 @@ export class InferenceStateManager {
       lastRun: null,
     };
   }
+}
+
+function readBackoff(value: ModelBackoffState | undefined): ModelBackoffState | null {
+  if (!value || typeof value.failedAt !== 'string') return null;
+  const failures = typeof value.failures === 'number' && value.failures > 0 ? value.failures : 1;
+  return { failedAt: value.failedAt, failures };
 }

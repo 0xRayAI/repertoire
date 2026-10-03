@@ -14,6 +14,11 @@ import {
   resolveWritableConfigPath,
 } from '../paths.js';
 import { RepertoireService } from '../RepertoireService.js';
+import {
+  MetaInferenceModelError,
+  type MetaInferenceFailureReason,
+  type MetaInferenceModel,
+} from '../synthesis/meta-inference-engine.js';
 import type {
   AgentCapability,
   OrchestrationTask,
@@ -92,6 +97,19 @@ export interface OrchestratorFeedbackEntry {
   lesson?: string;
 }
 
+export type MetaInferenceRefreshReason =
+  | 'synthesized'
+  | 'nothing_to_process'
+  | MetaInferenceFailureReason;
+
+export interface MetaInferenceRefreshResult {
+  refreshed: boolean;
+  /** Machine-readable outcome. A failed model is never `synthesized`. */
+  reason: MetaInferenceRefreshReason;
+  /** Present when the model was missing or the call failed. */
+  error?: string;
+}
+
 export interface MemoryRoutingProviderConfig {
   dataDir?: string;
   signalsPath?: string;
@@ -99,6 +117,11 @@ export interface MemoryRoutingProviderConfig {
   statePath?: string;
   feedbackDir?: string;
   projectRoot?: string;
+  /**
+   * Meta-inference model. `null` means none is configured (refresh fails closed).
+   * Omit to keep the engine's hermes CLI default.
+   */
+  hermesCommand?: MetaInferenceModel | null;
 }
 
 export interface MemoryRoutingProvider {
@@ -128,7 +151,7 @@ export interface MemoryRoutingProvider {
     projectRoot: string;
     dueReason?: string | null;
   }): Record<string, unknown> | null;
-  refreshMetaInference?(): Promise<{ refreshed: boolean }>;
+  refreshMetaInference?(): Promise<MetaInferenceRefreshResult>;
 }
 
 function toRepertoireCaps(caps: MemoryAgentCapability): AgentCapability {
@@ -215,6 +238,9 @@ export class RepertoireMemoryRoutingProvider implements MemoryRoutingProvider {
       logDir: resolveWritableConfigPath(config.logDir, cwd, writable.logDir),
       feedbackDir: resolveWritableConfigPath(config.feedbackDir, cwd, writable.feedbackDir),
     });
+    if (config.hermesCommand !== undefined) {
+      this.service.metaInference.configureModel(config.hermesCommand);
+    }
   }
 
   getAvailabilityStatus(): ProviderAvailabilityStatus {
@@ -384,9 +410,21 @@ export class RepertoireMemoryRoutingProvider implements MemoryRoutingProvider {
     ) as unknown as Record<string, unknown>;
   }
 
-  async refreshMetaInference(): Promise<{ refreshed: boolean }> {
-    const report = await this.service.runMetaInference();
-    return { refreshed: report !== null };
+  async refreshMetaInference(): Promise<MetaInferenceRefreshResult> {
+    try {
+      const report = await this.service.runMetaInference();
+      if (report === null) {
+        return { refreshed: false, reason: 'nothing_to_process' };
+      }
+      return { refreshed: true, reason: 'synthesized' };
+    } catch (error) {
+      if (error instanceof MetaInferenceModelError) {
+        return { refreshed: false, reason: error.reason, error: error.message };
+      }
+      const message = error instanceof Error ? error.message : String(error);
+      process.stderr.write(`[meta-inference] state_error: ${message}\n`);
+      return { refreshed: false, reason: 'state_error', error: message };
+    }
   }
 }
 

@@ -54,8 +54,8 @@ describe('SignalInjector.buildSynthesisContext', () => {
 
     mkdirSync(join(tempDir, 'logs/meta-inference'), { recursive: true });
     writeFileSync(
-      join(tempDir, 'logs/meta-inference/dry-synthesis.md'),
-      '# Dry synthesis\n\n## 5. Strategic Recommendations\n- Add consult receipt gate\n',
+      join(tempDir, 'logs/meta-inference/synthesis.md'),
+      '# Synthesis\n\n## 5. Strategic Recommendations\n- Add consult receipt gate\n',
     );
 
     const injector = new SignalInjector(manager, tempDir);
@@ -69,5 +69,48 @@ describe('SignalInjector.buildSynthesisContext', () => {
     expect(ctx.collatedText).toContain('Synthesis checkpoint');
     expect(ctx.collatedText).toContain('synthesis');
     expect(ctx.synthesisExcerpt).toContain('consult receipt gate');
+  });
+
+  it('with only dry-synthesis.md present, synthesisExcerpt is absent and routing gets nothing from it', () => {
+    tempDir = mkdtempSync(join(tmpdir(), 'repertoire-dry-synth-'));
+    const signalsPath = join(tempDir, 'curated_signals.json');
+    const manager = new CuratedSignalsManager(signalsPath);
+    manager.addSignal({
+      name: 'synthesis',
+      definition: 'Periodic reflect-and-realign checkpoint.',
+      tags: ['checkpoint'],
+      priority: 'high',
+      status: 'validated',
+      evaluation_criteria: 'Completes synthesis checkpoint.',
+      validation_experiment: 'Enable synthesis gate.',
+      master_index_integration: 'Orchestration primitive.',
+      implementation_notes: 'Dry reports stay out of routing.',
+    });
+
+    mkdirSync(join(tempDir, 'logs/meta-inference'), { recursive: true });
+    const token = 'DRY_ONLY_TOKEN_MUST_NOT_ROUTE';
+    writeFileSync(
+      join(tempDir, 'logs/meta-inference/dry-synthesis.md'),
+      `# UNREVIEWED Dry Synthesis Report (no Hermes — OAuth unavailable)\n\n## 5. Strategic Recommendations\n- ${token}\n`,
+    );
+
+    const injector = new SignalInjector(manager, tempDir);
+    const ctx = injector.buildSynthesisContext(tempDir);
+    expect(ctx.synthesisExcerpt).toBeUndefined();
+    expect(ctx.collatedText).not.toContain(token);
+
+    const inherited = injector.buildInheritedContext([
+      { id: 't1', description: 'reflect and realign', type: 'synthesis' },
+    ]);
+    expect(inherited.synthesisExcerpt).toBeUndefined();
+
+    const routing = injector.buildRoutingContext('synthesis checkpoint');
+    expect(routing.synthesisAvailable).toBe(false);
+    const tasks = injector.matchSignalsForTasks([
+      { id: 't1', description: 'reflect and realign', type: 'synthesis' },
+    ]);
+    expect(tasks[0]?.metadata?.synthesisContext).toBeUndefined();
+    expect(JSON.stringify(tasks)).not.toContain(token);
+    expect(JSON.stringify(routing)).not.toContain(token);
   });
 });

@@ -1,14 +1,25 @@
 #!/usr/bin/env node
 import { RepertoireService } from '../src/RepertoireService.js';
+import { formatMetaInferenceFailure } from '../src/synthesis/meta-inference-engine.js';
 
 const service = new RepertoireService();
-const report = await service.runMetaInference();
 
-if (!report) {
-  console.log('No new entries to process.');
-  process.exit(0);
+try {
+  const report = await service.runMetaInference();
+
+  if (!report) {
+    process.stdout.write('No new entries to process.\n');
+    process.exit(0);
+  }
+
+  process.stdout.write(`Meta-inference complete: ${report.entriesProcessed} entries\n`);
+  process.stdout.write(
+    `Dynamo PASS: ${report.dynamoStats.pass}, REJECT: ${report.dynamoStats.reject}\n`,
+  );
+  process.stdout.write(
+    `Avg resonance: ${report.dynamoStats.avgResonance?.toFixed(3) ?? 'N/A'}\n`,
+  );
+} catch (error) {
+  process.stderr.write(`${formatMetaInferenceFailure(error)}\n`);
+  process.exit(1);
 }
-
-console.log(`Meta-inference complete: ${report.entriesProcessed} entries`);
-console.log(`Dynamo PASS: ${report.dynamoStats.pass}, REJECT: ${report.dynamoStats.reject}`);
-console.log(`Avg resonance: ${report.dynamoStats.avgResonance?.toFixed(3) ?? 'N/A'}`);

@@ -2,7 +2,11 @@
 import { readFileSync, writeFileSync, existsSync, readdirSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { RepertoireService } from '../src/RepertoireService.js';
-import { MetaInferenceEngine } from '../src/synthesis/meta-inference-engine.js';
+import {
+  MetaInferenceModelError,
+  formatMetaInferenceFailure,
+  MetaInferenceEngine,
+} from '../src/synthesis/meta-inference-engine.js';
 import {
   aggregateWeightedPrimitives,
   formatWeightedPrimitivesSection,
@@ -130,7 +134,7 @@ function generateDrySynthesisReport(entries: InferenceEntry[]): string {
   });
 
   return [
-    '# Dry Synthesis Report (no Hermes — OAuth unavailable)',
+    '# UNREVIEWED Dry Synthesis Report (no Hermes — OAuth unavailable)',
     '',
     '## Confidence-Weighted Primitives',
     formatWeightedPrimitivesSection(entries, 12),
@@ -271,7 +275,12 @@ async function main(): Promise<void> {
   console.log(`\nPipeline summary written to ${options.outputPath}`);
 }
 
-main().catch((error) => {
-  console.error('Pipeline failed:', error);
+main().catch((error: unknown) => {
+  if (error instanceof MetaInferenceModelError) {
+    process.stderr.write(`${formatMetaInferenceFailure(error)}\n`);
+    process.exit(1);
+  }
+  const message = error instanceof Error ? error.message : String(error);
+  process.stderr.write(`Pipeline failed: ${message}\n`);
   process.exit(1);
 });

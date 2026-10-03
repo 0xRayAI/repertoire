@@ -58,15 +58,119 @@ async function main() {
     else fail('provider.buildSynthesisContext', 'null');
   }
 
-  if (typeof provider.refreshMetaInference === 'function') {
+  if (typeof provider.refreshMetaInference !== 'function') {
+    fail('provider.refreshMetaInference missing');
+  } else {
     try {
-      const { refreshed } = await provider.refreshMetaInference();
-      pass('provider.refreshMetaInference', String(refreshed));
+      const refresh = await provider.refreshMetaInference();
+      if (refresh && typeof refresh.refreshed === 'boolean' && typeof refresh.reason === 'string') {
+        pass('provider.refreshMetaInference', `${refresh.refreshed} ${refresh.reason}`);
+      } else {
+        fail('provider.refreshMetaInference', JSON.stringify(refresh));
+      }
     } catch (e) {
       fail('provider.refreshMetaInference', e.message);
     }
-  } else {
-    fail('provider.refreshMetaInference missing');
+  }
+
+  // Reaches synthesis output with a stubbed model, or fails.
+  const synthTmp = mkdtempSync(join(tmpdir(), 'repertoire-synth-output-'));
+  try {
+    const logDir = join(synthTmp, 'logs');
+    mkdirSync(logDir, { recursive: true });
+    const synthSessionId = 'dogfood-synth-1';
+    writeFileSync(
+      join(logDir, 'entries.jsonl'),
+      `${JSON.stringify({
+        timestamp: new Date().toISOString(),
+        source: 'groover',
+        session_id: synthSessionId,
+        inference: 'stubbed synthesis must land in the report',
+        post_title: 'dogfood',
+      })}\n`,
+    );
+    const statePath = join(synthTmp, 'inference-state.json');
+    const reportPath = join(synthTmp, 'synthesis.md');
+    const { MetaInferenceEngine } = await import(
+      join(root, 'dist/synthesis/meta-inference-engine.js')
+    );
+    const engine = new MetaInferenceEngine({
+      logDir,
+      statePath,
+      reportPath,
+      hermesCommand: () => 'STUBBED SYNTHESIS OUTPUT',
+    });
+    const report = await engine.run();
+    const written = existsSync(reportPath) ? readFileSync(reportPath, 'utf8') : '';
+    const state = existsSync(statePath)
+      ? JSON.parse(readFileSync(statePath, 'utf8'))
+      : { processedSessionIds: [] };
+    const processed = Array.isArray(state.processedSessionIds) &&
+      state.processedSessionIds.includes(synthSessionId);
+    if (
+      report &&
+      typeof report.finalReport === 'string' &&
+      report.finalReport.includes('STUBBED SYNTHESIS OUTPUT') &&
+      written.includes('STUBBED SYNTHESIS OUTPUT') &&
+      !written.includes('UNREVIEWED') &&
+      processed
+    ) {
+      pass('synthesis output with stubbed model', 'report written and entry processed');
+    } else {
+      fail(
+        'synthesis output with stubbed model',
+        `report=${Boolean(report)} bytes=${written.length} processed=${JSON.stringify(state.processedSessionIds)}`,
+      );
+    }
+  } catch (e) {
+    fail('synthesis output with stubbed model', e.message);
+  } finally {
+    rmSync(synthTmp, { recursive: true, force: true });
+  }
+
+  const failTmp = mkdtempSync(join(tmpdir(), 'repertoire-synth-fail-'));
+  try {
+    const failLogDir = join(failTmp, 'logs');
+    mkdirSync(failLogDir, { recursive: true });
+    const failSessionId = 'dogfood-synth-fail';
+    writeFileSync(
+      join(failLogDir, 'entries.jsonl'),
+      `${JSON.stringify({
+        timestamp: new Date().toISOString(),
+        source: 'groover',
+        session_id: failSessionId,
+        inference: 'a failed model must not consume this entry',
+        post_title: 'dogfood-fail',
+      })}\n`,
+    );
+    const failStatePath = join(failTmp, 'inference-state.json');
+    const failProvider = createMemoryRoutingProvider({
+      projectRoot: failTmp,
+      logDir: failLogDir,
+      statePath: failStatePath,
+      feedbackDir: join(failTmp, 'feedback'),
+      hermesCommand: () => {
+        throw new Error('dogfood model down');
+      },
+    });
+    const failed = await failProvider.refreshMetaInference();
+    const failState = existsSync(failStatePath)
+      ? JSON.parse(readFileSync(failStatePath, 'utf8'))
+      : { processedSessionIds: [], lastRun: null };
+    const stillOpen = !Array.isArray(failState.processedSessionIds)
+      || !failState.processedSessionIds.includes(failSessionId);
+    if (failed && failed.refreshed === false && failed.reason === 'model_call_failed' && stillOpen) {
+      pass('provider.refreshMetaInference failing model', `${failed.refreshed} ${failed.reason}`);
+    } else {
+      fail(
+        'provider.refreshMetaInference failing model',
+        JSON.stringify({ failed, processed: failState.processedSessionIds }),
+      );
+    }
+  } catch (e) {
+    fail('provider.refreshMetaInference failing model', e.message);
+  } finally {
+    rmSync(failTmp, { recursive: true, force: true });
   }
 
   if (typeof provider.ingestFeedback === 'function') {
