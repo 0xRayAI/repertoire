@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## [0.2.9] - 2026-10-03
+
+### Fixed
+
+- A longer id is not the shorter law. A content word after a spaced law extends the id. A function word is the rest of the sentence, so a law named inside a sentence still matches.
+- Junk model output fails closed. Empty, blank, and unparsed output stays unprocessed and does not write a report. A dry report marked UNREVIEWED is not a routing excerpt.
+
 ## [0.2.8] - 2026-09-24
 
 ### Fixed
