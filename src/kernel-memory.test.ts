@@ -394,6 +394,8 @@ describe('kernel memory + OP-PROC reload', () => {
     expect(signalNameInText('use repo-jelly today', 'repo-jelly')).toBe(true);
     expect(signalNameInText('heat conviction', 'heat-is-not-conviction')).toBe(false);
     expect(signalNameInText('heat is not conviction', 'heat-is-not-conviction')).toBe(true);
+    expect(signalNameInText('The workspace subject map as dest memory and the consumption fit gap.', 'workspace-subject-map')).toBe(true);
+    expect(signalNameInText('The workspace subject map as dest memory and the consumption fit gap.', 'consumption-fit-gap')).toBe(true);
     const beforeWords = service.signalsManager.getByName('station-survives-the-cut')?.observation_stats;
     const missed = service.heatKernelDiary({ text: twoWords, sources: ['definition-words'] });
     expect(missed.heated).not.toContain('station-survives-the-cut');

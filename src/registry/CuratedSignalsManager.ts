@@ -206,12 +206,34 @@ function isSpeechMint(signal: CuratedSignal): boolean {
 
 const FIELD_PRIMITIVE_NAME = /^[A-Za-z][A-Za-z0-9_-]{2,119}$/;
 
+/** A content word after a spaced law extends the id. A function word is the sentence. */
+const PROSE_TAIL = new Set([
+  'a', 'an', 'the', 'as', 'and', 'or', 'but', 'if', 'of', 'to', 'for', 'in', 'on', 'at', 'by',
+  'with', 'from', 'into', 'over', 'after', 'before', 'about', 'than', 'then', 'that', 'this',
+  'these', 'those', 'it', 'its', 'is', 'are', 'was', 'were', 'be', 'been', 'not', 'no', 'so',
+  'when', 'while', 'where', 'which', 'who', 'what', 'how', 'also', 'only', 'just', 'still',
+  'never', 'today',
+]);
+
 /** A longer id does not count. Spaced prose may continue after a hyphenated id. */
 function boundedId(text: string, id: string, spaced: boolean): boolean {
   if (!id) return false;
   const escaped = id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const tail = spaced ? String.raw`(?!\s+[a-z0-9])` : String.raw`(?![a-z0-9-])`;
-  return new RegExp(`(?:^|[^a-z0-9-])${escaped}${tail}`).test(text);
+  const re = new RegExp(`(?:^|[^a-z0-9-])${escaped}`, 'g');
+  let match: RegExpExecArray | null;
+  while ((match = re.exec(text)) !== null) {
+    const after = text.slice(match.index + match[0].length);
+    if (spaced ? spacedTailIsProse(after) : !/^[a-z0-9-]/.test(after)) return true;
+    if (match.index === re.lastIndex) re.lastIndex += 1;
+  }
+  return false;
+}
+
+function spacedTailIsProse(after: string): boolean {
+  if (/^-[a-z0-9]/.test(after) || /^[a-z0-9]/.test(after)) return false;
+  const word = /^\s*([a-z0-9]+)/.exec(after);
+  if (!word || !/^\s/.test(after)) return true;
+  return PROSE_TAIL.has(word[1]);
 }
 
 /**
