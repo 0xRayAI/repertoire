@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## [0.2.10] - 2026-10-23
+
+### Fixed
+
+- Published Node floor is `>=24.22.1`.
+- A fresh grade is measured inside the decay grace window. A floor observation mass still does not move conviction.
+
 ## [0.2.9] - 2026-10-03
 
 ### Fixed

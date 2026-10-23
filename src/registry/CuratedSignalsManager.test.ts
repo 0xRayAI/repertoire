@@ -206,8 +206,9 @@ describe('CuratedSignalsManager confidence tracking', () => {
       { id: 'floor', description: 'repo-clearing pays a live endpoint', type: 'general' },
       manager,
     );
+    const gradedAt = Date.now();
     manager.recordFeedbackOutcome({
-      timestamp: '2026-09-23T18:00:00.000Z',
+      timestamp: new Date(gradedAt).toISOString(),
       sessionId: 'learn-1',
       taskId: 'use-the-law',
       assignedAgent: 'architect',
@@ -225,7 +226,7 @@ describe('CuratedSignalsManager confidence tracking', () => {
     expect(existsSync(join(tempDir, 'learned-conviction.json'))).toBe(true);
 
     const failed = manager.recordFeedbackOutcome({
-      timestamp: '2026-09-23T18:01:00.000Z',
+      timestamp: new Date(gradedAt + 60_000).toISOString(),
       sessionId: 'learn-2',
       taskId: 'refute-the-law',
       assignedAgent: 'architect',
@@ -236,7 +237,7 @@ describe('CuratedSignalsManager confidence tracking', () => {
     });
     expect(failed[0]?.updatedAvgConfidence).toBeCloseTo(0.55, 5);
     manager.recordFeedbackOutcome({
-      timestamp: '2026-09-23T18:02:00.000Z',
+      timestamp: new Date(gradedAt + 120_000).toISOString(),
       sessionId: 'learn-3',
       taskId: 'refute-again',
       assignedAgent: 'architect',
